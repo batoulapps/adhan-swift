@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Adhan"
-  s.version          = "0.1.5"
+  s.version          = "1.0.0"
   s.summary          = "High precision prayer time library."
 
   s.description      = <<-DESC
@@ -13,10 +13,10 @@ Pod::Spec.new do |s|
                       compatible Swift interface.
                      DESC
 
-  s.homepage         = "https://github.com/batoulapps/Adhan"
+  s.homepage         = "https://github.com/batoulapps/adhan-swift"
   s.license          = 'MIT'
   s.author           = { 'Batoul Apps' => 'support@batoulapps.com' }
-  s.source           = { :git => "https://github.com/batoulapps/Adhan.git", :tag => "swift-" + s.version.to_s }
+  s.source           = { :git => "https://github.com/batoulapps/adhan-swift.git", :tag => "swift-" + s.version.to_s }
 
   s.social_media_url = 'https://twitter.com/batoulapps'
 
@@ -25,7 +25,6 @@ Pod::Spec.new do |s|
   s.watchos.deployment_target = '2.0'
   s.tvos.deployment_target = '9.0'
 
-  s.source_files =  'Swift/Sources/Adhan.swift',
-                    'Swift/Sources/AdhanObjc.swift'
+  s.source_files =  'Sources/**/*.{swift,h}'
   
 end

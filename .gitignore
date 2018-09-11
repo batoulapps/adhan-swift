@@ -52,14 +52,6 @@ playground.xcworkspace
 # Carthage/Build
 Swift/Example/Carthage Example/Carthage
 
-# java
-*.jar
-*.class
-
-# intellij
-*.iml
-.idea/
-
 # fastlane
 #
 # It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the 
