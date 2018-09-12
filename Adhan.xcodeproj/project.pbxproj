@@ -170,7 +170,7 @@
 		84369E9F1CD03D8700C34812 /* AdhanObjc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdhanObjc.swift; sourceTree = "<group>"; };
 		84482DBA1EA70A160074E53C /* QiblaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QiblaTests.swift; sourceTree = "<group>"; };
 		8480CCD81CD2DE0F00BD380B /* ObjcTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjcTests.m; sourceTree = "<group>"; };
-		84BCD1AD1CB09A5900614D12 /* Times */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Times; path = ../../Times; sourceTree = "<group>"; };
+		84BCD1AD1CB09A5900614D12 /* Times */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Times; path = ../Shared/Times; sourceTree = "<group>"; };
 		84BCD1AF1CB09A7700614D12 /* TimeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTests.swift; sourceTree = "<group>"; };
 		84F8E11F1C7AB542004C48D7 /* Adhan.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Adhan.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84F8E1221C7AB542004C48D7 /* Adhan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Adhan.h; sourceTree = "<group>"; };
