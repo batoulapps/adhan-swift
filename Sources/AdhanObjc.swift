@@ -78,13 +78,16 @@ import Foundation
     }
     
     open func timeForPrayer(_ prayer: BAPrayer) -> Date? {
-        return prayerTimes?.time(for: prayerForBAPrayer(prayer))
+        guard let swiftPrayer = prayerForBAPrayer(prayer) else {
+            return nil
+        }
+        return prayerTimes?.time(for: swiftPrayer)
     }
     
-    private func prayerForBAPrayer(_ baPrayer: BAPrayer) -> Prayer {
+    private func prayerForBAPrayer(_ baPrayer: BAPrayer) -> Prayer? {
         switch baPrayer {
         case BAPrayer.none:
-            return Prayer.none
+            return nil
         case BAPrayer.fajr:
             return Prayer.fajr
         case BAPrayer.sunrise:
@@ -100,10 +103,11 @@ import Foundation
         }
     }
     
-    private func BAPrayerForPrayer(_ prayer: Prayer) -> BAPrayer {
-        switch prayer {
-        case Prayer.none:
+    private func BAPrayerForPrayer(_ prayer: Prayer?) -> BAPrayer {
+        guard let prayer = prayer else {
             return BAPrayer.none
+        }
+        switch prayer {
         case Prayer.fajr:
             return BAPrayer.fajr
         case Prayer.sunrise:

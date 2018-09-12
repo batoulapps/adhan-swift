@@ -191,7 +191,7 @@ public struct PrayerTimes {
         self.isha = isha.addingTimeInterval(calculationParameters.adjustments.isha.timeInterval()).roundedMinute()
     }
 
-    public func currentPrayer(at time: Date = Date()) -> Prayer {
+    public func currentPrayer(at time: Date = Date()) -> Prayer? {
         if isha.timeIntervalSince(time) <= 0 {
             return .isha
         } else if maghrib.timeIntervalSince(time) <= 0 {
@@ -205,32 +205,30 @@ public struct PrayerTimes {
         } else if fajr.timeIntervalSince(time) <= 0 {
             return .fajr
         } else {
-            return .none
-        }
-    }
-
-    public func nextPrayer(at time: Date = Date()) -> Prayer {
-        if isha.timeIntervalSince(time) <= 0 {
-            return .none
-        } else if maghrib.timeIntervalSince(time) <= 0 {
-            return .isha
-        } else if asr.timeIntervalSince(time) <= 0 {
-            return .maghrib
-        } else if dhuhr.timeIntervalSince(time) <= 0 {
-            return .asr
-        } else if sunrise.timeIntervalSince(time) <= 0 {
-            return .dhuhr
-        } else if fajr.timeIntervalSince(time) <= 0 {
-            return .sunrise
-        } else {
-            return .fajr
-        }
-    }
-
-    public func time(for prayer: Prayer) -> Date? {
-        switch prayer {
-        case .none:
             return nil
+        }
+    }
+
+    public func nextPrayer(at time: Date = Date()) -> Prayer? {
+        if isha.timeIntervalSince(time) <= 0 {
+            return nil
+        } else if maghrib.timeIntervalSince(time) <= 0 {
+            return .isha
+        } else if asr.timeIntervalSince(time) <= 0 {
+            return .maghrib
+        } else if dhuhr.timeIntervalSince(time) <= 0 {
+            return .asr
+        } else if sunrise.timeIntervalSince(time) <= 0 {
+            return .dhuhr
+        } else if fajr.timeIntervalSince(time) <= 0 {
+            return .sunrise
+        } else {
+            return .fajr
+        }
+    }
+
+    public func time(for prayer: Prayer) -> Date {
+        switch prayer {
         case .fajr:
             return fajr
         case .sunrise:

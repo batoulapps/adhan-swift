@@ -245,7 +245,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		083EFC4F202815EE003F6218 /* Configuration */ = {
+		083EFC4F202815EE003F6218 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				083EFC50202815EE003F6218 /* CalculationMethod.swift */,
@@ -258,7 +258,7 @@
 				088088982026EFE60059C738 /* TimeComponents.swift */,
 				088088932026EFAC0059C738 /* ShadowLength.swift */,
 			);
-			path = Configuration;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		088088502026ECCD0059C738 /* Extensions */ = {
@@ -311,7 +311,7 @@
 			isa = PBXGroup;
 			children = (
 				088088832026EF270059C738 /* Astronomy */,
-				083EFC4F202815EE003F6218 /* Configuration */,
+				083EFC4F202815EE003F6218 /* Models */,
 				088088502026ECCD0059C738 /* Extensions */,
 				088088742026EE9E0059C738 /* PrayerTimes.swift */,
 				088088792026EEBD0059C738 /* Qibla.swift */,

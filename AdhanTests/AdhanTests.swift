@@ -260,7 +260,6 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p.asr, p.time(for: .asr))
         XCTAssertEqual(p.maghrib, p.time(for: .maghrib))
         XCTAssertEqual(p.isha, p.time(for: .isha))
-        XCTAssertNil(p.time(for: .none))
     }
     
     func testCurrentPrayer() {
@@ -272,7 +271,7 @@ class AdhanTests: XCTestCase {
         params.madhab = .hanafi
         params.highLatitudeRule = .twilightAngle
         let p = PrayerTimes(coordinates: Coordinates(latitude: 33.720817, longitude: 73.090032), date: comps, calculationParameters: params)!
-        XCTAssertEqual(p.currentPrayer(at: p.fajr.addingTimeInterval(-1)), Prayer.none)
+        XCTAssertNil(p.currentPrayer(at: p.fajr.addingTimeInterval(-1)))
         XCTAssertEqual(p.currentPrayer(at: p.fajr), Prayer.fajr)
         XCTAssertEqual(p.currentPrayer(at: p.fajr.addingTimeInterval(1)), Prayer.fajr)
         XCTAssertEqual(p.currentPrayer(at: p.sunrise.addingTimeInterval(1)), Prayer.sunrise)
@@ -298,6 +297,6 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p.nextPrayer(at: p.dhuhr.addingTimeInterval(1)), Prayer.asr)
         XCTAssertEqual(p.nextPrayer(at: p.asr.addingTimeInterval(1)), Prayer.maghrib)
         XCTAssertEqual(p.nextPrayer(at: p.maghrib.addingTimeInterval(1)), Prayer.isha)
-        XCTAssertEqual(p.nextPrayer(at: p.isha.addingTimeInterval(1)), Prayer.none)
+        XCTAssertNil(p.nextPrayer(at: p.isha.addingTimeInterval(1)))
     }
 }
