@@ -32,5 +32,4 @@ public enum Prayer {
     case asr
     case maghrib
     case isha
-    case none
 }
