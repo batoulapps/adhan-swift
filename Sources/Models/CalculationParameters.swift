@@ -30,7 +30,7 @@ public struct CalculationParameters {
     public var method: CalculationMethod = .other
     public var fajrAngle: Double
     public var ishaAngle: Double
-    public var ishaInterval: Int = 0
+    public var ishaInterval: Minute = 0
     public var madhab: Madhab = .shafi
     public var highLatitudeRule: HighLatitudeRule = .middleOfTheNight
     public var adjustments: PrayerAdjustments = PrayerAdjustments()

@@ -33,11 +33,10 @@ public struct Qibla {
         let makkah = Coordinates(latitude: 21.4225241, longitude: 39.8261818)
 
         /* Equation from "Spherical Trigonometry For the use of colleges and schools" page 50 */
-        let term1 = sin(makkah.longitude.degreesToRadians() - coordinates.longitude.degreesToRadians())
-        let term2 = cos(coordinates.latitude.degreesToRadians()) * tan(makkah.latitude.degreesToRadians())
-        let term3 = sin(coordinates.latitude.degreesToRadians()) * cos(makkah.longitude.degreesToRadians() - coordinates.longitude.degreesToRadians())
+        let term1 = sin(makkah.longitudeAngle.radians - coordinates.longitudeAngle.radians)
+        let term2 = cos(coordinates.latitudeAngle.radians) * tan(makkah.latitudeAngle.radians)
+        let term3 = sin(coordinates.latitudeAngle.radians) * cos(makkah.longitudeAngle.radians - coordinates.longitudeAngle.radians)
 
-        let angle = atan2(term1, term2 - term3)
-        direction = angle.radiansToDegrees().unwindAngle()
+        direction = Angle(radians: atan2(term1, term2 - term3)).unwound().degrees
     }
 }

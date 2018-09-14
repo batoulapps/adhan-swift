@@ -34,4 +34,12 @@ public struct Coordinates {
         self.latitude = latitude
         self.longitude = longitude
     }
+    
+    var latitudeAngle: Angle {
+        return Angle(latitude)
+    }
+    
+    var longitudeAngle: Angle {
+        return Angle(longitude)
+    }
 }
