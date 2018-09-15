@@ -156,6 +156,19 @@ if let prayers = PrayerTimes(coordinates: coordinates, date: date, calculationPa
 }
 ```
 
+## Convenience Utilities
+
+The `PrayerTimes` struct has functions for getting the current prayer and the next prayer. You can also get the time for a specified prayer, making it 
+easier to dynamically show countdowns until the next prayer.
+
+```swift
+let prayerTimes = PrayerTimes(coordinates: coordinates, date: date, calculationParameters: params)
+
+let current = prayerTimes.currentPrayer()
+let next = prayerTimes.nextPrayer()
+let countdown = prayerTimes.time(for: next)
+```
+
 ### Sunnah Times
 
 The Adhan library can also calulate Sunnah times. Given an instance of `PrayerTimes`, you can get a `SunnahTimes` struct with the times for Qiyam.
