@@ -54,7 +54,7 @@ let coordinates = Coordinates(latitude: 35.78056, longitude: -78.6389)
 #### Date
 
 To avoid confusion with timezones the date parameter passed in should be an instance of
-NSDateComponents. The year, month, and day components need to be populated. All other
+`DateComponents`. The year, month, and day components need to be populated. All other
 components will be ignored. The year, month and day values should be for the local date
 that you want prayer times for. These date components are expected to be for the Gregorian calendar.
 
@@ -98,6 +98,7 @@ params.adjustments.fajr = 2
 | qatar | Modified version of Umm al-Qura used in Qatar. Fajr angle: 18, Isha interval: 90. |
 | kuwait | Method used by the country of Kuwait. Fajr angle: 18, Isha angle: 17.5 |
 | moonsightingCommittee | Moonsighting Committee. Fajr angle: 18, Isha angle: 18. Also uses seasonal adjustment values. |
+| singapore | Method used by Singapore. Fajr angle: 20, Isha angle: 18. |
 | northAmerica | Referred to as the ISNA method. This method is included for completeness but is not recommended. Fajr angle: 15, Isha angle: 15 |
 | other | Fajr angle: 0, Isha angle: 0. This is the default value for `method` when initializing a `CalculationParameters` struct. |
 
@@ -130,7 +131,7 @@ let formatter = DateFormatter()
 formatter.timeStyle = .medium
 formatter.timeZone = TimeZone(identifier: "America/New_York")!
 
-NSLog("fajr %@", formatter.string(from: prayers.fajr))
+print("fajr %@", formatter.string(from: prayers.fajr))
 ```
 
 ## Full Example
@@ -146,15 +147,34 @@ if let prayers = PrayerTimes(coordinates: coordinates, date: date, calculationPa
     formatter.timeStyle = .medium
     formatter.timeZone = TimeZone(identifier: "America/New_York")!
     
-    NSLog("fajr %@", formatter.string(from: prayers.fajr))
-    NSLog("sunrise %@", formatter.string(from: prayers.sunrise))
-    NSLog("dhuhr %@", formatter.string(from: prayers.dhuhr))
-    NSLog("asr %@", formatter.string(from: prayers.asr))
-    NSLog("maghrib %@", formatter.string(from: prayers.maghrib))
-    NSLog("isha %@", formatter.string(from: prayers.isha))
+    print("fajr %@", formatter.string(from: prayers.fajr))
+    print("sunrise %@", formatter.string(from: prayers.sunrise))
+    print("dhuhr %@", formatter.string(from: prayers.dhuhr))
+    print("asr %@", formatter.string(from: prayers.asr))
+    print("maghrib %@", formatter.string(from: prayers.maghrib))
+    print("isha %@", formatter.string(from: prayers.isha))
 }
 ```
 
+### Sunnah Times
+
+The Adhan library can also calulate Sunnah times. Given an instance of `PrayerTimes`, you can get a `SunnahTimes` struct with the times for Qiyam.
+
+```swift
+if let sunnahTimes = SunnahTimes(from: todayPrayers) {
+	print(dateFormatter.string(from: sunnahTimes.lastThirdOfTheNight)
+	print(dateFormatter.string(from: sunnahTimes.middleOfTheNight)
+}
+```
+
+### Qibla Direction
+
+Get the direction, in degrees from North, of the Qibla from a given set of coordinates.
+
+```swift
+let nyc = Coordinates(latitude: 40.7128, longitude: -74.0059)
+let qiblaDirection = Qibla(coordinates: nyc).direction
+```
 
 ## Contributing
 
