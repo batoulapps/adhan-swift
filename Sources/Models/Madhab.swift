@@ -30,12 +30,12 @@ public enum Madhab {
     case shafi
     case hanafi
 
-    var shadowLength: ShadowLength {
+    var shadowLength: Double {
         switch(self) {
         case .shafi:
-            return .single
+            return 1
         case .hanafi:
-            return .double
+            return 2
         }
     }
 }

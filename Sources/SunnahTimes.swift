@@ -26,7 +26,7 @@
 import Foundation
 
 /* Sunnah times for a location and date using the given prayer times.
- All prayer times are in UTC and should be display using a DateFormatter that
+ All prayer times are in UTC and should be displayed using a DateFormatter that
  has the correct timezone set. */
 public struct SunnahTimes {
 

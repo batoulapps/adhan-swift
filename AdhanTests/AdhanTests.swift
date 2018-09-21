@@ -16,16 +16,16 @@ http://www.uoif-online.com/horaires-de-prieres/ // Paris 12 degrees
 
 */
 
-extension Double {
+extension DateComponents {
     func timeString() -> String {
-        guard let comps = self.timeComponents() else {
-            return ""
-        }
+        let hourValue = hour ?? 0
+        let minuteValue = minute ?? 0
+        let secondValue = second ?? 0
         
         // round to the nearest minute
-        let minutes = Int(Double(comps.minutes) + (Double(comps.seconds)/60).rounded())
+        let roundedMinutes = Int(Double(minuteValue) + (Double(secondValue)/60).rounded())
         
-        return String(format: "%d:%02d", comps.hours, minutes)
+        return String(format: "%d:%02d", hourValue, roundedMinutes)
     }
 }
 
@@ -122,6 +122,12 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p10.ishaAngle, 0)
         XCTAssertEqual(p10.ishaInterval, 90)
         XCTAssertEqual(p10.method, CalculationMethod.qatar)
+        
+        let p11 = CalculationMethod.singapore.params
+        XCTAssertEqual(p11.fajrAngle, 20)
+        XCTAssertEqual(p11.ishaAngle, 18)
+        XCTAssertEqual(p11.ishaInterval, 0)
+        XCTAssertEqual(p11.method, CalculationMethod.singapore)
     }
     
     func testPrayerTimes() {

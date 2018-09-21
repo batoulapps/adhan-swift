@@ -26,7 +26,7 @@
 import Foundation
 
 /* Prayer times for a location and date using the given calculation parameters.
- All prayer times are in UTC and should be display using a DateFormatter that
+ All prayer times are in UTC and should be displayed using a DateFormatter that
  has the correct timezone set. */
 public struct PrayerTimes {
     public let fajr: Date
@@ -60,32 +60,27 @@ public struct PrayerTimes {
         self.date = date
         self.calculationParameters = calculationParameters
 
-        let solarTime = SolarTime(date: date, coordinates: coordinates)
-        let tomorrowSolarTime = SolarTime(date: tomorrow, coordinates: coordinates)
-
-        guard let transit = solarTime.transit.timeComponents()?.dateComponents(date),
-            let sunriseComponents = solarTime.sunrise.timeComponents()?.dateComponents(date),
-            let sunsetComponents = solarTime.sunset.timeComponents()?.dateComponents(date),
-            let sunriseDate = cal.date(from: sunriseComponents),
-            let sunsetDate = cal.date(from: sunsetComponents),
-            let tomorrowSunriseComponents = tomorrowSolarTime.sunrise.timeComponents()?.dateComponents(tomorrow),
-            let tomorrowSunrise = cal.date(from: tomorrowSunriseComponents) else {
-                // unable to determine transit, sunrise and sunset aborting calculations
+        guard let solarTime = SolarTime(date: date, coordinates: coordinates),
+            let tomorrowSolarTime = SolarTime(date: tomorrow, coordinates: coordinates),
+            let sunriseDate = cal.date(from: solarTime.sunrise),
+            let sunsetDate = cal.date(from: solarTime.sunset),
+            let tomorrowSunrise = cal.date(from: tomorrowSolarTime.sunrise) else {
+                // unable to determine transit, sunrise or sunset aborting calculations
                 return nil
         }
 
-        tempDhuhr = cal.date(from: transit)
-        tempSunrise = cal.date(from: sunriseComponents)
-        tempMaghrib = cal.date(from: sunsetComponents)
+        tempDhuhr = cal.date(from: solarTime.transit)
+        tempSunrise = cal.date(from: solarTime.sunrise)
+        tempMaghrib = cal.date(from: solarTime.sunset)
 
-        if let asrComponents = solarTime.afternoon(shadowLength: calculationParameters.madhab.shadowLength).timeComponents()?.dateComponents(date) {
+        if let asrComponents = solarTime.afternoon(shadowLength: calculationParameters.madhab.shadowLength) {
             tempAsr = cal.date(from: asrComponents)
         }
 
         // get night length
         let night = tomorrowSunrise.timeIntervalSince(sunsetDate)
 
-        if let fajrComponents = solarTime.hourAngle(angle: -calculationParameters.fajrAngle, afterTransit: false).timeComponents()?.dateComponents(date) {
+        if let fajrComponents = solarTime.timeForSolarAngle(Angle(-calculationParameters.fajrAngle), afterTransit: false) {
             tempFajr = cal.date(from: fajrComponents)
         }
 
@@ -113,9 +108,9 @@ public struct PrayerTimes {
 
         // Isha calculation with check against safe value
         if calculationParameters.ishaInterval > 0 {
-            tempIsha = tempMaghrib?.addingTimeInterval(calculationParameters.ishaInterval.timeInterval())
+            tempIsha = tempMaghrib?.addingTimeInterval(calculationParameters.ishaInterval.timeInterval)
         } else {
-            if let ishaComponents = solarTime.hourAngle(angle: -calculationParameters.ishaAngle, afterTransit: true).timeComponents()?.dateComponents(date) {
+            if let ishaComponents = solarTime.timeForSolarAngle(Angle(-calculationParameters.ishaAngle), afterTransit: true) {
                 tempIsha = cal.date(from: ishaComponents)
             }
 
@@ -183,12 +178,12 @@ public struct PrayerTimes {
         }
 
         // Assign final times to public struct members with all offsets
-        self.fajr = fajr.addingTimeInterval(calculationParameters.adjustments.fajr.timeInterval()).roundedMinute()
-        self.sunrise = sunrise.addingTimeInterval(calculationParameters.adjustments.sunrise.timeInterval()).roundedMinute()
-        self.dhuhr = dhuhr.addingTimeInterval(calculationParameters.adjustments.dhuhr.timeInterval()).addingTimeInterval(dhuhrOffset).roundedMinute()
-        self.asr = asr.addingTimeInterval(calculationParameters.adjustments.asr.timeInterval()).roundedMinute()
-        self.maghrib = maghrib.addingTimeInterval(calculationParameters.adjustments.maghrib.timeInterval()).addingTimeInterval(maghribOffset).roundedMinute()
-        self.isha = isha.addingTimeInterval(calculationParameters.adjustments.isha.timeInterval()).roundedMinute()
+        self.fajr = fajr.addingTimeInterval(calculationParameters.adjustments.fajr.timeInterval).roundedMinute()
+        self.sunrise = sunrise.addingTimeInterval(calculationParameters.adjustments.sunrise.timeInterval).roundedMinute()
+        self.dhuhr = dhuhr.addingTimeInterval(calculationParameters.adjustments.dhuhr.timeInterval).addingTimeInterval(dhuhrOffset).roundedMinute()
+        self.asr = asr.addingTimeInterval(calculationParameters.adjustments.asr.timeInterval).roundedMinute()
+        self.maghrib = maghrib.addingTimeInterval(calculationParameters.adjustments.maghrib.timeInterval).addingTimeInterval(maghribOffset).roundedMinute()
+        self.isha = isha.addingTimeInterval(calculationParameters.adjustments.isha.timeInterval).roundedMinute()
     }
 
     public func currentPrayer(at time: Date = Date()) -> Prayer? {

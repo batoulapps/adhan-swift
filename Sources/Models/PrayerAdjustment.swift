@@ -27,14 +27,14 @@ import Foundation
 
 /* Adjustment value for prayer times, in minutes */
 public struct PrayerAdjustments {
-    public var fajr: Int
-    public var sunrise: Int
-    public var dhuhr: Int
-    public var asr: Int
-    public var maghrib: Int
-    public var isha: Int
+    public var fajr: Minute
+    public var sunrise: Minute
+    public var dhuhr: Minute
+    public var asr: Minute
+    public var maghrib: Minute
+    public var isha: Minute
 
-    public init(fajr: Int = 0, sunrise: Int = 0, dhuhr: Int = 0, asr: Int = 0, maghrib: Int = 0, isha: Int = 0) {
+    public init(fajr: Minute = 0, sunrise: Minute = 0, dhuhr: Minute = 0, asr: Minute = 0, maghrib: Minute = 0, isha: Minute = 0) {
         self.fajr = fajr
         self.sunrise = sunrise
         self.dhuhr = dhuhr

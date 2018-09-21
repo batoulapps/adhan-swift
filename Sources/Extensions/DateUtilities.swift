@@ -40,3 +40,33 @@ extension Date {
         return cal.date(from: components)!
     }
 }
+
+extension DateComponents {
+    
+    func settingHour(_ value: Double) -> DateComponents? {
+        guard value.isNormal else {
+            return nil
+        }
+        
+        let calculatedHours = floor(value)
+        let calculatedMinutes = floor((value - calculatedHours) * 60)
+        let calculatedSeconds = floor((value - (calculatedHours + calculatedMinutes/60)) * 60 * 60)
+        
+        var components = self
+        components.hour = Int(calculatedHours)
+        components.minute = Int(calculatedMinutes)
+        components.second = Int(calculatedSeconds)
+        
+        return components
+    }
+}
+
+extension Calendar {
+    
+    /// All calculations are done using a gregorian calendar with the UTC timezone
+    static let gregorianUTC: Calendar = {
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = TimeZone(identifier: "UTC")!
+        return cal
+    }()
+}
