@@ -71,9 +71,7 @@ public struct PrayerTimes {
 
         tempSunrise = cal.date(from: solarTime.sunrise)
         tempMaghrib = cal.date(from: solarTime.sunset)
-        
-        // dhuhr is one minute post zenith
-        tempDhuhr = cal.date(from: solarTime.transit)?.addingTimeInterval(60)
+        tempDhuhr = cal.date(from: solarTime.transit)
 
         if let asrComponents = solarTime.afternoon(shadowLength: calculationParameters.madhab.shadowLength) {
             tempAsr = cal.date(from: asrComponents)

@@ -64,35 +64,39 @@ public enum CalculationMethod {
     public var params: CalculationParameters {
         switch(self) {
         case .muslimWorldLeague:
-            return CalculationParameters(fajrAngle: 18, ishaAngle: 17, method: self)
-        case .egyptian:
-            return CalculationParameters(fajrAngle: 19.5, ishaAngle: 17.5, method: self)
-        case .karachi:
-            return CalculationParameters(fajrAngle: 18, ishaAngle: 18, method: self)
-        case .ummAlQura:
-            var params = CalculationParameters(fajrAngle: 18.5, ishaInterval: 90, method: self)
-            params.methodAdjustments = PrayerAdjustments(dhuhr: -1)
+            var params = CalculationParameters(fajrAngle: 18, ishaAngle: 17, method: self)
+            params.methodAdjustments = PrayerAdjustments(dhuhr: 1)
             return params
+        case .egyptian:
+            var params = CalculationParameters(fajrAngle: 19.5, ishaAngle: 17.5, method: self)
+            params.methodAdjustments = PrayerAdjustments(dhuhr: 1)
+            return params
+        case .karachi:
+            var params = CalculationParameters(fajrAngle: 18, ishaAngle: 18, method: self)
+            params.methodAdjustments = PrayerAdjustments(dhuhr: 1)
+            return params
+        case .ummAlQura:
+            return CalculationParameters(fajrAngle: 18.5, ishaInterval: 90, method: self)
         case .dubai:
             var params = CalculationParameters(fajrAngle: 18.2, ishaAngle: 18.2, method: self)
-            params.methodAdjustments = PrayerAdjustments(sunrise: -3, dhuhr: 2, asr: 3, maghrib: 3)
+            params.methodAdjustments = PrayerAdjustments(sunrise: -3, dhuhr: 3, asr: 3, maghrib: 3)
             return params
         case .moonsightingCommittee:
             var params = CalculationParameters(fajrAngle: 18, ishaAngle: 18, method: self)
-            params.methodAdjustments = PrayerAdjustments(dhuhr: 4, maghrib: 3)
+            params.methodAdjustments = PrayerAdjustments(dhuhr: 5, maghrib: 3)
             return params
         case .northAmerica:
-            return CalculationParameters(fajrAngle: 15, ishaAngle: 15, method: self)
+            var params = CalculationParameters(fajrAngle: 15, ishaAngle: 15, method: self)
+            params.methodAdjustments = PrayerAdjustments(dhuhr: 1)
+            return params
         case .kuwait:
-            var params = CalculationParameters(fajrAngle: 18, ishaAngle: 17.5, method: self)
-            params.methodAdjustments = PrayerAdjustments(dhuhr: -1)
-            return params
+            return CalculationParameters(fajrAngle: 18, ishaAngle: 17.5, method: self)
         case .qatar:
-            var params = CalculationParameters(fajrAngle: 18, ishaInterval: 90, method: self)
-            params.methodAdjustments = PrayerAdjustments(dhuhr: -1)
-            return params
+            return CalculationParameters(fajrAngle: 18, ishaInterval: 90, method: self)
         case .singapore:
-            return CalculationParameters(fajrAngle: 20, ishaAngle: 18, method: self)
+            var params = CalculationParameters(fajrAngle: 20, ishaAngle: 18, method: self)
+            params.methodAdjustments = PrayerAdjustments(dhuhr: 1)
+            return params
         case .other:
             return CalculationParameters(fajrAngle: 0, ishaAngle: 0, method: self)
         }

@@ -96,6 +96,12 @@
     XCTAssertEqual([p nextPrayer:[p.isha dateByAddingTimeInterval:1]], BAPrayerNone);
 }
 
+- (void)testQibla {
+    BACoordinates *washingtonDC = [[BACoordinates alloc] initWithLatitude:38.9072 longitude:-77.0369];
+    BAQibla *qibla = [[BAQibla alloc] initWithCoordinates:washingtonDC];
+    XCTAssertEqualWithAccuracy(qibla.direction, 56.560, 0.001);
+}
+
 - (BACalculationParameters *)parseParams:(NSDictionary *)dict {
     BACalculationParameters *params;
     
@@ -146,11 +152,56 @@
     return params;
 }
 
-- (void)testQibla {
-    BACoordinates *washingtonDC = [[BACoordinates alloc] initWithLatitude:38.9072 longitude:-77.0369];
-    BAQibla *qibla = [[BAQibla alloc] initWithCoordinates:washingtonDC];
-    XCTAssertEqualWithAccuracy(qibla.direction, 56.560, 0.001);
+- (void)testTimes {
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    for (NSString *path in [bundle pathsForResourcesOfType:@"json" inDirectory:@"Times"]) {
+        NSData *data = [NSData dataWithContentsOfFile:path];
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        NSDictionary *params = json[@"params"];
+        NSNumber *lat = params[@"latitude"];
+        NSNumber *lon = params[@"longitude"];
+        NSString *zone = params[@"timezone"];
+        NSTimeZone *timezone = [NSTimeZone timeZoneWithName:zone];
+        
+        BACoordinates *coordinates = [[BACoordinates alloc] initWithLatitude:lat.doubleValue longitude:lon.doubleValue];
+        
+        NSCalendar *cal = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+        cal.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateFormat = @"YYYY-MM-dd";
+        dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+        
+        NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+        timeFormatter.dateFormat = @"h:mm a";
+        timeFormatter.timeZone = timezone;
+        
+        NSDateFormatter *dateTimeFormatter = [[NSDateFormatter alloc] init];
+        dateTimeFormatter.dateFormat = @"YYYY-MM-dd h:mm a";
+        dateTimeFormatter.timeZone = timezone;
+        
+        NSArray *times = json[@"times"];
+        double variance = [json[@"variance"] doubleValue];
+        NSLog(@"Testing %@ (%lu) days", path, (unsigned long)times.count);
+        
+        for (NSDictionary *time in times) {
+            NSDate *date = [dateFormatter dateFromString:time[@"date"]];
+            NSDateComponents *components = [cal components:NSCalendarUnitDay|NSCalendarUnitMonth|NSCalendarUnitYear fromDate:date];
+            BAPrayerTimes *prayerTimes = [[BAPrayerTimes alloc] initWithCoordinates:coordinates date:components calculationParameters:[self parseParams:params]];
+            NSString *fajrString = [NSString stringWithFormat:@"%@ %@", time[@"date"], time[@"fajr"]];
+            NSString *sunriseString = [NSString stringWithFormat:@"%@ %@", time[@"date"], time[@"sunrise"]];
+            NSString *dhuhrString = [NSString stringWithFormat:@"%@ %@", time[@"date"], time[@"dhuhr"]];
+            NSString *asrString = [NSString stringWithFormat:@"%@ %@", time[@"date"], time[@"asr"]];
+            NSString *maghribString = [NSString stringWithFormat:@"%@ %@", time[@"date"], time[@"maghrib"]];
+            NSString *ishaString = [NSString stringWithFormat:@"%@ %@", time[@"date"], time[@"isha"]];
+            XCTAssertLessThanOrEqual(fabs([prayerTimes.fajr timeIntervalSinceDate:[dateTimeFormatter dateFromString:fajrString]]) / 60, variance);
+            XCTAssertLessThanOrEqual(fabs([prayerTimes.sunrise timeIntervalSinceDate:[dateTimeFormatter dateFromString:sunriseString]]) / 60, variance);
+            XCTAssertLessThanOrEqual(fabs([prayerTimes.dhuhr timeIntervalSinceDate:[dateTimeFormatter dateFromString:dhuhrString]]) / 60, variance);
+            XCTAssertLessThanOrEqual(fabs([prayerTimes.asr timeIntervalSinceDate:[dateTimeFormatter dateFromString:asrString]]) / 60, variance);
+            XCTAssertLessThanOrEqual(fabs([prayerTimes.maghrib timeIntervalSinceDate:[dateTimeFormatter dateFromString:maghribString]]) / 60, variance);
+            XCTAssertLessThanOrEqual(fabs([prayerTimes.isha timeIntervalSinceDate:[dateTimeFormatter dateFromString:ishaString]]) / 60, variance);
+        }
+    }
 }
-
 
 @end

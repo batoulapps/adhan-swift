@@ -132,6 +132,7 @@ import Foundation
     open var madhab: BAMadhab = .shafi
     open var highLatitudeRule: BAHighLatitudeRule = .middleOfTheNight
     open var adjustments: BAPrayerAdjustments = BAPrayerAdjustments()
+    open var methodAdjustments: BAPrayerAdjustments = BAPrayerAdjustments()
     
     public init(fajrAngle: Double, ishaAngle: Double, ishaInterval: Int) {
         self.fajrAngle = fajrAngle
@@ -144,6 +145,7 @@ import Foundation
         let params = BACalculationParameters.calculationMethodForBACalculationMethod(method).params
         self.init(fajrAngle: params.fajrAngle, ishaAngle: params.ishaAngle, ishaInterval: params.ishaInterval)
         self.method = method
+        self.methodAdjustments = BAPrayerAdjustments(fajr: params.methodAdjustments.fajr, sunrise: params.methodAdjustments.sunrise, dhuhr: params.methodAdjustments.dhuhr, asr: params.methodAdjustments.asr, maghrib: params.methodAdjustments.maghrib, isha: params.methodAdjustments.isha)
     }
     
     internal func calculationParameters() -> CalculationParameters {
@@ -151,6 +153,7 @@ import Foundation
         params.method = BACalculationParameters.calculationMethodForBACalculationMethod(self.method)
         params.ishaInterval = self.ishaInterval
         params.adjustments = self.adjustments.prayerAdjustments()
+        params.methodAdjustments = self.methodAdjustments.prayerAdjustments()
         
         switch self.madhab {
         case BAMadhab.shafi:
