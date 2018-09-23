@@ -181,8 +181,8 @@ import Foundation
             return CalculationMethod.karachi
         case .ummAlQura:
             return CalculationMethod.ummAlQura
-        case .gulf:
-            return CalculationMethod.gulf
+        case .dubai:
+            return CalculationMethod.dubai
         case .moonsightingCommittee:
             return CalculationMethod.moonsightingCommittee
         case .northAmerica:
@@ -204,7 +204,7 @@ import Foundation
     case egyptian
     case karachi
     case ummAlQura
-    case gulf
+    case dubai
     case moonsightingCommittee
     case northAmerica
     case kuwait

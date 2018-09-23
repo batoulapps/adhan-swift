@@ -41,7 +41,7 @@ public enum CalculationMethod {
     case ummAlQura
 
     // The Gulf Region
-    case gulf
+    case dubai
 
     // Moonsighting Committee
     case moonsightingCommittee
@@ -70,17 +70,27 @@ public enum CalculationMethod {
         case .karachi:
             return CalculationParameters(fajrAngle: 18, ishaAngle: 18, method: self)
         case .ummAlQura:
-            return CalculationParameters(fajrAngle: 18.5, ishaInterval: 90, method: self)
-        case .gulf:
-            return CalculationParameters(fajrAngle: 19.5, ishaInterval: 90, method: self)
+            var params = CalculationParameters(fajrAngle: 18.5, ishaInterval: 90, method: self)
+            params.methodAdjustments = PrayerAdjustments(dhuhr: -1)
+            return params
+        case .dubai:
+            var params = CalculationParameters(fajrAngle: 18.2, ishaAngle: 18.2, method: self)
+            params.methodAdjustments = PrayerAdjustments(sunrise: -3, dhuhr: 2, asr: 3, maghrib: 3)
+            return params
         case .moonsightingCommittee:
-            return CalculationParameters(fajrAngle: 18, ishaAngle: 18, method: self)
+            var params = CalculationParameters(fajrAngle: 18, ishaAngle: 18, method: self)
+            params.methodAdjustments = PrayerAdjustments(dhuhr: 4, maghrib: 3)
+            return params
         case .northAmerica:
             return CalculationParameters(fajrAngle: 15, ishaAngle: 15, method: self)
         case .kuwait:
-            return CalculationParameters(fajrAngle: 18, ishaAngle: 17.5, method: self)
+            var params = CalculationParameters(fajrAngle: 18, ishaAngle: 17.5, method: self)
+            params.methodAdjustments = PrayerAdjustments(dhuhr: -1)
+            return params
         case .qatar:
-            return CalculationParameters(fajrAngle: 18, ishaInterval: 90, method: self)
+            var params = CalculationParameters(fajrAngle: 18, ishaInterval: 90, method: self)
+            params.methodAdjustments = PrayerAdjustments(dhuhr: -1)
+            return params
         case .singapore:
             return CalculationParameters(fajrAngle: 20, ishaAngle: 18, method: self)
         case .other:

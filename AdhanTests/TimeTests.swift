@@ -24,8 +24,8 @@ class TimeTests: XCTestCase {
             params = CalculationMethod.karachi.params
         } else if method == "UmmAlQura" {
             params = CalculationMethod.ummAlQura.params
-        } else if method == "Gulf" {
-            params = CalculationMethod.gulf.params
+        } else if method == "Dubai" {
+            params = CalculationMethod.dubai.params
         } else if method == "MoonsightingCommittee" {
             params = CalculationMethod.moonsightingCommittee.params
         } else if method == "NorthAmerica" {
@@ -62,10 +62,10 @@ class TimeTests: XCTestCase {
     }
     
     func testTimes() {
-        var output = "################\nTime Test Output\n"
         let bundle = Bundle(for: type(of: self))
         let paths = bundle.paths(forResourcesOfType: "json", inDirectory: "Times")
         for path in paths {
+            var output = "################\nTime Test Output\n"
             let data = try? Data(contentsOf: URL(fileURLWithPath: path))
             let json = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! NSDictionary
             let params = json["params"] as! NSDictionary
@@ -92,6 +92,7 @@ class TimeTests: XCTestCase {
             dateTimeFormatter.dateFormat = "YYYY-MM-dd h:mm a"
             dateTimeFormatter.timeZone = timezone
          
+            let variance = json["variance"] as? Double ?? 0
             let times = json["times"] as! [NSDictionary]
             output += "Times for \((path as NSString).lastPathComponent) - \(params["method"]!)\n"
             print("Testing \((path as NSString).lastPathComponent) (\(times.count) days)")
@@ -101,12 +102,6 @@ class TimeTests: XCTestCase {
                 let date = dateFormatter.date(from: time["date"] as! String)!
                 let components = (cal as NSCalendar).components([.year, .month, .day], from: date)
                 let prayerTimes = PrayerTimes(coordinates: coordinates, date: components, calculationParameters: calculationParameters)!
-                XCTAssertEqual(timeFormatter.string(from: prayerTimes.fajr), time["fajr"] as? String, "Incorrect Fajr on \(String(describing: time["date"]))")
-                XCTAssertEqual(timeFormatter.string(from: prayerTimes.sunrise), time["sunrise"] as? String, "Incorrect Sunrise on \(String(describing: time["date"]))")
-                XCTAssertEqual(timeFormatter.string(from: prayerTimes.dhuhr), time["dhuhr"] as? String, "Incorrect Dhuhr on \(String(describing: time["date"]))")
-                XCTAssertEqual(timeFormatter.string(from: prayerTimes.asr), time["asr"] as? String, "Incorrect Asr on \(String(describing: time["date"]))")
-                XCTAssertEqual(timeFormatter.string(from: prayerTimes.maghrib), time["maghrib"] as? String, "Incorrect Maghrib on \(String(describing: time["date"]))")
-                XCTAssertEqual(timeFormatter.string(from: prayerTimes.isha), time["isha"] as? String, "Incorrect Isha on \(String(describing: time["date"]))")
                 
                 let fajrDiff = prayerTimes.fajr.timeIntervalSince(dateTimeFormatter.date(from: "\(time["date"]!) \(time["fajr"]!)")!)/60
                 let sunriseDiff = prayerTimes.sunrise.timeIntervalSince(dateTimeFormatter.date(from: "\(time["date"]!) \(time["sunrise"]!)")!)/60
@@ -114,27 +109,39 @@ class TimeTests: XCTestCase {
                 let asrDiff = prayerTimes.asr.timeIntervalSince(dateTimeFormatter.date(from: "\(time["date"]!) \(time["asr"]!)")!)/60
                 let maghribDiff = prayerTimes.maghrib.timeIntervalSince(dateTimeFormatter.date(from: "\(time["date"]!) \(time["maghrib"]!)")!)/60
                 let ishaDiff = prayerTimes.isha.timeIntervalSince(dateTimeFormatter.date(from: "\(time["date"]!) \(time["isha"]!)")!)/60
-                totalDiff += fabs(fajrDiff)
-                totalDiff += fabs(sunriseDiff)
-                totalDiff += fabs(dhuhrDiff)
-                totalDiff += fabs(asrDiff)
-                totalDiff += fabs(maghribDiff)
-                totalDiff += fabs(ishaDiff)
-                maxDiff = max(fabs(fajrDiff), fabs(sunriseDiff), fabs(dhuhrDiff), fabs(asrDiff), fabs(maghribDiff), fabs(ishaDiff), maxDiff)
                 
-                output += "\(String(describing: components.year))-\(String(describing: components.month))-\(String(describing: components.day))\n"
-                output += "F: \(timeFormatter.string(from: prayerTimes.fajr))  \t\(time["fajr"]!)  \tDiff: \(fajrDiff)\n"
-                output += "S: \(timeFormatter.string(from: prayerTimes.sunrise))  \t\(time["sunrise"]!)  \tDiff: \(sunriseDiff)\n"
-                output += "D: \(timeFormatter.string(from: prayerTimes.dhuhr))  \t\(time["dhuhr"]!)  \tDiff: \(dhuhrDiff)\n"
-                output += "A: \(timeFormatter.string(from: prayerTimes.asr))  \t\(time["asr"]!)  \tDiff: \(asrDiff)\n"
-                output += "M: \(timeFormatter.string(from: prayerTimes.maghrib))  \t\(time["maghrib"]!)  \tDiff: \(maghribDiff)\n"
-                output += "I: \(timeFormatter.string(from: prayerTimes.isha))  \t\(time["isha"]!)  \tDiff: \(ishaDiff)\n"
+                XCTAssert(fabs(fajrDiff) <= variance, "Fajr variance larger than accepted value of \(variance)")
+                XCTAssert(fabs(sunriseDiff) <= variance, "Sunrise variance larger than accepted value of \(variance)")
+                XCTAssert(fabs(dhuhrDiff) <= variance, "Dhuhr variance larger than accepted value of \(variance)")
+                XCTAssert(fabs(asrDiff) <= variance, "Asr variance larger than accepted value of \(variance)")
+                XCTAssert(fabs(maghribDiff) <= variance, "Maghrib variance larger than accepted value of \(variance)")
+                XCTAssert(fabs(ishaDiff) <= variance, "Isha variance larger than accepted value of \(variance)")
+                
+                totalDiff += fabs(fajrDiff) + fabs(sunriseDiff) + fabs(dhuhrDiff) + fabs(asrDiff) + fabs(maghribDiff) + fabs(ishaDiff)
+                maxDiff = max(fabs(fajrDiff), fabs(sunriseDiff), fabs(dhuhrDiff), fabs(asrDiff), fabs(maghribDiff), fabs(ishaDiff), maxDiff)
+
+                output += "\(components.year ?? 0)-\(components.month ?? 0)-\(components.day ?? 0)\n"
+                let outputValues: [(Date, String, Double)] = [
+                    (prayerTimes.fajr, "fajr", fajrDiff),
+                    (prayerTimes.sunrise, "sunrise", sunriseDiff),
+                    (prayerTimes.dhuhr, "dhuhr", dhuhrDiff),
+                    (prayerTimes.asr, "asr", asrDiff),
+                    (prayerTimes.maghrib, "maghrib", maghribDiff),
+                    (prayerTimes.isha, "isha", ishaDiff)
+                ]
+                outputValues.forEach {
+                    let paddingLength = 10
+                    let jsonTime = time[$0.1]! as! String
+                    output += "\($0.1.prefix(1).capitalized): \(timeFormatter.string(from: $0.0).padding(toLength: paddingLength, withPad: " ", startingAt: 0)) JSON: \(jsonTime.padding(toLength: paddingLength, withPad: " ", startingAt: 0)) Diff: \(Int($0.2))\n"
+                }
             }
+            output += "Difference for \((path as NSString).lastPathComponent) - \(params["method"]!)\n"
             output += "Average difference: \(totalDiff/Double(times.count * 6))\n"
             output += "Max difference: \(maxDiff)\n"
-            output += "\n"
+            if maxDiff > 0 {
+                print(output)
+            }
         }
-        print(output)
     }
 
 }
