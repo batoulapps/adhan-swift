@@ -110,14 +110,19 @@ class TimeTests: XCTestCase {
                 let maghribDiff = prayerTimes.maghrib.timeIntervalSince(dateTimeFormatter.date(from: "\(time["date"]!) \(time["maghrib"]!)")!)/60
                 let ishaDiff = prayerTimes.isha.timeIntervalSince(dateTimeFormatter.date(from: "\(time["date"]!) \(time["isha"]!)")!)/60
                 
-                XCTAssert(fabs(fajrDiff) <= variance, "Fajr variance larger than accepted value of \(variance)")
-                XCTAssert(fabs(sunriseDiff) <= variance, "Sunrise variance larger than accepted value of \(variance)")
-                XCTAssert(fabs(dhuhrDiff) <= variance, "Dhuhr variance larger than accepted value of \(variance)")
-                XCTAssert(fabs(asrDiff) <= variance, "Asr variance larger than accepted value of \(variance)")
-                XCTAssert(fabs(maghribDiff) <= variance, "Maghrib variance larger than accepted value of \(variance)")
-                XCTAssert(fabs(ishaDiff) <= variance, "Isha variance larger than accepted value of \(variance)")
+                XCTAssertLessThanOrEqual(fabs(fajrDiff), variance, "Fajr variance larger than accepted value of \(variance)")
+                XCTAssertLessThanOrEqual(fabs(sunriseDiff), variance, "Sunrise variance larger than accepted value of \(variance)")
+                XCTAssertLessThanOrEqual(fabs(dhuhrDiff), variance, "Dhuhr variance larger than accepted value of \(variance)")
+                XCTAssertLessThanOrEqual(fabs(asrDiff), variance, "Asr variance larger than accepted value of \(variance)")
+                XCTAssertLessThanOrEqual(fabs(maghribDiff), variance, "Maghrib variance larger than accepted value of \(variance)")
+                XCTAssertLessThanOrEqual(fabs(ishaDiff), variance, "Isha variance larger than accepted value of \(variance)")
                 
-                totalDiff += fabs(fajrDiff) + fabs(sunriseDiff) + fabs(dhuhrDiff) + fabs(asrDiff) + fabs(maghribDiff) + fabs(ishaDiff)
+                totalDiff += fabs(fajrDiff)
+                totalDiff += fabs(sunriseDiff)
+                totalDiff += fabs(dhuhrDiff)
+                totalDiff += fabs(asrDiff)
+                totalDiff += fabs(maghribDiff)
+                totalDiff += fabs(ishaDiff)
                 maxDiff = max(fabs(fajrDiff), fabs(sunriseDiff), fabs(dhuhrDiff), fabs(asrDiff), fabs(maghribDiff), fabs(ishaDiff), maxDiff)
 
                 output += "\(components.year ?? 0)-\(components.month ?? 0)-\(components.day ?? 0)\n"
