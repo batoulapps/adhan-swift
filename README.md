@@ -1,6 +1,6 @@
 # Adhan Swift
 
-The Adhan Swift implementation uses Swift 4 and has an Objective-C compatible wrapper.
+Adhan Swift implementation  Swift 4.2 and has an Objective-C compatible wrapper.
 
 ## Installation
 
@@ -17,7 +17,7 @@ pod 'Adhan'
 Adhan supports [Carthage](https://github.com/Carthage/Carthage). Simply add the following line to your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
 
 ```ruby
-github "batoulapps/Adhan" "master"
+github "batoulapps/adhan-swift" "master"
 ```
 
 
@@ -94,7 +94,7 @@ params.adjustments.fajr = 2
 | egyptian | Egyptian General Authority of Survey. Fajr angle: 19.5, Isha angle: 17.5 |
 | karachi | University of Islamic Sciences, Karachi. Fajr angle: 18, Isha angle: 18 |
 | ummAlQura | Umm al-Qura University, Makkah. Fajr angle: 18.5, Isha interval: 90. *Note: you should add a +30 minute custom adjustment for Isha during Ramadan.* |
-| gulf | Modified version of Umm al-Qura used in UAE. Fajr angle: 19.5, Isha interval: 90. |
+| dubai | Method used in UAE. Fajr angle: 18.2, Isha angle: 18.2. |
 | qatar | Modified version of Umm al-Qura used in Qatar. Fajr angle: 18, Isha interval: 90. |
 | kuwait | Method used by the country of Kuwait. Fajr angle: 18, Isha angle: 17.5 |
 | moonsightingCommittee | Moonsighting Committee. Fajr angle: 18, Isha angle: 18. Also uses seasonal adjustment values. |
