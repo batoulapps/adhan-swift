@@ -87,11 +87,11 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p4.ishaInterval, 90)
         XCTAssertEqual(p4.method, CalculationMethod.ummAlQura)
         
-        let p5 = CalculationMethod.gulf.params
-        XCTAssertEqual(p5.fajrAngle, 19.5)
-        XCTAssertEqual(p5.ishaAngle, 0)
-        XCTAssertEqual(p5.ishaInterval, 90)
-        XCTAssertEqual(p5.method, CalculationMethod.gulf)
+        let p5 = CalculationMethod.dubai.params
+        XCTAssertEqual(p5.fajrAngle, 18.2)
+        XCTAssertEqual(p5.ishaAngle, 18.2)
+        XCTAssertEqual(p5.ishaInterval, 0)
+        XCTAssertEqual(p5.method, CalculationMethod.dubai)
         
         let p6 = CalculationMethod.moonsightingCommittee.params
         XCTAssertEqual(p6.fajrAngle, 18)

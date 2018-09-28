@@ -69,9 +69,9 @@ public struct PrayerTimes {
                 return nil
         }
 
-        tempDhuhr = cal.date(from: solarTime.transit)
         tempSunrise = cal.date(from: solarTime.sunrise)
         tempMaghrib = cal.date(from: solarTime.sunset)
+        tempDhuhr = cal.date(from: solarTime.transit)
 
         if let asrComponents = solarTime.afternoon(shadowLength: calculationParameters.madhab.shadowLength) {
             tempAsr = cal.date(from: asrComponents)
@@ -137,36 +137,6 @@ public struct PrayerTimes {
             }
         }
 
-
-        // method based offsets
-        let dhuhrOffset: TimeInterval = {
-            switch(calculationParameters.method) {
-            case .moonsightingCommittee:
-                // Moonsighting Committee requires 5 minutes for
-                // the sun to pass the zenith and dhuhr to enter
-                return 5 * 60
-            case .ummAlQura, .gulf, .qatar:
-                // UmmAlQura and derivatives don't add
-                // anything to zenith for dhuhr
-                return 0
-            default:
-                // Default behavior waits 1 minute for the
-                // sun to pass the zenith and dhuhr to enter
-                return 60
-            }
-        }()
-
-        let maghribOffset: TimeInterval = {
-            switch(calculationParameters.method) {
-            case .moonsightingCommittee:
-                // Moonsighting Committee adds 3 minutes to
-                // sunset time to account for light refraction
-                return 3 * 60
-            default:
-                return 0
-            }
-        }()
-
         // if we don't have all prayer times then initialization failed
         guard let fajr = tempFajr,
             let sunrise = tempSunrise,
@@ -178,12 +148,24 @@ public struct PrayerTimes {
         }
 
         // Assign final times to public struct members with all offsets
-        self.fajr = fajr.addingTimeInterval(calculationParameters.adjustments.fajr.timeInterval).roundedMinute()
-        self.sunrise = sunrise.addingTimeInterval(calculationParameters.adjustments.sunrise.timeInterval).roundedMinute()
-        self.dhuhr = dhuhr.addingTimeInterval(calculationParameters.adjustments.dhuhr.timeInterval).addingTimeInterval(dhuhrOffset).roundedMinute()
-        self.asr = asr.addingTimeInterval(calculationParameters.adjustments.asr.timeInterval).roundedMinute()
-        self.maghrib = maghrib.addingTimeInterval(calculationParameters.adjustments.maghrib.timeInterval).addingTimeInterval(maghribOffset).roundedMinute()
-        self.isha = isha.addingTimeInterval(calculationParameters.adjustments.isha.timeInterval).roundedMinute()
+        self.fajr = fajr.addingTimeInterval(calculationParameters.adjustments.fajr.timeInterval)
+            .addingTimeInterval(calculationParameters.methodAdjustments.fajr.timeInterval)
+            .roundedMinute()
+        self.sunrise = sunrise.addingTimeInterval(calculationParameters.adjustments.sunrise.timeInterval)
+            .addingTimeInterval(calculationParameters.methodAdjustments.sunrise.timeInterval)
+            .roundedMinute()
+        self.dhuhr = dhuhr.addingTimeInterval(calculationParameters.adjustments.dhuhr.timeInterval)
+            .addingTimeInterval(calculationParameters.methodAdjustments.dhuhr.timeInterval)
+            .roundedMinute()
+        self.asr = asr.addingTimeInterval(calculationParameters.adjustments.asr.timeInterval)
+            .addingTimeInterval(calculationParameters.methodAdjustments.asr.timeInterval)
+            .roundedMinute()
+        self.maghrib = maghrib.addingTimeInterval(calculationParameters.adjustments.maghrib.timeInterval)
+            .addingTimeInterval(calculationParameters.methodAdjustments.maghrib.timeInterval)
+            .roundedMinute()
+        self.isha = isha.addingTimeInterval(calculationParameters.adjustments.isha.timeInterval)
+            .addingTimeInterval(calculationParameters.methodAdjustments.isha.timeInterval)
+            .roundedMinute()
     }
 
     public func currentPrayer(at time: Date = Date()) -> Prayer? {
