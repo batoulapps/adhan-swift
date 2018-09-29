@@ -2,6 +2,8 @@
 
 Adhan Swift implementation  Swift 4.2 and has an Objective-C compatible wrapper.
 
+[![Build Status](https://travis-ci.org/batoulapps/adhan-swift.svg?branch=master)](https://travis-ci.org/batoulapps/adhan-swift)
+
 ## Installation
 
 ### CocoaPods
