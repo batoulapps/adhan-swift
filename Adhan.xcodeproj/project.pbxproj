@@ -150,6 +150,8 @@
 		0880888E2026EF910059C738 /* Astronomical.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Astronomical.swift; sourceTree = "<group>"; };
 		088088A22026F0390059C738 /* DateUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtilities.swift; sourceTree = "<group>"; };
 		088088B12026F0B30059C738 /* MathUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathUtilities.swift; sourceTree = "<group>"; };
+		4DAB34552160D3E8006D3003 /* LinuxMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinuxMain.swift; sourceTree = "<group>"; };
+		4DAB34592160D42B006D3003 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		84369E9F1CD03D8700C34812 /* AdhanObjc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdhanObjc.swift; sourceTree = "<group>"; };
 		84482DBA1EA70A160074E53C /* QiblaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QiblaTests.swift; sourceTree = "<group>"; };
 		844EFDEA214A001E00186C45 /* Angle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Angle.swift; sourceTree = "<group>"; };
@@ -275,6 +277,7 @@
 		84F8E1151C7AB541004C48D7 = {
 			isa = PBXGroup;
 			children = (
+				4DAB34592160D42B006D3003 /* Package.swift */,
 				8B74F4521EF55367006A51EE /* README.md */,
 				84F8E1211C7AB542004C48D7 /* Sources */,
 				84F8E12D1C7AB542004C48D7 /* AdhanTests */,
@@ -316,6 +319,7 @@
 		84F8E12D1C7AB542004C48D7 /* AdhanTests */ = {
 			isa = PBXGroup;
 			children = (
+				4DAB34552160D3E8006D3003 /* LinuxMain.swift */,
 				84BCD1AD1CB09A5900614D12 /* Times */,
 				84BCD1AF1CB09A7700614D12 /* TimeTests.swift */,
 				84F8E12E1C7AB542004C48D7 /* AdhanTests.swift */,

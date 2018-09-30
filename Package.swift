@@ -15,6 +15,12 @@ let package = Package(
         .target(
             name: "Adhan",
             path: "Sources"
+        ),
+        .testTarget(
+            name: "Tests",
+            dependencies: ["Adhan"],
+            path: "AdhanTests",
+            exclude: ["ObjcTests.m", "Info.plist"]
         )
     ]
 )
