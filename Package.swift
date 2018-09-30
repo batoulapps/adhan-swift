@@ -14,7 +14,8 @@ let package = Package(
     targets: [
         .target(
             name: "Adhan",
-            path: "Sources"
+            path: "Sources",
+            exclude: ["AdhanObjc.swift"]
         ),
         .testTarget(
             name: "Tests",
