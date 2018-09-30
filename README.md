@@ -22,7 +22,16 @@ Adhan supports [Carthage](https://github.com/Carthage/Carthage). Simply add the 
 github "batoulapps/adhan-swift" "master"
 ```
 
+### Swift Package Manager
 
+Adhan supports [SPM](https://swift.org/package-manager/). Simply add the following line to your dependencies value of your `Package.swift` file:
+
+```swift
+// swift-tools-version:4.2
+dependencies: [
+    .package(url: "https://github.com/batoulapps/adhan-swift", .branch("master")),
+]
+```
 
 ### Manual
 
