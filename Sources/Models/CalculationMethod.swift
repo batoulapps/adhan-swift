@@ -26,7 +26,7 @@
 import Foundation
 
 /* Preset calculation parameters */
-public enum CalculationMethod {
+public enum CalculationMethod: CaseIterable {
 
     // Muslim World League
     case muslimWorldLeague
