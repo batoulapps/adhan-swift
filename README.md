@@ -22,7 +22,16 @@ Adhan supports [Carthage](https://github.com/Carthage/Carthage). Simply add the 
 github "batoulapps/adhan-swift" "master"
 ```
 
+### Swift Package Manager
 
+Adhan supports [SPM](https://swift.org/package-manager/). Simply add the following line to your dependencies value of your `Package.swift` file:
+
+```swift
+// swift-tools-version:4.2
+dependencies: [
+    .package(url: "https://github.com/batoulapps/adhan-swift", .branch("master")),
+]
+```
 
 ### Manual
 
@@ -133,7 +142,7 @@ let formatter = DateFormatter()
 formatter.timeStyle = .medium
 formatter.timeZone = TimeZone(identifier: "America/New_York")!
 
-print("fajr %@", formatter.string(from: prayers.fajr))
+print("fajr \(formatter.string(from: prayers.fajr))")
 ```
 
 ## Full Example
@@ -148,19 +157,19 @@ if let prayers = PrayerTimes(coordinates: coordinates, date: date, calculationPa
     let formatter = DateFormatter()
     formatter.timeStyle = .medium
     formatter.timeZone = TimeZone(identifier: "America/New_York")!
-    
-    print("fajr %@", formatter.string(from: prayers.fajr))
-    print("sunrise %@", formatter.string(from: prayers.sunrise))
-    print("dhuhr %@", formatter.string(from: prayers.dhuhr))
-    print("asr %@", formatter.string(from: prayers.asr))
-    print("maghrib %@", formatter.string(from: prayers.maghrib))
-    print("isha %@", formatter.string(from: prayers.isha))
+
+    print("fajr \(formatter.string(from: prayers.fajr))")
+    print("sunrise \(formatter.string(from: prayers.sunrise))")
+    print("dhuhr \(formatter.string(from: prayers.dhuhr))")
+    print("asr \(formatter.string(from: prayers.asr))")
+    print("maghrib \(formatter.string(from: prayers.maghrib))")
+    print("isha \(formatter.string(from: prayers.isha))")
 }
 ```
 
 ## Convenience Utilities
 
-The `PrayerTimes` struct has functions for getting the current prayer and the next prayer. You can also get the time for a specified prayer, making it 
+The `PrayerTimes` struct has functions for getting the current prayer and the next prayer. You can also get the time for a specified prayer, making it
 easier to dynamically show countdowns until the next prayer.
 
 ```swift
@@ -193,9 +202,9 @@ let qiblaDirection = Qibla(coordinates: nyc).direction
 
 ## Contributing
 
-Adhan is made publicly available to provide a well tested and well documented library for Islamic prayer times to all 
-developers. We accept feature contributions provided that they are properly documented and include the appropriate 
-unit tests. We are also looking for contributions in the form of unit tests of of prayer times for different 
+Adhan is made publicly available to provide a well tested and well documented library for Islamic prayer times to all
+developers. We accept feature contributions provided that they are properly documented and include the appropriate
+unit tests. We are also looking for contributions in the form of unit tests of of prayer times for different
 locations, we do ask that the source of the comparison values be properly documented.
 
 ## License

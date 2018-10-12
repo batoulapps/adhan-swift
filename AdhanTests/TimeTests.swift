@@ -62,11 +62,21 @@ class TimeTests: XCTestCase {
     }
     
     func testTimes() {
+        #if os(Linux)
+        let fileManager = FileManager.default
+        let currentDir = URL(fileURLWithPath: fileManager.currentDirectoryPath)
+        let fixtureDir = currentDir.appendingPathComponent("Shared/Times")
+        let paths = try! fileManager.contentsOfDirectory(at: fixtureDir, includingPropertiesForKeys: nil)
+            .filter { $0.pathExtension == "json" }
+        #else
         let bundle = Bundle(for: type(of: self))
         let paths = bundle.paths(forResourcesOfType: "json", inDirectory: "Times")
+            .compactMap(URL.init(fileURLWithPath:))
+        #endif
+        
         for path in paths {
             var output = "################\nTime Test Output\n"
-            let data = try? Data(contentsOf: URL(fileURLWithPath: path))
+            let data = try? Data(contentsOf: path)
             let json = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! NSDictionary
             let params = json["params"] as! NSDictionary
             let lat = params["latitude"] as! NSNumber
@@ -94,8 +104,8 @@ class TimeTests: XCTestCase {
          
             let variance = json["variance"] as? Double ?? 0
             let times = json["times"] as! [NSDictionary]
-            output += "Times for \((path as NSString).lastPathComponent) - \(params["method"]!)\n"
-            print("Testing \((path as NSString).lastPathComponent) (\(times.count) days)")
+            output += "Times for \(path.lastPathComponent) - \(params["method"]!)\n"
+            print("Testing \(path.lastPathComponent) (\(times.count) days)")
             var totalDiff = 0.0
             var maxDiff = 0.0
             for time in times {
@@ -140,7 +150,7 @@ class TimeTests: XCTestCase {
                     output += "\($0.1.prefix(1).capitalized): \(timeFormatter.string(from: $0.0).padding(toLength: paddingLength, withPad: " ", startingAt: 0)) JSON: \(jsonTime.padding(toLength: paddingLength, withPad: " ", startingAt: 0)) Diff: \(Int($0.2))\n"
                 }
             }
-            output += "Difference for \((path as NSString).lastPathComponent) - \(params["method"]!)\n"
+            output += "Difference for \(path.lastPathComponent) - \(params["method"]!)\n"
             output += "Average difference: \(totalDiff/Double(times.count * 6))\n"
             output += "Max difference: \(maxDiff)\n"
             if maxDiff > 0 {
