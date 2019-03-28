@@ -1,7 +1,35 @@
-language: objective-c
-osx_image: xcode10.2
+language: swift
+
+osx_image: 
+- xcode10.1
+- xcode10.2
+
+env:
+- SCHEME=Adhan SWIFT_VERSION=5.0
+- SCHEME=Adhan-macOS SWIFT_VERSION=5.0
+- SCHEME=Adhan-tvOS SWIFT_VERSION=5.0
+- SCHEME=Adhan SWIFT_VERSION=4.2
+- SCHEME=Adhan-macOS SWIFT_VERSION=4.2
+- SCHEME=Adhan-tvOS SWIFT_VERSION=4.2
+- SCHEME=Adhan SWIFT_VERSION=4.0
+- SCHEME=Adhan-macOS SWIFT_VERSION=4.0
+- SCHEME=Adhan-tvOS SWIFT_VERSION=4.0
+
+cache: bundler
+
+before_install:
+  - gem update --system
+  - gem install bundler
+
+matrix:
+  exclude:
+  - osx_image: xcode10.1
+    env: SCHEME=Adhan SWIFT_VERSION=5.0
+  - osx_image: xcode10.1
+    env: SCHEME=Adhan-macOS SWIFT_VERSION=5.0
+  - osx_image: xcode10.1
+    env: SCHEME=Adhan-tvOS SWIFT_VERSION=5.0
+
 script:
- - xcodebuild clean test -scheme 'Adhan iOS' -project Adhan.xcodeproj -destination "platform=iOS Simulator,name=iPhone X,OS=12.2" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
- - xcodebuild clean test -scheme 'Adhan macOS' -project Adhan.xcodeproj -destination "platform=OS X" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
- - xcodebuild clean test -scheme 'Adhan tvOS' -project Adhan.xcodeproj -destination "platform=tvOS Simulator,name=Apple TV 4K" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
- - xcodebuild clean build -scheme 'Adhan watchOS' -project Adhan.xcodeproj CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+  - bundle exec fastlane test_ci
+  - xcodebuild clean build -scheme 'Adhan-watchOS' -project Adhan.xcodeproj CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO SWIFT_VERSION=$SWIFT_VERSION

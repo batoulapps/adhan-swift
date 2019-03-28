@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites name='AdhanTests.xctest' tests='43' failures='0'>
+  <testsuite name='AdhanTests.AdhanTests' tests='9' failures='0'>
+    <testcase classname='AdhanTests.AdhanTests' name='testCalculationMethods' time='0.002'/>
+    <testcase classname='AdhanTests.AdhanTests' name='testCurrentPrayer' time='0.002'/>
+    <testcase classname='AdhanTests.AdhanTests' name='testMoonsightingMethod' time='0.001'/>
+    <testcase classname='AdhanTests.AdhanTests' name='testMoonsightingMethodHighLat' time='0.001'/>
+    <testcase classname='AdhanTests.AdhanTests' name='testNextPrayer' time='0.001'/>
+    <testcase classname='AdhanTests.AdhanTests' name='testNightPortion' time='0.001'/>
+    <testcase classname='AdhanTests.AdhanTests' name='testOffsets' time='0.001'/>
+    <testcase classname='AdhanTests.AdhanTests' name='testPrayerTimes' time='0.001'/>
+    <testcase classname='AdhanTests.AdhanTests' name='testTimeForPrayer' time='0.001'/>
+  </testsuite>
+  <testsuite name='AdhanTests.AstronomicalTests' tests='13' failures='0'>
+    <testcase classname='AdhanTests.AstronomicalTests' name='testAltitudeOfCelestialBody' time='0.001'/>
+    <testcase classname='AdhanTests.AstronomicalTests' name='testAngleInterpolation' time='0.001'/>
+    <testcase classname='AdhanTests.AstronomicalTests' name='testCalendricalDate' time='0.001'/>
+    <testcase classname='AdhanTests.AstronomicalTests' name='testDaysSinceSolstice' time='0.002'/>
+    <testcase classname='AdhanTests.AstronomicalTests' name='testInterpolation' time='0.000'/>
+    <testcase classname='AdhanTests.AstronomicalTests' name='testJulianDay' time='0.001'/>
+    <testcase classname='AdhanTests.AstronomicalTests' name='testJulianHours' time='0.001'/>
+    <testcase classname='AdhanTests.AstronomicalTests' name='testLeapYear' time='0.001'/>
+    <testcase classname='AdhanTests.AstronomicalTests' name='testRightAscensionEdgeCase' time='0.029'/>
+    <testcase classname='AdhanTests.AstronomicalTests' name='testSolarCoordinates' time='0.001'/>
+    <testcase classname='AdhanTests.AstronomicalTests' name='testSolarTime' time='0.001'/>
+    <testcase classname='AdhanTests.AstronomicalTests' name='testTimeIntervalSinceMidnight' time='0.000'/>
+    <testcase classname='AdhanTests.AstronomicalTests' name='testTransitAndHourAngle' time='0.001'/>
+  </testsuite>
+  <testsuite name='AdhanTests.MathTests' tests='5' failures='0'>
+    <testcase classname='AdhanTests.MathTests' name='testAngleConversion' time='0.001'/>
+    <testcase classname='AdhanTests.MathTests' name='testClosestAngle' time='0.001'/>
+    <testcase classname='AdhanTests.MathTests' name='testMinuteRounding' time='0.001'/>
+    <testcase classname='AdhanTests.MathTests' name='testNormalizing' time='0.001'/>
+    <testcase classname='AdhanTests.MathTests' name='testTimeComponents' time='0.001'/>
+  </testsuite>
+  <testsuite name='ObjcTests' tests='6' failures='0'>
+    <testcase classname='ObjcTests' name='testCurrentPrayer' time='0.001'/>
+    <testcase classname='ObjcTests' name='testNextPrayer' time='0.001'/>
+    <testcase classname='ObjcTests' name='testObjcInterface' time='0.001'/>
+    <testcase classname='ObjcTests' name='testQibla' time='0.001'/>
+    <testcase classname='ObjcTests' name='testTimeForPrayer' time='0.001'/>
+    <testcase classname='ObjcTests' name='testTimes' time='0.036'/>
+  </testsuite>
+  <testsuite name='AdhanTests.QiblaTests' tests='4' failures='0'>
+    <testcase classname='AdhanTests.QiblaTests' name='testAsia' time='0.001'/>
+    <testcase classname='AdhanTests.QiblaTests' name='testEurope' time='0.001'/>
+    <testcase classname='AdhanTests.QiblaTests' name='testNorthAmerica' time='0.001'/>
+    <testcase classname='AdhanTests.QiblaTests' name='testSouthPacific' time='0.001'/>
+  </testsuite>
+  <testsuite name='AdhanTests.SunnahTests' tests='5' failures='0'>
+    <testcase classname='AdhanTests.SunnahTests' name='testSunnahTimesDST1' time='0.002'/>
+    <testcase classname='AdhanTests.SunnahTests' name='testSunnahTimesDST2' time='0.002'/>
+    <testcase classname='AdhanTests.SunnahTests' name='testSunnahTimesLondon' time='0.001'/>
+    <testcase classname='AdhanTests.SunnahTests' name='testSunnahTimesNY' time='0.001'/>
+    <testcase classname='AdhanTests.SunnahTests' name='testSunnahTimesOslo' time='0.001'/>
+  </testsuite>
+  <testsuite name='AdhanTests.TimeTests' tests='1' failures='0'>
+    <testcase classname='AdhanTests.TimeTests' name='testTimes' time='0.051'/>
+  </testsuite>
+</testsuites>
