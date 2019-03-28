@@ -5,15 +5,9 @@ osx_image:
 - xcode10.2
 
 env:
-- SCHEME=Adhan SWIFT_VERSION=5.0
-- SCHEME=Adhan-macOS SWIFT_VERSION=5.0
-- SCHEME=Adhan-tvOS SWIFT_VERSION=5.0
-- SCHEME=Adhan SWIFT_VERSION=4.2
-- SCHEME=Adhan-macOS SWIFT_VERSION=4.2
-- SCHEME=Adhan-tvOS SWIFT_VERSION=4.2
-- SCHEME=Adhan SWIFT_VERSION=4.0
-- SCHEME=Adhan-macOS SWIFT_VERSION=4.0
-- SCHEME=Adhan-tvOS SWIFT_VERSION=4.0
+- SWIFT_VERSION=5.0
+- SWIFT_VERSION=4.2
+- SWIFT_VERSION=4.0
 
 cache: bundler
 
@@ -24,11 +18,7 @@ before_install:
 matrix:
   exclude:
   - osx_image: xcode10.1
-    env: SCHEME=Adhan SWIFT_VERSION=5.0
-  - osx_image: xcode10.1
-    env: SCHEME=Adhan-macOS SWIFT_VERSION=5.0
-  - osx_image: xcode10.1
-    env: SCHEME=Adhan-tvOS SWIFT_VERSION=5.0
+    env: SWIFT_VERSION=5.0
 
 script:
   - bundle exec fastlane test_ci

@@ -18,16 +18,16 @@ default_platform :ios
 platform :ios do
   desc "Runs all the tests"
   lane :tests do
-    test(scheme: "Adhan", swift_version: "5.0")
     test(scheme: "Adhan-macOS", swift_version: "5.0")
-    test(scheme: "Adhan-tvOS", swift_version: "5.0")
-
-    test(scheme: "Adhan", swift_version: "4.2")
     test(scheme: "Adhan-macOS", swift_version: "4.2")
-    test(scheme: "Adhan-tvOS", swift_version: "4.2")
-
-    test(scheme: "Adhan", swift_version: "4.0")
     test(scheme: "Adhan-macOS", swift_version: "4.0")
+
+    test(scheme: "Adhan-iOS", swift_version: "5.0")
+    test(scheme: "Adhan-iOS", swift_version: "4.2")
+    test(scheme: "Adhan-iOS", swift_version: "4.0")
+
+    test(scheme: "Adhan-tvOS", swift_version: "5.0")
+    test(scheme: "Adhan-tvOS", swift_version: "4.2")
     test(scheme: "Adhan-tvOS", swift_version: "4.0")
   end
 
@@ -40,13 +40,15 @@ platform :ios do
 
   private_lane :_test do |options|
     if options[:scheme].include? "macOS"
-        scan(scheme: options[:scheme], clean: true, xcargs: "SWIFT_VERSION=#{options[:swift_version]}", destination: "platform=macOS")
+        scan(scheme: options[:scheme], clean: true, code_coverage: true, xcargs: "SWIFT_VERSION=#{options[:swift_version]}", destination: "platform=macOS")
     else
-        scan(scheme: options[:scheme], clean: true, xcargs: "SWIFT_VERSION=#{options[:swift_version]}")
+        scan(scheme: options[:scheme], clean: true, code_coverage: true, xcargs: "SWIFT_VERSION=#{options[:swift_version]}")
     end
   end
 
   lane :test_ci do
-    test(scheme: ENV["SCHEME"], swift_version: ENV["SWIFT_VERSION"])
+    test(scheme: "Adhan-macOS", swift_version: ENV["SWIFT_VERSION"])
+    test(scheme: "Adhan-iOS", swift_version: ENV["SWIFT_VERSION"])
+    test(scheme: "Adhan-tvOS", swift_version: ENV["SWIFT_VERSION"])
   end
 end

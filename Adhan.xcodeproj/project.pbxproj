@@ -159,7 +159,7 @@
 		84DC7627214B1B3C003F79FD /* Minute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Minute.swift; sourceTree = "<group>"; };
 		84F8E11F1C7AB542004C48D7 /* Adhan.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Adhan.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84F8E1221C7AB542004C48D7 /* Adhan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Adhan.h; sourceTree = "<group>"; };
-		84F8E1291C7AB542004C48D7 /* AdhanTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdhanTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		84F8E1291C7AB542004C48D7 /* AdhanTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AdhanTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		84F8E12E1C7AB542004C48D7 /* AdhanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdhanTests.swift; sourceTree = "<group>"; };
 		84F8E1301C7AB542004C48D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84F8E13B1C7AB5DE004C48D7 /* AstronomicalTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AstronomicalTests.swift; sourceTree = "<group>"; };
@@ -286,7 +286,7 @@
 			isa = PBXGroup;
 			children = (
 				84F8E11F1C7AB542004C48D7 /* Adhan.framework */,
-				84F8E1291C7AB542004C48D7 /* AdhanTests.xctest */,
+				84F8E1291C7AB542004C48D7 /* AdhanTests-iOS.xctest */,
 				8B74F4271EF54FCB006A51EE /* Adhan.framework */,
 				8B74F4341EF55023006A51EE /* Adhan.framework */,
 				8B74F4411EF55030006A51EE /* Adhan.framework */,
@@ -367,9 +367,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		84F8E11E1C7AB542004C48D7 /* Adhan */ = {
+		84F8E11E1C7AB542004C48D7 /* Adhan-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 84F8E1331C7AB542004C48D7 /* Build configuration list for PBXNativeTarget "Adhan" */;
+			buildConfigurationList = 84F8E1331C7AB542004C48D7 /* Build configuration list for PBXNativeTarget "Adhan-iOS" */;
 			buildPhases = (
 				84F8E11A1C7AB542004C48D7 /* Sources */,
 				84F8E11B1C7AB542004C48D7 /* Frameworks */,
@@ -380,14 +380,14 @@
 			);
 			dependencies = (
 			);
-			name = Adhan;
+			name = "Adhan-iOS";
 			productName = Adhan;
 			productReference = 84F8E11F1C7AB542004C48D7 /* Adhan.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		84F8E1281C7AB542004C48D7 /* AdhanTests */ = {
+		84F8E1281C7AB542004C48D7 /* AdhanTests-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 84F8E1361C7AB542004C48D7 /* Build configuration list for PBXNativeTarget "AdhanTests" */;
+			buildConfigurationList = 84F8E1361C7AB542004C48D7 /* Build configuration list for PBXNativeTarget "AdhanTests-iOS" */;
 			buildPhases = (
 				84F8E1251C7AB542004C48D7 /* Sources */,
 				84F8E1261C7AB542004C48D7 /* Frameworks */,
@@ -398,9 +398,9 @@
 			dependencies = (
 				84F8E12C1C7AB542004C48D7 /* PBXTargetDependency */,
 			);
-			name = AdhanTests;
+			name = "AdhanTests-iOS";
 			productName = AdhanTests;
-			productReference = 84F8E1291C7AB542004C48D7 /* AdhanTests.xctest */;
+			productReference = 84F8E1291C7AB542004C48D7 /* AdhanTests-iOS.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		8B74F4261EF54FCB006A51EE /* Adhan-watchOS */ = {
@@ -552,11 +552,11 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				84F8E11E1C7AB542004C48D7 /* Adhan */,
+				84F8E11E1C7AB542004C48D7 /* Adhan-iOS */,
 				8B74F4261EF54FCB006A51EE /* Adhan-watchOS */,
 				8B74F4331EF55023006A51EE /* Adhan-tvOS */,
 				8B74F4401EF55030006A51EE /* Adhan-macOS */,
-				84F8E1281C7AB542004C48D7 /* AdhanTests */,
+				84F8E1281C7AB542004C48D7 /* AdhanTests-iOS */,
 				8B74F4561EF553E8006A51EE /* AdhanTests-tvOS */,
 				8B74F4651EF553F4006A51EE /* AdhanTests-macOS */,
 			);
@@ -764,7 +764,7 @@
 /* Begin PBXTargetDependency section */
 		84F8E12C1C7AB542004C48D7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 84F8E11E1C7AB542004C48D7 /* Adhan */;
+			target = 84F8E11E1C7AB542004C48D7 /* Adhan-iOS */;
 			targetProxy = 84F8E12B1C7AB542004C48D7 /* PBXContainerItemProxy */;
 		};
 		8B74F45E1EF553E8006A51EE /* PBXTargetDependency */ = {
@@ -1217,7 +1217,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		84F8E1331C7AB542004C48D7 /* Build configuration list for PBXNativeTarget "Adhan" */ = {
+		84F8E1331C7AB542004C48D7 /* Build configuration list for PBXNativeTarget "Adhan-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				84F8E1341C7AB542004C48D7 /* Debug */,
@@ -1226,7 +1226,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		84F8E1361C7AB542004C48D7 /* Build configuration list for PBXNativeTarget "AdhanTests" */ = {
+		84F8E1361C7AB542004C48D7 /* Build configuration list for PBXNativeTarget "AdhanTests-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				84F8E1371C7AB542004C48D7 /* Debug */,
