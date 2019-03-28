@@ -33,3 +33,6 @@ matrix:
 script:
   - bundle exec fastlane test_ci
   - xcodebuild clean build -scheme 'Adhan-watchOS' -project Adhan.xcodeproj CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO SWIFT_VERSION=$SWIFT_VERSION
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
