@@ -181,9 +181,9 @@ public struct PrayerTimes {
             return .sunrise
         } else if fajr.timeIntervalSince(time) <= 0 {
             return .fajr
-        } else {
-            return nil
         }
+
+        return nil
     }
 
     public func nextPrayer(at time: Date = Date()) -> Prayer? {
@@ -199,9 +199,9 @@ public struct PrayerTimes {
             return .dhuhr
         } else if fajr.timeIntervalSince(time) <= 0 {
             return .sunrise
-        } else {
-            return .fajr
         }
+
+        return .fajr
     }
 
     public func time(for prayer: Prayer) -> Date {

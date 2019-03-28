@@ -25,7 +25,7 @@
 
 import Foundation
 
-extension Date {
+internal extension Date {
 
     func roundedMinute() -> Date {
         let cal: Calendar = .gregorianUTC
@@ -41,7 +41,7 @@ extension Date {
     }
 }
 
-extension DateComponents {
+internal extension DateComponents {
     
     func settingHour(_ value: Double) -> DateComponents? {
         guard value.isNormal else {
@@ -61,7 +61,7 @@ extension DateComponents {
     }
 }
 
-extension Calendar {
+internal extension Calendar {
     
     /// All calculations are done using a gregorian calendar with the UTC timezone
     static let gregorianUTC: Calendar = {
