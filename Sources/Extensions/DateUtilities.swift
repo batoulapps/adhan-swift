@@ -37,7 +37,7 @@ internal extension Date {
         components.minute = Int(minute + round(second/60))
         components.second = 0
 
-        return cal.date(from: components)!
+        return cal.date(from: components) ?? self
     }
 }
 

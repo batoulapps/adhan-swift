@@ -19,6 +19,19 @@ fileprivate extension DateComponents {
     }
 }
 
+fileprivate extension DateComponents {
+    func timeString() -> String {
+        let hourValue = hour ?? 0
+        let minuteValue = minute ?? 0
+        let secondValue = second ?? 0
+
+        // round to the nearest minute
+        let roundedMinutes = Int(Double(minuteValue) + (Double(secondValue)/60).rounded())
+
+        return String(format: "%d:%02d", hourValue, roundedMinutes)
+    }
+}
+
 class AstronomicalTests: XCTestCase {
     
     func testSolarCoordinates() {
@@ -307,9 +320,5 @@ class AstronomicalTests: XCTestCase {
         daysSinceSolsticeTest(0, year: 2016, month: 6, day: 21, latitude: -1)
         daysSinceSolsticeTest(364, year: 2015, month: 6, day: 20, latitude: -1)
         daysSinceSolsticeTest(365, year: 2016, month: 6, day: 20, latitude: -1)
-    }
-
-    func testTimeIntervalSinceMidnight() {
-        XCTAssertEqual(DateComponents().timeIntervalSinceMidnight, 0)
     }
 }
