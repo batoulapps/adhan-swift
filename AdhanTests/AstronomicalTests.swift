@@ -17,9 +17,7 @@ fileprivate extension DateComponents {
         
         return (hourValue * 60 * 60) + (minuteValue * 60) + secondValue
     }
-}
 
-fileprivate extension DateComponents {
     func timeString() -> String {
         let hourValue = hour ?? 0
         let minuteValue = minute ?? 0

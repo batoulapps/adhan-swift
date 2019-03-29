@@ -38,18 +38,18 @@ public struct SunnahTimes {
     public let lastThirdOfTheNight: Date
 
     public init?(from prayerTimes: PrayerTimes) {
-        let date = Calendar.gregorianUTC.date(from: prayerTimes.date)!
-        let tomorrow = Calendar.gregorianUTC.date(byAdding: .day, value: 1, to: date)!
-
-        guard let nextDayPrayers = PrayerTimes(
-            coordinates: prayerTimes.coordinates,
-            date: Calendar.gregorianUTC.dateComponents([.year, .month, .day], from: tomorrow),
-            calculationParameters: prayerTimes.calculationParameters) else {
+        guard let date = Calendar.gregorianUTC.date(from: prayerTimes.date),
+            let nextDay = Calendar.gregorianUTC.date(byAdding: .day, value: 1, to: date),
+            let nextDayPrayerTimes = PrayerTimes(
+                coordinates: prayerTimes.coordinates,
+                date: Calendar.gregorianUTC.dateComponents([.year, .month, .day], from: nextDay),
+                calculationParameters: prayerTimes.calculationParameters)
+            else {
                 // unable to determine tomorrow prayer times
                 return nil
         }
 
-        let nightDuration = nextDayPrayers.fajr.timeIntervalSince(prayerTimes.maghrib)
+        let nightDuration = nextDayPrayerTimes.fajr.timeIntervalSince(prayerTimes.maghrib)
         self.middleOfTheNight = prayerTimes.maghrib.addingTimeInterval(nightDuration / 2).roundedMinute()
         self.lastThirdOfTheNight = prayerTimes.maghrib.addingTimeInterval(nightDuration * (2 / 3)).roundedMinute()
     }

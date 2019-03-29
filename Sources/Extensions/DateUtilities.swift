@@ -65,8 +65,12 @@ internal extension Calendar {
     
     /// All calculations are done using a gregorian calendar with the UTC timezone
     static let gregorianUTC: Calendar = {
+        guard let utc = TimeZone(identifier: "UTC") else {
+            fatalError("Unable to instantiate UTC TimeZone.")
+        }
+
         var cal = Calendar(identifier: .gregorian)
-        cal.timeZone = TimeZone(identifier: "UTC")!
+        cal.timeZone = utc
         return cal
     }()
 }

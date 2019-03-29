@@ -43,17 +43,18 @@ struct SolarTime {
         date.hour = 0
         date.minute = 0
 
-        let today = Calendar.gregorianUTC.date(from: date)!
+        guard let currentDate = Calendar.gregorianUTC.date(from: date),
+            let nextDate = Calendar.gregorianUTC.date(byAdding: .day, value: 1, to: currentDate),
+            let previousDate = Calendar.gregorianUTC.date(byAdding: .day, value: -1, to: currentDate) else {
+            return nil
+        }
 
-        let tomorrowDate = Calendar.gregorianUTC.date(byAdding: .day, value: 1, to: today)!
-        let tomorrow = Calendar.gregorianUTC.dateComponents([.year, .month, .day], from: tomorrowDate)
+        let nextDay = Calendar.gregorianUTC.dateComponents([.year, .month, .day], from: nextDate)
+        let previousDay = Calendar.gregorianUTC.dateComponents([.year, .month, .day], from: previousDate)
 
-        let yesterdayDate = Calendar.gregorianUTC.date(byAdding: .day, value: -1, to: today)!
-        let yesterday = Calendar.gregorianUTC.dateComponents([.year, .month, .day], from: yesterdayDate)
-
-        let prevSolar = SolarCoordinates(julianDay: Astronomical.julianDay(dateComponents: yesterday))
+        let prevSolar = SolarCoordinates(julianDay: Astronomical.julianDay(dateComponents: previousDay))
         let solar = SolarCoordinates(julianDay: Astronomical.julianDay(dateComponents: date))
-        let nextSolar = SolarCoordinates(julianDay: Astronomical.julianDay(dateComponents: tomorrow))
+        let nextSolar = SolarCoordinates(julianDay: Astronomical.julianDay(dateComponents: nextDay))
         let m0 = Astronomical.approximateTransit(longitude: coordinates.longitudeAngle, siderealTime: solar.apparentSiderealTime, rightAscension: solar.rightAscension)
         let solarAltitude = Angle(-50.0 / 60.0)
 

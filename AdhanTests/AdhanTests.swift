@@ -292,4 +292,17 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p.nextPrayer(at: p.maghrib.addingTimeInterval(1)), Prayer.isha)
         XCTAssertNil(p.nextPrayer(at: p.isha.addingTimeInterval(1)))
     }
+
+    func testInvalidDate() {
+        let comps1 = DateComponents()
+        let p1 = PrayerTimes(coordinates: Coordinates(latitude: 33.720817, longitude: 73.090032), date: comps1, calculationParameters: CalculationMethod.muslimWorldLeague.params)
+        XCTAssertNil(p1)
+
+        var comps2 = DateComponents()
+        comps2.year = -1
+        comps2.month = 99
+        comps2.day = 99
+        let p2 = PrayerTimes(coordinates: Coordinates(latitude: 33.720817, longitude: 73.090032), date: comps1, calculationParameters: CalculationMethod.muslimWorldLeague.params)
+        XCTAssertNil(p2)
+    }
 }
