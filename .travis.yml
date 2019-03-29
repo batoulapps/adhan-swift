@@ -5,9 +5,9 @@ osx_image:
 - xcode10.2
 
 env:
-- SWIFT_VERSION=5.0
-- SWIFT_VERSION=4.2
 - SWIFT_VERSION=4.0
+- SWIFT_VERSION=4.2
+- SWIFT_VERSION=5.0
 
 cache: bundler
 
@@ -23,4 +23,4 @@ matrix:
 script:
   - bundle exec fastlane test_ci
   - bash <(curl -s https://codecov.io/bash) -J 'Adhan'
-  - xcodebuild clean build -scheme 'Adhan-watchOS' -project Adhan.xcodeproj CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO SWIFT_VERSION=$SWIFT_VERSION
+  - xcodebuild clean build -scheme 'Adhan-watchOS' -project Adhan.xcodeproj CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO SWIFT_VERSION=$SWIFT_VERSION | xcpretty

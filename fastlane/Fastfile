@@ -18,17 +18,17 @@ default_platform :ios
 platform :ios do
   desc "Runs all the tests"
   lane :tests do
-    test(scheme: "Adhan-macOS", swift_version: "5.0")
-    test(scheme: "Adhan-macOS", swift_version: "4.2")
     test(scheme: "Adhan-macOS", swift_version: "4.0")
+    test(scheme: "Adhan-macOS", swift_version: "4.2")
+    test(scheme: "Adhan-macOS", swift_version: "5.0")
 
-    test(scheme: "Adhan-iOS", swift_version: "5.0")
-    test(scheme: "Adhan-iOS", swift_version: "4.2")
-    test(scheme: "Adhan-iOS", swift_version: "4.0")
-
-    test(scheme: "Adhan-tvOS", swift_version: "5.0")
-    test(scheme: "Adhan-tvOS", swift_version: "4.2")
     test(scheme: "Adhan-tvOS", swift_version: "4.0")
+    test(scheme: "Adhan-tvOS", swift_version: "4.2")
+    test(scheme: "Adhan-tvOS", swift_version: "5.0")
+
+    test(scheme: "Adhan-iOS", swift_version: "4.0")
+    test(scheme: "Adhan-iOS", swift_version: "4.2")
+    test(scheme: "Adhan-iOS", swift_version: "5.0")
   end
 
   lane :test do |options|
@@ -48,7 +48,7 @@ platform :ios do
 
   lane :test_ci do
     test(scheme: "Adhan-macOS", swift_version: ENV["SWIFT_VERSION"])
-    test(scheme: "Adhan-iOS", swift_version: ENV["SWIFT_VERSION"])
     test(scheme: "Adhan-tvOS", swift_version: ENV["SWIFT_VERSION"])
+    test(scheme: "Adhan-iOS", swift_version: ENV["SWIFT_VERSION"])
   end
 end
