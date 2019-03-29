@@ -102,6 +102,22 @@
     XCTAssertEqualWithAccuracy(qibla.direction, 56.560, 0.001);
 }
 
+- (void)testInvalidDate {
+    NSDateComponents *date = [[NSDateComponents alloc] init];
+    BACalculationParameters *params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodNorthAmerica];
+    params.madhab = BAMadhabHanafi;
+
+    BAPrayerTimes *p = [[BAPrayerTimes alloc] initWithCoordinates:[[BACoordinates alloc] initWithLatitude:35.7750 longitude:-78.6389] date:date calculationParameters:params];
+    XCTAssertEqual([p nextPrayer:nil], BAPrayerNone);
+    XCTAssertEqual([p currentPrayer:nil], BAPrayerNone);
+    XCTAssertNil(p.fajr);
+    XCTAssertNil(p.sunrise);
+    XCTAssertNil(p.dhuhr);
+    XCTAssertNil(p.asr);
+    XCTAssertNil(p.maghrib);
+    XCTAssertNil(p.isha);
+}
+
 - (BACalculationParameters *)parseParams:(NSDictionary *)dict {
     BACalculationParameters *params;
     

@@ -50,7 +50,10 @@ public struct PrayerTimes {
         var tempIsha: Date? = nil
         let cal: Calendar = .gregorianUTC
 
-        guard let prayerDate = cal.date(from: date), let tomorrowDate = cal.date(byAdding: .day, value: 1, to: prayerDate) else {
+        guard let prayerDate = cal.date(from: date),
+            let tomorrowDate = cal.date(byAdding: .day, value: 1, to: prayerDate),
+            let year = date.year,
+            let dayOfYear = cal.ordinality(of: .day, in: .year, for: prayerDate) else {
             return nil
         }
 
@@ -92,8 +95,7 @@ public struct PrayerTimes {
 
         let safeFajr: Date = {
             guard calculationParameters.method != .moonsightingCommittee else {
-                let dayOfYear = cal.ordinality(of: .day, in: .year, for: prayerDate)
-                return Astronomical.seasonAdjustedMorningTwilight(latitude: coordinates.latitude, day: dayOfYear!, year: date.year!, sunrise: sunriseDate)
+                return Astronomical.seasonAdjustedMorningTwilight(latitude: coordinates.latitude, day: dayOfYear, year: year, sunrise: sunriseDate)
             }
 
             let portion = calculationParameters.nightPortions().fajr
@@ -122,8 +124,7 @@ public struct PrayerTimes {
 
             let safeIsha: Date = {
                 guard calculationParameters.method != .moonsightingCommittee else {
-                    let dayOfYear = cal.ordinality(of: .day, in: .year, for: prayerDate)
-                    return Astronomical.seasonAdjustedEveningTwilight(latitude: coordinates.latitude, day: dayOfYear!, year: date.year!, sunset: sunsetDate)
+                    return Astronomical.seasonAdjustedEveningTwilight(latitude: coordinates.latitude, day: dayOfYear, year: year, sunset: sunsetDate)
                 }
 
                 let portion = calculationParameters.nightPortions().isha
