@@ -16,19 +16,6 @@ http://www.uoif-online.com/horaires-de-prieres/ // Paris 12 degrees
 
 */
 
-extension DateComponents {
-    func timeString() -> String {
-        let hourValue = hour ?? 0
-        let minuteValue = minute ?? 0
-        let secondValue = second ?? 0
-        
-        // round to the nearest minute
-        let roundedMinutes = Int(Double(minuteValue) + (Double(secondValue)/60).rounded())
-        
-        return String(format: "%d:%02d", hourValue, roundedMinutes)
-    }
-}
-
 func date(year: Int, month: Int, day: Int, hours: Double = 0) -> DateComponents {
     var cal = Calendar(identifier: Calendar.Identifier.gregorian)
     cal.timeZone = TimeZone(identifier: "UTC")!

@@ -9,13 +9,26 @@
 import XCTest
 @testable import Adhan
 
-extension DateComponents {
+fileprivate extension DateComponents {
     var timeIntervalSinceMidnight: TimeInterval {
         let hourValue = Double(hour ?? 0)
         let minuteValue = Double(minute ?? 0)
         let secondValue = Double(second ?? 0)
         
         return (hourValue * 60 * 60) + (minuteValue * 60) + secondValue
+    }
+}
+
+fileprivate extension DateComponents {
+    func timeString() -> String {
+        let hourValue = hour ?? 0
+        let minuteValue = minute ?? 0
+        let secondValue = second ?? 0
+
+        // round to the nearest minute
+        let roundedMinutes = Int(Double(minuteValue) + (Double(secondValue)/60).rounded())
+
+        return String(format: "%d:%02d", hourValue, roundedMinutes)
     }
 }
 
@@ -254,6 +267,8 @@ class AstronomicalTests: XCTestCase {
         
         XCTAssertEqual(Astronomical.julianDay(year: 2015, month: 7, day: 12, hours: 8.0), 2457215.833333, accuracy: 0.000001)
         XCTAssertEqual(Astronomical.julianDay(year: 1992, month: 10, day: 13, hours: 0.0), 2448908.5, accuracy: 0.000001)
+
+        XCTAssertEqual(Astronomical.julianDay(dateComponents: DateComponents()), 1721425.5, accuracy: 0.000001)
     }
     
     func testJulianHours() {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1000"
+   LastUpgradeVersion = "1020"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -9,14 +9,28 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "84F8E1281C7AB542004C48D7"
-               BuildableName = "Adhan iOSTests.xctest"
-               BlueprintName = "Adhan iOSTests"
+               BlueprintIdentifier = "8B74F4331EF55023006A51EE"
+               BuildableName = "Adhan.framework"
+               BlueprintName = "Adhan-tvOS"
+               ReferencedContainer = "container:Adhan.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8B74F4561EF553E8006A51EE"
+               BuildableName = "AdhanTests-tvOS.xctest"
+               BlueprintName = "AdhanTests-tvOS"
                ReferencedContainer = "container:Adhan.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,13 +47,22 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "84F8E1281C7AB542004C48D7"
-               BuildableName = "Adhan iOSTests.xctest"
-               BlueprintName = "Adhan iOSTests"
+               BlueprintIdentifier = "8B74F4561EF553E8006A51EE"
+               BuildableName = "AdhanTests-tvOS.xctest"
+               BlueprintName = "AdhanTests-tvOS"
                ReferencedContainer = "container:Adhan.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "8B74F4331EF55023006A51EE"
+            BuildableName = "Adhan.framework"
+            BlueprintName = "Adhan-tvOS"
+            ReferencedContainer = "container:Adhan.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -56,9 +79,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "84F8E1281C7AB542004C48D7"
-            BuildableName = "Adhan iOSTests.xctest"
-            BlueprintName = "Adhan iOSTests"
+            BlueprintIdentifier = "8B74F4331EF55023006A51EE"
+            BuildableName = "Adhan.framework"
+            BlueprintName = "Adhan-tvOS"
             ReferencedContainer = "container:Adhan.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -74,9 +97,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "84F8E1281C7AB542004C48D7"
-            BuildableName = "Adhan iOSTests.xctest"
-            BlueprintName = "Adhan iOSTests"
+            BlueprintIdentifier = "8B74F4331EF55023006A51EE"
+            BuildableName = "Adhan.framework"
+            BlueprintName = "Adhan-tvOS"
             ReferencedContainer = "container:Adhan.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

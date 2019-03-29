@@ -25,7 +25,7 @@
 
 import Foundation
 
-extension Double {
+internal extension Double {
 
     func normalizedToScale(_ max: Double) -> Double {
         return self - (max * (floor(self / max)))

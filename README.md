@@ -1,8 +1,10 @@
 # Adhan Swift
 
-Adhan Swift uses Swift 4.2 and has an Objective-C compatible wrapper.
+![badge-languages][] ![badge-pms][] ![badge-platforms][]
 
-[![Build Status](https://travis-ci.org/batoulapps/adhan-swift.svg?branch=master)](https://travis-ci.org/batoulapps/adhan-swift)
+[![badge-pod][]][cocoapods] [![badge-travis][]][travis] [![badge-cov][]][codecov]
+
+Implementations of Adhan in other languages can be found in the parent repo [Adhan](https://github.com/batoulapps/Adhan)
 
 ## Installation
 
@@ -210,3 +212,13 @@ locations, we do ask that the source of the comparison values be properly docume
 ## License
 
 Adhan is available under the MIT license. See the LICENSE file for more info.
+
+[badge-pod]: https://img.shields.io/cocoapods/v/Adhan.svg?label=version
+[badge-pms]: https://img.shields.io/badge/supports-CocoaPods%20%7C%20Carthage%20%7C%20SwiftPM-green.svg
+[badge-languages]: https://img.shields.io/badge/languages-Swift%20%7C%20ObjC-orange.svg
+[badge-platforms]: https://img.shields.io/badge/platforms-macOS%20%7C%20iOS%20%7C%20watchOS%20%7C%20tvOS-lightgrey.svg
+[badge-travis]: https://travis-ci.org/batoulapps/adhan-swift.svg?branch=master
+[badge-cov]: https://codecov.io/gh/batoulapps/adhan-swift/branch/master/graph/badge.svg
+[travis]: https://travis-ci.org/batoulapps/adhan-swift
+[cocoapods]: https://cocoapods.org/pods/Adhan
+[codecov]: https://codecov.io/gh/batoulapps/adhan-swift

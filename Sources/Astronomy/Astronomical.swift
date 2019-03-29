@@ -223,9 +223,9 @@ struct Astronomical {
     
     /* The Julian Day for the given Gregorian date components. */
     static func julianDay(dateComponents: DateComponents) -> Double {
-        let year = dateComponents.year ?? 0
-        let month = dateComponents.month ?? 0
-        let day = dateComponents.day ?? 0
+        let year = dateComponents.year ?? 1
+        let month = dateComponents.month ?? 1
+        let day = dateComponents.day ?? 1
         let hour: Double = Double(dateComponents.hour ?? 0)
         let minute: Double = Double(dateComponents.minute ?? 0)
         
@@ -270,9 +270,9 @@ struct Astronomical {
                 return d + ( c - d ) / 46.0 * ( dyy - 183 )
             } else if ( dyy < 275 ) {
                 return c + ( b - c ) / 46.0 * ( dyy - 229 )
-            } else {
-                return b + ( a - b ) / 91.0 * ( dyy - 275 )
             }
+
+            return b + ( a - b ) / 91.0 * ( dyy - 275 )
         }()
 
         return sunrise.addingTimeInterval(round(adjustment * -60.0))
@@ -297,9 +297,9 @@ struct Astronomical {
                 return d + ( c - d ) / 46.0 * ( dyy - 183 )
             } else if ( dyy < 275 ) {
                 return c + ( b - c ) / 46.0 * ( dyy - 229 )
-            } else {
-                return b + ( a - b ) / 91.0 * ( dyy - 275 )
             }
+
+            return b + ( a - b ) / 91.0 * ( dyy - 275 )
         }()
 
         return sunset.addingTimeInterval(round(adjustment * 60.0))
