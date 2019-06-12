@@ -46,6 +46,7 @@ public struct PrayerTimes {
         var tempSunrise: Date? = nil
         var tempDhuhr: Date? = nil
         var tempAsr: Date? = nil
+        var tempSunset: Date? = nil
         var tempMaghrib: Date? = nil
         var tempIsha: Date? = nil
         let cal: Calendar = .gregorianUTC
@@ -73,7 +74,7 @@ public struct PrayerTimes {
         }
 
         tempSunrise = cal.date(from: solarTime.sunrise)
-        tempMaghrib = cal.date(from: solarTime.sunset)
+        tempSunset = cal.date(from: solarTime.sunset)
         tempDhuhr = cal.date(from: solarTime.transit)
 
         if let asrComponents = solarTime.afternoon(shadowLength: calculationParameters.madhab.shadowLength) {
@@ -110,7 +111,7 @@ public struct PrayerTimes {
 
         // Isha calculation with check against safe value
         if calculationParameters.ishaInterval > 0 {
-            tempIsha = tempMaghrib?.addingTimeInterval(calculationParameters.ishaInterval.timeInterval)
+            tempIsha = tempSunset?.addingTimeInterval(calculationParameters.ishaInterval.timeInterval)
         } else {
             if let ishaComponents = solarTime.timeForSolarAngle(Angle(-calculationParameters.ishaAngle), afterTransit: true) {
                 tempIsha = cal.date(from: ishaComponents)
@@ -136,6 +137,25 @@ public struct PrayerTimes {
             if tempIsha == nil || tempIsha?.compare(safeIsha) == .orderedDescending {
                 tempIsha = safeIsha
             }
+        }
+        
+        // Maghrib calculation with check against safe value
+        if calculationParameters.maghribAngle > 0 {
+            if let maghribComponents = solarTime.timeForSolarAngle(Angle(-calculationParameters.maghribAngle), afterTransit: true) {
+                tempMaghrib = cal.date(from: maghribComponents)
+            }
+            
+            if let tempAsr = tempAsr, let tempIsha = tempIsha {
+                // maghrib safe if falls between asr and maghrib
+                if tempMaghrib == nil || tempMaghrib?.compare(tempAsr) == .orderedAscending || tempMaghrib?.compare(tempIsha) == .orderedDescending {
+                    tempMaghrib = tempSunset
+                }
+            } else {
+                // fallback to regular sunset
+                tempMaghrib = tempSunset
+            }
+        } else {
+            tempMaghrib = tempSunset
         }
 
         // if we don't have all prayer times then initialization failed

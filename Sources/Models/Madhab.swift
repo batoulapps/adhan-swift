@@ -29,6 +29,7 @@ import Foundation
 public enum Madhab {
     case shafi
     case hanafi
+    case jafari
 
     var shadowLength: Double {
         switch(self) {
@@ -36,6 +37,8 @@ public enum Madhab {
             return 1
         case .hanafi:
             return 2
+        case .jafari:
+            return 1
         }
     }
 }
