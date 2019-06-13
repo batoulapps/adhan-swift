@@ -29,7 +29,7 @@ import Foundation
 public struct CalculationParameters {
     public var method: CalculationMethod = .other
     public var fajrAngle: Double
-    public var maghribAngle: Double = 0
+    public var maghribAngle: Double?
     public var ishaAngle: Double
     public var ishaInterval: Minute = 0
     public var madhab: Madhab = .shafi
