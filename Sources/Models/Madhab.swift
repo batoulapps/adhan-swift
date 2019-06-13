@@ -27,7 +27,10 @@ import Foundation
 
 /* Madhab for determining how Asr is calculated */
 public enum Madhab {
+    
+    // Also for Maliki, Hanbali, and Jafari
     case shafi
+    
     case hanafi
 
     var shadowLength: Double {

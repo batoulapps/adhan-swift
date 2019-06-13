@@ -31,7 +31,7 @@ public enum CalculationMethod: CaseIterable {
     // Muslim World League
     case muslimWorldLeague
 
-    //Egyptian General Authority of Survey
+    // Egyptian General Authority of Survey
     case egyptian
 
     // University of Islamic Sciences, Karachi
