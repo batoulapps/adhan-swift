@@ -143,8 +143,7 @@ public struct PrayerTimes {
             let maghribComponents = solarTime.timeForSolarAngle(Angle(-maghribAngle), afterTransit: true),
             let maghribDate = cal.date(from: maghribComponents),
             // maghrib safe if falls between sunset and isha
-            sunsetDate.compare(maghribDate) == .orderedAscending,
-            (tempIsha?.compare(maghribDate) == .orderedDescending || tempIsha == nil) {
+            sunsetDate < maghribDate, (tempIsha?.compare(maghribDate) == .orderedDescending || tempIsha == nil) {
                 tempMaghrib = maghribDate
         }
 
