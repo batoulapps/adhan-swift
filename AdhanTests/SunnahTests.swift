@@ -17,8 +17,7 @@ class SunnahTests: XCTestCase {
         
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "America/New_York")!
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .short
+        dateFormatter.dateFormat = "M/d/yy, h:mm a"
         
         var comps1 = DateComponents()
         comps1.year = 2015
@@ -53,8 +52,7 @@ class SunnahTests: XCTestCase {
         
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "Europe/London")!
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .short
+        dateFormatter.dateFormat = "M/d/yy, h:mm a"
         
         var comps1 = DateComponents()
         comps1.year = 2016
@@ -90,8 +88,7 @@ class SunnahTests: XCTestCase {
         
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "Europe/Oslo")!
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .short
+        dateFormatter.dateFormat = "M/d/yy, h:mm a"
         
         var comps1 = DateComponents()
         comps1.year = 2016
@@ -127,8 +124,7 @@ class SunnahTests: XCTestCase {
         
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "America/Los_Angeles")!
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .short
+        dateFormatter.dateFormat = "M/d/yy, h:mm a"
         
         var comps1 = DateComponents()
         comps1.year = 2017
@@ -166,8 +162,7 @@ class SunnahTests: XCTestCase {
         
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "Europe/Paris")!
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .short
+        dateFormatter.dateFormat = "M/d/yy, h:mm a"
         
         var comps1 = DateComponents()
         comps1.year = 2015
