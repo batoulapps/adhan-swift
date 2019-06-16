@@ -26,7 +26,7 @@
 import Foundation
 
 /* All customizable parameters for calculating prayer times */
-public struct CalculationParameters {
+public struct CalculationParameters: Codable, Equatable {
     public var method: CalculationMethod = .other
     public var fajrAngle: Double
     public var maghribAngle: Double?

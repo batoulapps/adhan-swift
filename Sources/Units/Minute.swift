@@ -2,7 +2,6 @@
 //  Minute.swift
 //  Adhan
 //
-//  Created by Ameir Al-Zoubi on 9/13/18.
 //  Copyright © 2018 Batoul Apps. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
