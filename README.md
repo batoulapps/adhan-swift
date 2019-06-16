@@ -97,6 +97,7 @@ params.adjustments.fajr = 2
 | --------- | ----------- |
 | method    | Member of CalculationMethod enum |
 | fajrAngle | Angle of the sun used to calculate Fajr |
+| maghribAngle | Angle of the sun used to calculate Maghrib, used for some Calculation Methods |
 | ishaAngle | Angle of the sun used to calculate Isha |
 | ishaInterval | Minutes after Maghrib (if set, the time for Isha will be Maghrib plus ishaInterval) |
 | madhab | Member of the Madhab enum, used to calculate Asr |
@@ -116,6 +117,7 @@ params.adjustments.fajr = 2
 | kuwait | Method used by the country of Kuwait. Fajr angle: 18, Isha angle: 17.5 |
 | moonsightingCommittee | Moonsighting Committee. Fajr angle: 18, Isha angle: 18. Also uses seasonal adjustment values. |
 | singapore | Method used by Singapore. Fajr angle: 20, Isha angle: 18. |
+| tehran | Institute of Geophysics, University of Tehran. Fajr angle: 17.7, Maghrib angle: 4.5, Isha angle: 14. |
 | northAmerica | Referred to as the ISNA method. This method is included for completeness but is not recommended. Fajr angle: 15, Isha angle: 15 |
 | other | Fajr angle: 0, Isha angle: 0. This is the default value for `method` when initializing a `CalculationParameters` struct. |
 
@@ -123,7 +125,7 @@ params.adjustments.fajr = 2
 
 | Value | Description |
 | ----- | ----------- |
-| shafi | Earlier Asr time |
+| shafi | Earlier Asr time (use for Shafi, Maliki, Hanbali, and Jafari) |
 | hanafi | Later Asr time |
 
 **HighLatitudeRule**

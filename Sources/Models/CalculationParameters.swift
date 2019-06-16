@@ -29,6 +29,7 @@ import Foundation
 public struct CalculationParameters {
     public var method: CalculationMethod = .other
     public var fajrAngle: Double
+    public var maghribAngle: Double?
     public var ishaAngle: Double
     public var ishaInterval: Minute = 0
     public var madhab: Madhab = .shafi
@@ -54,6 +55,11 @@ public struct CalculationParameters {
     init(fajrAngle: Double, ishaInterval: Int, method: CalculationMethod) {
         self.init(fajrAngle: fajrAngle, ishaInterval: ishaInterval)
         self.method = method
+    }
+    
+    init(fajrAngle: Double, maghribAngle: Double, ishaAngle: Double, method: CalculationMethod) {
+        self.init(fajrAngle: fajrAngle, ishaAngle: ishaAngle, method: method)
+        self.maghribAngle = maghribAngle
     }
 
     func nightPortions() -> (fajr: Double, isha: Double) {

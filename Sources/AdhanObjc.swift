@@ -127,6 +127,7 @@ import Foundation
 @objcMembers open class BACalculationParameters: NSObject {
     open var method: BACalculationMethod = .other
     open var fajrAngle: Double
+    open var maghribAngle: Double = 0
     open var ishaAngle: Double
     open var ishaInterval: Int = 0
     open var madhab: BAMadhab = .shafi
@@ -134,8 +135,9 @@ import Foundation
     open var adjustments: BAPrayerAdjustments = BAPrayerAdjustments()
     open var methodAdjustments: BAPrayerAdjustments = BAPrayerAdjustments()
     
-    public init(fajrAngle: Double, ishaAngle: Double, ishaInterval: Int) {
+    public init(fajrAngle: Double, maghribAngle: Double, ishaAngle: Double, ishaInterval: Int) {
         self.fajrAngle = fajrAngle
+        self.maghribAngle = maghribAngle
         self.ishaAngle = ishaAngle
         self.ishaInterval = ishaInterval
         super.init()
@@ -143,7 +145,7 @@ import Foundation
     
     public convenience init(method: BACalculationMethod) {
         let params = BACalculationParameters.calculationMethodForBACalculationMethod(method).params
-        self.init(fajrAngle: params.fajrAngle, ishaAngle: params.ishaAngle, ishaInterval: params.ishaInterval)
+        self.init(fajrAngle: params.fajrAngle, maghribAngle: params.maghribAngle ?? 0, ishaAngle: params.ishaAngle, ishaInterval: params.ishaInterval)
         self.method = method
         self.methodAdjustments = BAPrayerAdjustments(fajr: params.methodAdjustments.fajr, sunrise: params.methodAdjustments.sunrise, dhuhr: params.methodAdjustments.dhuhr, asr: params.methodAdjustments.asr, maghrib: params.methodAdjustments.maghrib, isha: params.methodAdjustments.isha)
     }
@@ -151,6 +153,7 @@ import Foundation
     internal func calculationParameters() -> CalculationParameters {
         var params = CalculationParameters(fajrAngle: self.fajrAngle, ishaAngle: self.ishaAngle)
         params.method = BACalculationParameters.calculationMethodForBACalculationMethod(self.method)
+        params.maghribAngle = self.maghribAngle == 0 ? nil : self.maghribAngle
         params.ishaInterval = self.ishaInterval
         params.adjustments = self.adjustments.prayerAdjustments()
         params.methodAdjustments = self.methodAdjustments.prayerAdjustments()
@@ -194,6 +197,8 @@ import Foundation
             return CalculationMethod.kuwait
         case .qatar:
             return CalculationMethod.qatar
+        case .tehran:
+            return CalculationMethod.tehran
         case .other:
             return CalculationMethod.other
         case .singapore:
@@ -212,6 +217,7 @@ import Foundation
     case northAmerica
     case kuwait
     case qatar
+    case tehran
     case other
     case singapore
 }

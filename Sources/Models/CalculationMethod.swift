@@ -31,7 +31,7 @@ public enum CalculationMethod: CaseIterable {
     // Muslim World League
     case muslimWorldLeague
 
-    //Egyptian General Authority of Survey
+    // Egyptian General Authority of Survey
     case egyptian
 
     // University of Islamic Sciences, Karachi
@@ -57,6 +57,9 @@ public enum CalculationMethod: CaseIterable {
 
     // Singapore
     case singapore
+    
+    // Institute of Geophysics, University of Tehran
+    case tehran
 
     // Other
     case other
@@ -97,6 +100,8 @@ public enum CalculationMethod: CaseIterable {
             var params = CalculationParameters(fajrAngle: 20, ishaAngle: 18, method: self)
             params.methodAdjustments = PrayerAdjustments(dhuhr: 1)
             return params
+        case .tehran:
+            return CalculationParameters(fajrAngle: 17.7, maghribAngle: 4.5, ishaAngle: 14, method: self)
         case .other:
             return CalculationParameters(fajrAngle: 0, ishaAngle: 0, method: self)
         }

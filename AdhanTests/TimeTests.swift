@@ -34,6 +34,8 @@ class TimeTests: XCTestCase {
             params = CalculationMethod.kuwait.params
         } else if method == "Qatar" {
             params = CalculationMethod.qatar.params
+        } else if method == "Tehran" {
+            params = CalculationMethod.tehran.params
         } else if method == "Singapore" {
             params = CalculationMethod.singapore.params
         } else {

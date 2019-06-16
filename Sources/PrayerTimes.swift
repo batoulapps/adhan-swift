@@ -137,6 +137,15 @@ public struct PrayerTimes {
                 tempIsha = safeIsha
             }
         }
+        
+        // Maghrib calculation with check against safe value
+        if let maghribAngle = calculationParameters.maghribAngle,
+            let maghribComponents = solarTime.timeForSolarAngle(Angle(-maghribAngle), afterTransit: true),
+            let maghribDate = cal.date(from: maghribComponents),
+            // maghrib safe if falls between sunset and isha
+            sunsetDate < maghribDate, (tempIsha?.compare(maghribDate) == .orderedDescending || tempIsha == nil) {
+                tempMaghrib = maghribDate
+        }
 
         // if we don't have all prayer times then initialization failed
         guard let fajr = tempFajr,
