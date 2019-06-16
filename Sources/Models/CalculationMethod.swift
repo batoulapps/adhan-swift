@@ -60,9 +60,6 @@ public enum CalculationMethod: CaseIterable {
     
     // Institute of Geophysics, University of Tehran
     case tehran
-    
-    // Shia Ithna-Ashari, Leva Institute, Qum
-    case shia
 
     // Other
     case other
@@ -105,8 +102,6 @@ public enum CalculationMethod: CaseIterable {
             return params
         case .tehran:
             return CalculationParameters(fajrAngle: 17.7, maghribAngle: 4.5, ishaAngle: 14, method: self)
-        case .shia:
-            return CalculationParameters(fajrAngle: 16, maghribAngle: 4, ishaAngle: 14, method: self)
         case .other:
             return CalculationParameters(fajrAngle: 0, ishaAngle: 0, method: self)
         }

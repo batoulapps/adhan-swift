@@ -199,8 +199,6 @@ import Foundation
             return CalculationMethod.qatar
         case .tehran:
             return CalculationMethod.tehran
-        case .shia:
-            return CalculationMethod.shia
         case .other:
             return CalculationMethod.other
         case .singapore:
@@ -220,7 +218,6 @@ import Foundation
     case kuwait
     case qatar
     case tehran
-    case shia
     case other
     case singapore
 }
