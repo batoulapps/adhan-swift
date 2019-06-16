@@ -245,7 +245,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.isha), "5:02 PM")
     }
     
-    func testJafariMethod() {
+    func testTehranMethod() {
         // Values from http://praytimes.org/code/
         var comps = DateComponents()
         comps.year = 2016
@@ -345,5 +345,30 @@ class AdhanTests: XCTestCase {
         comps2.day = 99
         let p2 = PrayerTimes(coordinates: Coordinates(latitude: 33.720817, longitude: 73.090032), date: comps1, calculationParameters: CalculationMethod.muslimWorldLeague.params)
         XCTAssertNil(p2)
+    }
+
+    func testInvalidLocation() {
+        var comps = DateComponents()
+        comps.year = 2019
+        comps.month = 1
+        comps.day = 1
+        let p1 = PrayerTimes(coordinates: Coordinates(latitude: 999, longitude: 999), date: comps, calculationParameters: CalculationMethod.muslimWorldLeague.params)
+        XCTAssertNil(p1)
+    }
+
+    func testExtremeLocation() {
+        var comps1 = DateComponents()
+        comps1.year = 2018
+        comps1.month = 1
+        comps1.day = 1
+        let p1 = PrayerTimes(coordinates: Coordinates(latitude: 71.275009, longitude: -156.761368), date: comps1, calculationParameters: CalculationMethod.muslimWorldLeague.params)
+        XCTAssertNil(p1)
+
+        var comps2 = DateComponents()
+        comps2.year = 2018
+        comps2.month = 3
+        comps2.day = 1
+        let p2 = PrayerTimes(coordinates: Coordinates(latitude: 71.275009, longitude: -156.761368), date: comps2, calculationParameters: CalculationMethod.muslimWorldLeague.params)
+        XCTAssertNotNil(p2)
     }
 }
