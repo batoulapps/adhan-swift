@@ -23,7 +23,6 @@
     
     BACalculationParameters *params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodMuslimWorldLeague];
     params.madhab = BAMadhabHanafi;
-    
     BACoordinates *coordinates = [[BACoordinates alloc] initWithLatitude:35.78056 longitude:-78.6389];
     
     BAPrayerTimes *prayerTimes = [[BAPrayerTimes alloc] initWithCoordinates:coordinates date:date calculationParameters:params];

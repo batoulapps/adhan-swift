@@ -133,7 +133,7 @@ import Foundation
     open var madhab: BAMadhab = .shafi
     open var highLatitudeRule: BAHighLatitudeRule = .middleOfTheNight
     open var adjustments: BAPrayerAdjustments = BAPrayerAdjustments()
-    open var methodAdjustments: BAPrayerAdjustments = BAPrayerAdjustments()
+    private var methodAdjustments: BAPrayerAdjustments = BAPrayerAdjustments()
     
     public init(fajrAngle: Double, maghribAngle: Double, ishaAngle: Double, ishaInterval: Int) {
         self.fajrAngle = fajrAngle
