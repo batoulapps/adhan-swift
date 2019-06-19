@@ -26,7 +26,7 @@
 import Foundation
 
 /* Rule for approximating Fajr and Isha at high latitudes */
-public enum HighLatitudeRule {
+public enum HighLatitudeRule: String, Codable, CaseIterable {
     case middleOfTheNight
     case seventhOfTheNight
     case twilightAngle

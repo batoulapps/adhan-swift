@@ -26,19 +26,14 @@
 import Foundation
 
 /* Madhab for determining how Asr is calculated */
-public enum Madhab {
+public enum Madhab: Int, Codable, CaseIterable {
     
     // Also for Maliki, Hanbali, and Jafari
-    case shafi
+    case shafi = 1
     
-    case hanafi
+    case hanafi = 2
 
     var shadowLength: Double {
-        switch(self) {
-        case .shafi:
-            return 1
-        case .hanafi:
-            return 2
-        }
+        return Double(self.rawValue)
     }
 }

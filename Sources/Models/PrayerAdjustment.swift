@@ -26,7 +26,7 @@
 import Foundation
 
 /* Adjustment value for prayer times, in minutes */
-public struct PrayerAdjustments {
+public struct PrayerAdjustments: Codable, Equatable {
     public var fajr: Minute
     public var sunrise: Minute
     public var dhuhr: Minute
