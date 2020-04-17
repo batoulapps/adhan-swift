@@ -25,9 +25,12 @@
 
 import Foundation
 
-/* Prayer times for a location and date using the given calculation parameters.
- All prayer times are in UTC and should be displayed using a DateFormatter that
- has the correct timezone set. */
+/**
+  Prayer times for a location and date using the given calculation parameters.
+
+  All prayer times are in UTC and should be displayed using a DateFormatter that
+  has the correct timezone set.
+ */
 public struct PrayerTimes {
     public let fajr: Date
     public let sunrise: Date
@@ -142,7 +145,7 @@ public struct PrayerTimes {
         if let maghribAngle = calculationParameters.maghribAngle,
             let maghribComponents = solarTime.timeForSolarAngle(Angle(-maghribAngle), afterTransit: true),
             let maghribDate = cal.date(from: maghribComponents),
-            // maghrib safe if falls between sunset and isha
+            // maghrib is considered safe if it falls between sunset and isha
             sunsetDate < maghribDate, (tempIsha?.compare(maghribDate) == .orderedDescending || tempIsha == nil) {
                 tempMaghrib = maghribDate
         }

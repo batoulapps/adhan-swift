@@ -14,7 +14,7 @@ Implementations of Adhan in other languages can be found in the parent repo [Adh
 
 ### CocoaPods
 
-Adhan supports [CocoaPods](https://cocoapods.org/). Simply add the following line to your [Podfile](https://guides.cocoapods.org/syntax/podfile.html):
+For [CocoaPods](https://cocoapods.org/) add the following to your [Podfile](https://guides.cocoapods.org/syntax/podfile.html):
 
 ```ruby
 pod 'Adhan'
@@ -22,7 +22,7 @@ pod 'Adhan'
 
 ### Carthage
 
-Adhan supports [Carthage](https://github.com/Carthage/Carthage). Simply add the following line to your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
+For [Carthage](https://github.com/Carthage/Carthage) add the following to your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
 
 ```ruby
 github "batoulapps/adhan-swift" "master"
@@ -30,7 +30,7 @@ github "batoulapps/adhan-swift" "master"
 
 ### Swift Package Manager
 
-Adhan supports [SPM](https://swift.org/package-manager/). Simply add the following line to your dependencies value of your `Package.swift` file:
+For [SPM](https://swift.org/package-manager/) add the following to your `Package.swift` file:
 
 ```swift
 // swift-tools-version:4.2
@@ -39,7 +39,7 @@ dependencies: [
 ]
 ```
 
-### Manual
+### Manually
 
 You can also manually add Adhan.
 
@@ -80,61 +80,12 @@ let cal = Calendar(identifier: Calendar.Identifier.gregorian)
 let date = cal.dateComponents([.year, .month, .day], from: Date())
 ```
 
-#### Calculation parameters
+### Calculation parameters & Calculation Methods
 
 The rest of the needed information is contained within the `CalculationParameters` struct.
-Instead of manually initializing this struct it is recommended to use one of the pre-populated
-instances by calling the `params` var on the `CalculationMethod` enum. You can then further
-customize the calculation parameters if needed.
 
-```swift
-var params = CalculationMethod.moonsightingCommittee.params
-params.madhab = .hanafi
-params.adjustments.fajr = 2
-```
+[Calculation Parameters & Methods Guide](METHODS.md)
 
-| Parameter | Description |
-| --------- | ----------- |
-| method    | Member of CalculationMethod enum |
-| fajrAngle | Angle of the sun used to calculate Fajr |
-| maghribAngle | Angle of the sun used to calculate Maghrib, used for some Calculation Methods |
-| ishaAngle | Angle of the sun used to calculate Isha |
-| ishaInterval | Minutes after Maghrib (if set, the time for Isha will be Maghrib plus ishaInterval) |
-| madhab | Member of the Madhab enum, used to calculate Asr |
-| highLatitudeRule | Member of the HighLatitudeRule enum, used to set a minimum time for Fajr and a max time for Isha |
-| adjustments | PrayerAdjustments struct with custom prayer time adjustments in minutes for each prayer time |
-
-**CalculationMethod**
-
-| Value | Description |
-| ----- | ----------- |
-| muslimWorldLeague | Muslim World League. Fajr angle: 18, Isha angle: 17 |
-| egyptian | Egyptian General Authority of Survey. Fajr angle: 19.5, Isha angle: 17.5 |
-| karachi | University of Islamic Sciences, Karachi. Fajr angle: 18, Isha angle: 18 |
-| ummAlQura | Umm al-Qura University, Makkah. Fajr angle: 18.5, Isha interval: 90. *Note: you should add a +30 minute custom adjustment for Isha during Ramadan.* |
-| dubai | Method used in UAE. Fajr angle: 18.2, Isha angle: 18.2. |
-| qatar | Modified version of Umm al-Qura used in Qatar. Fajr angle: 18, Isha interval: 90. |
-| kuwait | Method used by the country of Kuwait. Fajr angle: 18, Isha angle: 17.5 |
-| moonsightingCommittee | Moonsighting Committee. Fajr angle: 18, Isha angle: 18. Also uses seasonal adjustment values. |
-| singapore | Method used by Singapore. Fajr angle: 20, Isha angle: 18. |
-| tehran | Institute of Geophysics, University of Tehran. Fajr angle: 17.7, Maghrib angle: 4.5, Isha angle: 14. |
-| northAmerica | Referred to as the ISNA method. This method is included for completeness but is not recommended. Fajr angle: 15, Isha angle: 15 |
-| other | Fajr angle: 0, Isha angle: 0. This is the default value for `method` when initializing a `CalculationParameters` struct. |
-
-**Madhab**
-
-| Value | Description |
-| ----- | ----------- |
-| shafi | Earlier Asr time (use for Shafi, Maliki, Hanbali, and Jafari) |
-| hanafi | Later Asr time |
-
-**HighLatitudeRule**
-
-| Value | Description |
-| ----- | ----------- |
-| middleOfTheNight | Fajr will never be earlier than the middle of the night and Isha will never be later than the middle of the night |
-| seventhOfTheNight | Fajr will never be earlier than the beginning of the last seventh of the night and Isha will never be later than the end of the first seventh of the night |
-| twilightAngle | Similar to SeventhOfTheNight, but instead of 1/7, the fraction of the night used is fajrAngle/60 and ishaAngle/60 |
 
 
 ### Prayer Times
@@ -188,7 +139,7 @@ let next = prayerTimes.nextPrayer()
 let countdown = prayerTimes.time(for: next)
 ```
 
-### Sunnah Times
+## Sunnah Times
 
 The Adhan library can also calulate Sunnah times. Given an instance of `PrayerTimes`, you can get a `SunnahTimes` struct with the times for Qiyam.
 
@@ -199,7 +150,7 @@ if let sunnahTimes = SunnahTimes(from: todayPrayers) {
 }
 ```
 
-### Qibla Direction
+## Qibla Direction
 
 Get the direction, in degrees from North, of the Qibla from a given set of coordinates.
 

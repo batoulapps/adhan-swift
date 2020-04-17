@@ -277,7 +277,7 @@
 			children = (
 				8B74F4521EF55367006A51EE /* README.md */,
 				84F8E1211C7AB542004C48D7 /* Sources */,
-				84F8E12D1C7AB542004C48D7 /* AdhanTests */,
+				84F8E12D1C7AB542004C48D7 /* Tests */,
 				84F8E1201C7AB542004C48D7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -313,7 +313,7 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		84F8E12D1C7AB542004C48D7 /* AdhanTests */ = {
+		84F8E12D1C7AB542004C48D7 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				84BCD1AD1CB09A5900614D12 /* Times */,
@@ -326,7 +326,7 @@
 				8480CCD81CD2DE0F00BD380B /* ObjcTests.m */,
 				84F8E1301C7AB542004C48D7 /* Info.plist */,
 			);
-			path = AdhanTests;
+			path = Tests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -938,7 +938,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = AdhanTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.batoulapps.Adhan.Adhan-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -953,7 +953,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = AdhanTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.batoulapps.Adhan.Adhan-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
