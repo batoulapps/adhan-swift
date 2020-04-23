@@ -25,7 +25,6 @@
 
 import Foundation
 
-/* Latitude and longitude */
 public struct Coordinates: Codable, Equatable {
     let latitude: Double
     let longitude: Double

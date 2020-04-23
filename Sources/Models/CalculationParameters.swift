@@ -25,7 +25,9 @@
 
 import Foundation
 
-/* All customizable parameters for calculating prayer times */
+/**
+  Customizable parameters for calculating prayer times
+ */
 public struct CalculationParameters: Codable, Equatable {
     public var method: CalculationMethod = .other
     public var fajrAngle: Double
@@ -42,7 +44,7 @@ public struct CalculationParameters: Codable, Equatable {
         self.ishaAngle = ishaAngle
     }
 
-    init(fajrAngle: Double, ishaInterval: Int) {
+    init(fajrAngle: Double, ishaInterval: Minute) {
         self.init(fajrAngle: fajrAngle, ishaAngle: 0)
         self.ishaInterval = ishaInterval
     }
@@ -52,7 +54,7 @@ public struct CalculationParameters: Codable, Equatable {
         self.method = method
     }
 
-    init(fajrAngle: Double, ishaInterval: Int, method: CalculationMethod) {
+    init(fajrAngle: Double, ishaInterval: Minute, method: CalculationMethod) {
         self.init(fajrAngle: fajrAngle, ishaInterval: ishaInterval)
         self.method = method
     }

@@ -145,6 +145,8 @@
         params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodTehran];
     } else if ([method isEqualToString:@"Singapore"]) {
         params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodSingapore];
+    } else if ([method isEqualToString:@"Turkey"]) {
+        params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodTurkey];
     } else {
         params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodOther];
     }
