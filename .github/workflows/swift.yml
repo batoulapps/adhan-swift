@@ -16,7 +16,7 @@ jobs:
     - name: Build swift package
       run: swift build -v
     - name: Build xcodeproj
-      run: xcodebuild clean build -scheme 'Adhan-watchOS' -project Adhan.xcodeproj CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+      run: xcodebuild clean build -scheme 'Adhan-iOS' -project Adhan.xcodeproj CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
     - name: Run tests
       run: swift test -v
 
