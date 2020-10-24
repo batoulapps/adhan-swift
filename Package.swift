@@ -20,7 +20,7 @@ let package = Package(
         .testTarget(
             name: "Tests",
             dependencies: ["Adhan"],
-            path: "AdhanTests",
+            path: "Tests",
             exclude: ["ObjcTests.m", "Info.plist"]
         )
     ]
