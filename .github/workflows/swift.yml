@@ -7,9 +7,20 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  build_osx:
 
     runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build
+      run: swift build -v
+    - name: Run tests
+      run: swift test -v
+
+  build_ubuntu:
+
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
