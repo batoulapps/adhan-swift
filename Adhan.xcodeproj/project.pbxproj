@@ -11,10 +11,10 @@
 		083EFC56202815EE003F6218 /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC50202815EE003F6218 /* CalculationMethod.swift */; };
 		083EFC57202815EE003F6218 /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC50202815EE003F6218 /* CalculationMethod.swift */; };
 		083EFC58202815EE003F6218 /* CalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC50202815EE003F6218 /* CalculationMethod.swift */; };
-		083EFC59202815EE003F6218 /* HighAltitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC51202815EE003F6218 /* HighAltitudeRule.swift */; };
-		083EFC5A202815EE003F6218 /* HighAltitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC51202815EE003F6218 /* HighAltitudeRule.swift */; };
-		083EFC5B202815EE003F6218 /* HighAltitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC51202815EE003F6218 /* HighAltitudeRule.swift */; };
-		083EFC5C202815EE003F6218 /* HighAltitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC51202815EE003F6218 /* HighAltitudeRule.swift */; };
+		083EFC59202815EE003F6218 /* HighLatitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC51202815EE003F6218 /* HighLatitudeRule.swift */; };
+		083EFC5A202815EE003F6218 /* HighLatitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC51202815EE003F6218 /* HighLatitudeRule.swift */; };
+		083EFC5B202815EE003F6218 /* HighLatitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC51202815EE003F6218 /* HighLatitudeRule.swift */; };
+		083EFC5C202815EE003F6218 /* HighLatitudeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC51202815EE003F6218 /* HighLatitudeRule.swift */; };
 		083EFC5D202815EE003F6218 /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC52202815EE003F6218 /* Madhab.swift */; };
 		083EFC5E202815EE003F6218 /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC52202815EE003F6218 /* Madhab.swift */; };
 		083EFC5F202815EE003F6218 /* Madhab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083EFC52202815EE003F6218 /* Madhab.swift */; };
@@ -136,7 +136,7 @@
 
 /* Begin PBXFileReference section */
 		083EFC50202815EE003F6218 /* CalculationMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculationMethod.swift; sourceTree = "<group>"; };
-		083EFC51202815EE003F6218 /* HighAltitudeRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighAltitudeRule.swift; sourceTree = "<group>"; };
+		083EFC51202815EE003F6218 /* HighLatitudeRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighLatitudeRule.swift; sourceTree = "<group>"; };
 		083EFC52202815EE003F6218 /* Madhab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Madhab.swift; sourceTree = "<group>"; };
 		083EFC53202815EE003F6218 /* Prayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Prayer.swift; sourceTree = "<group>"; };
 		083EFC54202815EE003F6218 /* Coordinates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinates.swift; sourceTree = "<group>"; };
@@ -154,6 +154,7 @@
 		84482DBA1EA70A160074E53C /* QiblaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QiblaTests.swift; sourceTree = "<group>"; };
 		844EFDEA214A001E00186C45 /* Angle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Angle.swift; sourceTree = "<group>"; };
 		8480CCD81CD2DE0F00BD380B /* ObjcTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjcTests.m; sourceTree = "<group>"; };
+		84896CB82558A386008CA6BC /* METHODS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = METHODS.md; sourceTree = "<group>"; };
 		84BCD1AD1CB09A5900614D12 /* Times */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Times; path = ../Shared/Times; sourceTree = "<group>"; };
 		84BCD1AF1CB09A7700614D12 /* TimeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTests.swift; sourceTree = "<group>"; };
 		84DC7627214B1B3C003F79FD /* Minute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Minute.swift; sourceTree = "<group>"; };
@@ -236,7 +237,7 @@
 				083EFC50202815EE003F6218 /* CalculationMethod.swift */,
 				0880886A2026EE420059C738 /* CalculationParameters.swift */,
 				083EFC54202815EE003F6218 /* Coordinates.swift */,
-				083EFC51202815EE003F6218 /* HighAltitudeRule.swift */,
+				083EFC51202815EE003F6218 /* HighLatitudeRule.swift */,
 				083EFC52202815EE003F6218 /* Madhab.swift */,
 				083EFC53202815EE003F6218 /* Prayer.swift */,
 				088088652026EDF90059C738 /* PrayerAdjustment.swift */,
@@ -276,6 +277,7 @@
 			isa = PBXGroup;
 			children = (
 				8B74F4521EF55367006A51EE /* README.md */,
+				84896CB82558A386008CA6BC /* METHODS.md */,
 				84F8E1211C7AB542004C48D7 /* Sources */,
 				84F8E12D1C7AB542004C48D7 /* Tests */,
 				84F8E1201C7AB542004C48D7 /* Products */,
@@ -628,7 +630,7 @@
 				083EFC55202815EE003F6218 /* CalculationMethod.swift in Sources */,
 				083EFC5D202815EE003F6218 /* Madhab.swift in Sources */,
 				083EFC65202815EE003F6218 /* Coordinates.swift in Sources */,
-				083EFC59202815EE003F6218 /* HighAltitudeRule.swift in Sources */,
+				083EFC59202815EE003F6218 /* HighLatitudeRule.swift in Sources */,
 				088088752026EE9E0059C738 /* PrayerTimes.swift in Sources */,
 				0880887A2026EEBD0059C738 /* Qibla.swift in Sources */,
 				088088852026EF4A0059C738 /* SolarTime.swift in Sources */,
@@ -669,7 +671,7 @@
 				845DA5C1214BDCA6001AF870 /* Angle.swift in Sources */,
 				845DA5C4214BDCAE001AF870 /* Minute.swift in Sources */,
 				083EFC66202815EE003F6218 /* Coordinates.swift in Sources */,
-				083EFC5A202815EE003F6218 /* HighAltitudeRule.swift in Sources */,
+				083EFC5A202815EE003F6218 /* HighLatitudeRule.swift in Sources */,
 				088088762026EE9E0059C738 /* PrayerTimes.swift in Sources */,
 				0880887B2026EEBD0059C738 /* Qibla.swift in Sources */,
 				088088862026EF4A0059C738 /* SolarTime.swift in Sources */,
@@ -694,7 +696,7 @@
 				845DA5C2214BDCA7001AF870 /* Angle.swift in Sources */,
 				845DA5C5214BDCAF001AF870 /* Minute.swift in Sources */,
 				083EFC67202815EE003F6218 /* Coordinates.swift in Sources */,
-				083EFC5B202815EE003F6218 /* HighAltitudeRule.swift in Sources */,
+				083EFC5B202815EE003F6218 /* HighLatitudeRule.swift in Sources */,
 				088088772026EE9E0059C738 /* PrayerTimes.swift in Sources */,
 				0880887C2026EEBD0059C738 /* Qibla.swift in Sources */,
 				088088872026EF4A0059C738 /* SolarTime.swift in Sources */,
@@ -719,7 +721,7 @@
 				845DA5C3214BDCA8001AF870 /* Angle.swift in Sources */,
 				845DA5C6214BDCAF001AF870 /* Minute.swift in Sources */,
 				083EFC68202815EE003F6218 /* Coordinates.swift in Sources */,
-				083EFC5C202815EE003F6218 /* HighAltitudeRule.swift in Sources */,
+				083EFC5C202815EE003F6218 /* HighLatitudeRule.swift in Sources */,
 				088088782026EE9E0059C738 /* PrayerTimes.swift in Sources */,
 				0880887D2026EEBD0059C738 /* Qibla.swift in Sources */,
 				088088882026EF4A0059C738 /* SolarTime.swift in Sources */,

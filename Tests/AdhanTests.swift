@@ -466,4 +466,12 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p3.maghrib), "10:01 PM")
         XCTAssertEqual(dateFormatter.string(from: p3.isha), "11:50 PM")
     }
+
+    func testRecommendedHighLatitudeRule() {
+        let coords1 = Coordinates(latitude: 45.983226, longitude: -3.216649)
+        XCTAssertEqual(HighLatitudeRule.recommended(for: coords1), .middleOfTheNight)
+
+        let coords2 = Coordinates(latitude: 48.983226, longitude: -3.216649)
+        XCTAssertEqual(HighLatitudeRule.recommended(for: coords2), .seventhOfTheNight)
+    }
 }
