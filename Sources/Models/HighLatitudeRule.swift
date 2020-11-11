@@ -1,5 +1,5 @@
 //
-//  HighAltitudeRule.swift
+//  HighLatitudeRule.swift
 //  Adhan
 //
 //  Copyright © 2018 Batoul Apps. All rights reserved.
@@ -49,4 +49,12 @@ public enum HighLatitudeRule: String, Codable, CaseIterable {
     case middleOfTheNight
     case seventhOfTheNight
     case twilightAngle
+
+    static func recommended(for coordinates: Coordinates) -> HighLatitudeRule {
+        if coordinates.latitude > 48 {
+            return .seventhOfTheNight
+        } else {
+            return .middleOfTheNight
+        }
+    }
 }

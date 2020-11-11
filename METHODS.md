@@ -63,3 +63,9 @@ Rule for approximating Fajr and Isha at high latitudes.
 | seventhOfTheNight | Fajr is at the end of the first seventh of the night and isha is at the beginning of the last seventh of the night. This is recommended to use for locations above 55° latitude to prevent prayer times that would be difficult to perform. |
 | twilightAngle | The night is divided into portions of roughly 1/3. The exact value is derived by dividing the fajr/isha angles by 60. This can be used to prevent difficult fajr and isha times at locations below 55° latitude. |
 
+You can get the recommended High Latitude Rule for a location by calling the `recommended(for:)` function and passing in the coordinates for the location.
+
+```
+let myCoordinates = Coordinates(latitude: 48.983226, longitude: -3.216649)
+let highLatRule = HighLatitudeRule.recommended(for: myCoordinates)
+```
