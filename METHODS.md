@@ -23,6 +23,7 @@ params.adjustments.fajr = 2
 | madhab | Which setting from the Madhab enum to use for calculating Asr. |
 | highLatitudeRule | Which setting from the HighLatitudeRule enum to use for calculating the minimum time for Fajr and the maximum time for Isha. |
 | adjustments | PrayerAdjustments struct with custom prayer time adjustments in minutes for each prayer time. |
+| rounding | The behavior for rounding prayer times. Either to nearest minute, to the higher minute, or none.  |
 
 ## CalculationMethod
 

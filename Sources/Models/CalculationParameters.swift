@@ -37,6 +37,7 @@ public struct CalculationParameters: Codable, Equatable {
     public var madhab: Madhab = .shafi
     public var highLatitudeRule: HighLatitudeRule = .middleOfTheNight
     public var adjustments: PrayerAdjustments = PrayerAdjustments()
+    public var rounding: Rounding = .nearest
     var methodAdjustments: PrayerAdjustments = PrayerAdjustments()
 
     init(fajrAngle: Double, ishaAngle: Double) {
