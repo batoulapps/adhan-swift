@@ -27,15 +27,24 @@ import Foundation
 
 internal extension Date {
 
-    func roundedMinute() -> Date {
+    func roundedMinute(rounding: Rounding = .nearest) -> Date {
         let cal: Calendar = .gregorianUTC
         var components = cal.dateComponents([.year, .month, .day, .hour, .minute, .second], from: self)
 
         let minute: Double = Double(components.minute ?? 0)
         let second: Double = Double(components.second ?? 0)
 
-        components.minute = Int(minute + round(second/60))
-        components.second = 0
+        switch rounding {
+        case .nearest:
+            components.minute = Int(minute + round(second/60))
+            components.second = 0
+        case .up:
+            components.minute = Int(minute + ceil(second/60))
+            components.second = 0
+        case .none:
+            components.minute = Int(minute)
+            components.second = Int(second)
+        }
 
         return cal.date(from: components) ?? self
     }

@@ -77,6 +77,10 @@
 		845DA5C5214BDCAF001AF870 /* Minute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DC7627214B1B3C003F79FD /* Minute.swift */; };
 		845DA5C6214BDCAF001AF870 /* Minute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DC7627214B1B3C003F79FD /* Minute.swift */; };
 		8480CCD91CD2DE0F00BD380B /* ObjcTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8480CCD81CD2DE0F00BD380B /* ObjcTests.m */; };
+		84B2C70D256CB1E70097C96C /* Rouding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B2C70C256CB1E70097C96C /* Rouding.swift */; };
+		84B2C70E256CB1E70097C96C /* Rouding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B2C70C256CB1E70097C96C /* Rouding.swift */; };
+		84B2C70F256CB1E70097C96C /* Rouding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B2C70C256CB1E70097C96C /* Rouding.swift */; };
+		84B2C710256CB1E70097C96C /* Rouding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B2C70C256CB1E70097C96C /* Rouding.swift */; };
 		84BCD1AE1CB09A5900614D12 /* Times in Resources */ = {isa = PBXBuildFile; fileRef = 84BCD1AD1CB09A5900614D12 /* Times */; };
 		84BCD1B01CB09A7700614D12 /* TimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BCD1AF1CB09A7700614D12 /* TimeTests.swift */; };
 		84DC7628214B1B3C003F79FD /* Minute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DC7627214B1B3C003F79FD /* Minute.swift */; };
@@ -155,6 +159,7 @@
 		844EFDEA214A001E00186C45 /* Angle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Angle.swift; sourceTree = "<group>"; };
 		8480CCD81CD2DE0F00BD380B /* ObjcTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjcTests.m; sourceTree = "<group>"; };
 		84896CB82558A386008CA6BC /* METHODS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = METHODS.md; sourceTree = "<group>"; };
+		84B2C70C256CB1E70097C96C /* Rouding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rouding.swift; sourceTree = "<group>"; };
 		84BCD1AD1CB09A5900614D12 /* Times */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Times; path = ../Shared/Times; sourceTree = "<group>"; };
 		84BCD1AF1CB09A7700614D12 /* TimeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTests.swift; sourceTree = "<group>"; };
 		84DC7627214B1B3C003F79FD /* Minute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Minute.swift; sourceTree = "<group>"; };
@@ -241,6 +246,7 @@
 				083EFC52202815EE003F6218 /* Madhab.swift */,
 				083EFC53202815EE003F6218 /* Prayer.swift */,
 				088088652026EDF90059C738 /* PrayerAdjustment.swift */,
+				84B2C70C256CB1E70097C96C /* Rouding.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -627,6 +633,7 @@
 				088088662026EDF90059C738 /* PrayerAdjustment.swift in Sources */,
 				0880886B2026EE420059C738 /* CalculationParameters.swift in Sources */,
 				083EFC61202815EE003F6218 /* Prayer.swift in Sources */,
+				84B2C70D256CB1E70097C96C /* Rouding.swift in Sources */,
 				083EFC55202815EE003F6218 /* CalculationMethod.swift in Sources */,
 				083EFC5D202815EE003F6218 /* Madhab.swift in Sources */,
 				083EFC65202815EE003F6218 /* Coordinates.swift in Sources */,
@@ -666,6 +673,7 @@
 				088088672026EDF90059C738 /* PrayerAdjustment.swift in Sources */,
 				0880886C2026EE420059C738 /* CalculationParameters.swift in Sources */,
 				083EFC62202815EE003F6218 /* Prayer.swift in Sources */,
+				84B2C70E256CB1E70097C96C /* Rouding.swift in Sources */,
 				083EFC56202815EE003F6218 /* CalculationMethod.swift in Sources */,
 				083EFC5E202815EE003F6218 /* Madhab.swift in Sources */,
 				845DA5C1214BDCA6001AF870 /* Angle.swift in Sources */,
@@ -691,6 +699,7 @@
 				088088682026EDF90059C738 /* PrayerAdjustment.swift in Sources */,
 				0880886D2026EE420059C738 /* CalculationParameters.swift in Sources */,
 				083EFC63202815EE003F6218 /* Prayer.swift in Sources */,
+				84B2C70F256CB1E70097C96C /* Rouding.swift in Sources */,
 				083EFC57202815EE003F6218 /* CalculationMethod.swift in Sources */,
 				083EFC5F202815EE003F6218 /* Madhab.swift in Sources */,
 				845DA5C2214BDCA7001AF870 /* Angle.swift in Sources */,
@@ -716,6 +725,7 @@
 				088088692026EDF90059C738 /* PrayerAdjustment.swift in Sources */,
 				0880886E2026EE420059C738 /* CalculationParameters.swift in Sources */,
 				083EFC64202815EE003F6218 /* Prayer.swift in Sources */,
+				84B2C710256CB1E70097C96C /* Rouding.swift in Sources */,
 				083EFC58202815EE003F6218 /* CalculationMethod.swift in Sources */,
 				083EFC60202815EE003F6218 /* Madhab.swift in Sources */,
 				845DA5C3214BDCA8001AF870 /* Angle.swift in Sources */,

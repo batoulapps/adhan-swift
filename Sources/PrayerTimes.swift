@@ -163,22 +163,22 @@ public struct PrayerTimes {
         // Assign final times to public struct members with all offsets
         self.fajr = fajr.addingTimeInterval(calculationParameters.adjustments.fajr.timeInterval)
             .addingTimeInterval(calculationParameters.methodAdjustments.fajr.timeInterval)
-            .roundedMinute()
+            .roundedMinute(rounding: calculationParameters.rounding)
         self.sunrise = sunrise.addingTimeInterval(calculationParameters.adjustments.sunrise.timeInterval)
             .addingTimeInterval(calculationParameters.methodAdjustments.sunrise.timeInterval)
-            .roundedMinute()
+            .roundedMinute(rounding: calculationParameters.rounding)
         self.dhuhr = dhuhr.addingTimeInterval(calculationParameters.adjustments.dhuhr.timeInterval)
             .addingTimeInterval(calculationParameters.methodAdjustments.dhuhr.timeInterval)
-            .roundedMinute()
+            .roundedMinute(rounding: calculationParameters.rounding)
         self.asr = asr.addingTimeInterval(calculationParameters.adjustments.asr.timeInterval)
             .addingTimeInterval(calculationParameters.methodAdjustments.asr.timeInterval)
-            .roundedMinute()
+            .roundedMinute(rounding: calculationParameters.rounding)
         self.maghrib = maghrib.addingTimeInterval(calculationParameters.adjustments.maghrib.timeInterval)
             .addingTimeInterval(calculationParameters.methodAdjustments.maghrib.timeInterval)
-            .roundedMinute()
+            .roundedMinute(rounding: calculationParameters.rounding)
         self.isha = isha.addingTimeInterval(calculationParameters.adjustments.isha.timeInterval)
             .addingTimeInterval(calculationParameters.methodAdjustments.isha.timeInterval)
-            .roundedMinute()
+            .roundedMinute(rounding: calculationParameters.rounding)
     }
 
     public func currentPrayer(at time: Date = Date()) -> Prayer? {

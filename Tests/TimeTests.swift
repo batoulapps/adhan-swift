@@ -79,6 +79,7 @@ class TimeTests: XCTestCase {
         #endif
         
         for path in paths {
+            let filename = path.lastPathComponent
             var output = "################\nTime Test Output\n"
             let data = try? Data(contentsOf: path)
             let json = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! NSDictionary
@@ -108,9 +109,16 @@ class TimeTests: XCTestCase {
          
             let variance = json["variance"] as? Double ?? 0
             let times = json["times"] as! [NSDictionary]
-            output += "Times for \(path.lastPathComponent) - \(params["method"]!)\n"
-            print("Testing \(path.lastPathComponent) (\(times.count) days)")
+            output += "Times for \(filename) - \(params["method"]!)\n"
+            print("\(params["method"]!) Testing \(path.lastPathComponent) (\(times.count) days)")
             var totalDiff = 0.0
+            var totalFajrVariance = 0.0
+            var totalSunriseVariance = 0.0
+            var totalDhuhrVariance = 0.0
+            var totalAsrVariance = 0.0
+            var totalMaghribVariance = 0.0
+            var totalIshaVariance = 0.0
+
             var maxDiff = 0.0
             for time in times {
                 let date = dateFormatter.date(from: time["date"] as! String)!
@@ -130,7 +138,14 @@ class TimeTests: XCTestCase {
                 XCTAssertLessThanOrEqual(fabs(asrDiff), variance, "Asr variance larger than accepted value of \(variance)")
                 XCTAssertLessThanOrEqual(fabs(maghribDiff), variance, "Maghrib variance larger than accepted value of \(variance)")
                 XCTAssertLessThanOrEqual(fabs(ishaDiff), variance, "Isha variance larger than accepted value of \(variance)")
-                
+
+                totalFajrVariance += fajrDiff
+                totalSunriseVariance += sunriseDiff
+                totalDhuhrVariance += dhuhrDiff
+                totalAsrVariance += asrDiff
+                totalMaghribVariance += maghribDiff
+                totalIshaVariance += ishaDiff
+
                 totalDiff += fabs(fajrDiff)
                 totalDiff += fabs(sunriseDiff)
                 totalDiff += fabs(dhuhrDiff)
@@ -139,7 +154,7 @@ class TimeTests: XCTestCase {
                 totalDiff += fabs(ishaDiff)
                 maxDiff = max(fabs(fajrDiff), fabs(sunriseDiff), fabs(dhuhrDiff), fabs(asrDiff), fabs(maghribDiff), fabs(ishaDiff), maxDiff)
 
-                output += "\(components.year ?? 0)-\(components.month ?? 0)-\(components.day ?? 0)\n"
+                output += "\(params["method"]!) \(components.year ?? 0)-\(components.month ?? 0)-\(components.day ?? 0)\n"
                 let outputValues: [(Date, String, Double)] = [
                     (prayerTimes.fajr, "fajr", fajrDiff),
                     (prayerTimes.sunrise, "sunrise", sunriseDiff),
@@ -151,12 +166,17 @@ class TimeTests: XCTestCase {
                 outputValues.forEach {
                     let paddingLength = 10
                     let jsonTime = time[$0.1]! as! String
-                    output += "\($0.1.prefix(1).capitalized): \(timeFormatter.string(from: $0.0).padding(toLength: paddingLength, withPad: " ", startingAt: 0)) JSON: \(jsonTime.padding(toLength: paddingLength, withPad: " ", startingAt: 0)) Diff: \(Int($0.2))\n"
+                    output += "\(filename) \($0.1.prefix(1).capitalized): \(timeFormatter.string(from: $0.0).padding(toLength: paddingLength, withPad: " ", startingAt: 0)) JSON: \(jsonTime.padding(toLength: paddingLength, withPad: " ", startingAt: 0)) Diff: \(Int($0.2))\n"
                 }
             }
-            output += "Difference for \(path.lastPathComponent) - \(params["method"]!)\n"
-            output += "Average difference: \(totalDiff/Double(times.count * 6))\n"
-            output += "Max difference: \(maxDiff)\n"
+            output += "\(filename) Average difference: \(totalDiff/Double(times.count * 6))\n"
+            output += "\(filename) Max difference: \(maxDiff)\n"
+            output += "\(filename) Fajr variance: \(totalFajrVariance/Double(times.count))\n"
+            output += "\(filename) Sunrise variance: \(totalSunriseVariance/Double(times.count))\n"
+            output += "\(filename) Dhuhr variance: \(totalDhuhrVariance/Double(times.count))\n"
+            output += "\(filename) Asr variance: \(totalAsrVariance/Double(times.count))\n"
+            output += "\(filename) Maghrib variance: \(totalMaghribVariance/Double(times.count))\n"
+            output += "\(filename) Isha variance: \(totalIshaVariance/Double(times.count))\n"
             if maxDiff > 0 {
                 print(output)
             }
