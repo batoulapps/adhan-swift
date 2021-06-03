@@ -437,6 +437,7 @@ class AdhanTests: XCTestCase {
         comps1.month = 6
         comps1.day = 15
 
+        params.highLatitudeRule = .middleOfTheNight
         let p1 = PrayerTimes(coordinates: coords, date: comps1, calculationParameters: params)!
 
         XCTAssertEqual(dateFormatter.string(from: p1.fajr), "1:14 AM")
@@ -465,6 +466,17 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p3.asr), "5:46 PM")
         XCTAssertEqual(dateFormatter.string(from: p3.maghrib), "10:01 PM")
         XCTAssertEqual(dateFormatter.string(from: p3.isha), "11:50 PM")
+
+        params.highLatitudeRule = nil
+        let pAuto = PrayerTimes(coordinates: coords, date: comps1, calculationParameters: params)!
+        let expectedAuto = p2
+
+        XCTAssertEqual(pAuto.fajr, expectedAuto.fajr)
+        XCTAssertEqual(pAuto.sunrise, expectedAuto.sunrise)
+        XCTAssertEqual(pAuto.dhuhr, expectedAuto.dhuhr)
+        XCTAssertEqual(pAuto.asr, expectedAuto.asr)
+        XCTAssertEqual(pAuto.maghrib, expectedAuto.maghrib)
+        XCTAssertEqual(pAuto.isha, expectedAuto.isha)
     }
 
     func testRecommendedHighLatitudeRule() {

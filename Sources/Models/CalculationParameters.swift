@@ -35,7 +35,7 @@ public struct CalculationParameters: Codable, Equatable {
     public var ishaAngle: Double
     public var ishaInterval: Minute = 0
     public var madhab: Madhab = .shafi
-    public var highLatitudeRule: HighLatitudeRule = .middleOfTheNight
+    public var highLatitudeRule: HighLatitudeRule? = nil
     public var adjustments: PrayerAdjustments = PrayerAdjustments()
     public var rounding: Rounding = .nearest
     var methodAdjustments: PrayerAdjustments = PrayerAdjustments()
@@ -66,7 +66,15 @@ public struct CalculationParameters: Codable, Equatable {
     }
 
     func nightPortions() -> (fajr: Double, isha: Double) {
-        switch self.highLatitudeRule {
+        nightPortions(for: highLatitudeRule ?? .middleOfTheNight)
+    }
+
+    func nightPortions(using coordinates: Coordinates) -> (fajr: Double, isha: Double) {
+        nightPortions(for: highLatitudeRule ?? .recommended(for: coordinates))
+    }
+
+    private func nightPortions(for highLatitudeRule: HighLatitudeRule) -> (fajr: Double, isha: Double) {
+        switch highLatitudeRule {
         case .middleOfTheNight:
             return (1/2, 1/2)
         case .seventhOfTheNight:
