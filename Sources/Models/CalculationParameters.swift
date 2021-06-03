@@ -65,15 +65,10 @@ public struct CalculationParameters: Codable, Equatable {
         self.maghribAngle = maghribAngle
     }
 
-    func nightPortions() -> (fajr: Double, isha: Double) {
-        nightPortions(for: highLatitudeRule ?? .middleOfTheNight)
-    }
+    func nightPortions(using coordinates: Coordinates? = nil) -> (fajr: Double, isha: Double) {
+        // Always prioritize stored parameter, then automatic rule, or fallback to default
+        let highLatitudeRule = highLatitudeRule ?? coordinates.map { .recommended(for: $0) } ?? .middleOfTheNight
 
-    func nightPortions(using coordinates: Coordinates) -> (fajr: Double, isha: Double) {
-        nightPortions(for: highLatitudeRule ?? .recommended(for: coordinates))
-    }
-
-    private func nightPortions(for highLatitudeRule: HighLatitudeRule) -> (fajr: Double, isha: Double) {
         switch highLatitudeRule {
         case .middleOfTheNight:
             return (1/2, 1/2)
