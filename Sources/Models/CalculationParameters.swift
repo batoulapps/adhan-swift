@@ -67,7 +67,7 @@ public struct CalculationParameters: Codable, Equatable {
 
     func nightPortions(using coordinates: Coordinates? = nil) -> (fajr: Double, isha: Double) {
         // Always prioritize stored parameter, then automatic rule, or fallback to default
-        let highLatitudeRule = highLatitudeRule ?? coordinates.map { .recommended(for: $0) } ?? .middleOfTheNight
+        let highLatitudeRule = highLatitudeRule ?? coordinates.map(HighLatitudeRule.recommended) ?? .middleOfTheNight
 
         switch highLatitudeRule {
         case .middleOfTheNight:
