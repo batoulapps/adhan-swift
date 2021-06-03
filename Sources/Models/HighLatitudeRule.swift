@@ -37,20 +37,21 @@ import Foundation
 
   **seventhOfTheNight**
 
-  Fajr is at the end of the first seventh of the night and isha is at the beginning of the last seventh of the night. This is
-  recommended to use for locations above 55° latitude to prevent prayer times that would be difficult to perform.
+  Fajr will never be earlier than the beginning of the last seventh of the night and Isha will never be later than the end of the first seventh of the night.
+  This is recommended to use for locations above 48° latitude to prevent prayer times that would be difficult to perform.
 
   **twilightAngle**
 
   The night is divided into portions of roughly 1/3. The exact value is derived by dividing the fajr/isha angles by 60.
-  This can be used to prevent difficult fajr and isha times at locations below 55° latitude.
+  This can be used to prevent difficult fajr and isha times at certain locations.
  */
 public enum HighLatitudeRule: String, Codable, CaseIterable {
     case middleOfTheNight
     case seventhOfTheNight
     case twilightAngle
 
-    static func recommended(for coordinates: Coordinates) -> HighLatitudeRule {
+    /// Returns the recommended High Latitude Rule for the specified location.
+    public static func recommended(for coordinates: Coordinates) -> HighLatitudeRule {
         if coordinates.latitude > 48 {
             return .seventhOfTheNight
         } else {
