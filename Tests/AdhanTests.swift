@@ -33,20 +33,22 @@ func date(year: Int, month: Int, day: Int, hours: Double = 0) -> DateComponents 
 class AdhanTests: XCTestCase {
     
     func testNightPortion() {
+        let coordinates = Coordinates(latitude: 0, longitude: 0)
+
         var p1 = CalculationParameters(fajrAngle: 18, ishaAngle: 18)
         p1.highLatitudeRule = .middleOfTheNight
-        XCTAssertEqual(p1.nightPortions().fajr, 0.5)
-        XCTAssertEqual(p1.nightPortions().isha, 0.5)
+        XCTAssertEqual(p1.nightPortions(using: coordinates).fajr, 0.5)
+        XCTAssertEqual(p1.nightPortions(using: coordinates).isha, 0.5)
         
         var p2 = CalculationParameters(fajrAngle: 18, ishaAngle: 18)
         p2.highLatitudeRule = .seventhOfTheNight
-        XCTAssertEqual(p2.nightPortions().fajr, 1/7)
-        XCTAssertEqual(p2.nightPortions().isha, 1/7)
+        XCTAssertEqual(p2.nightPortions(using: coordinates).fajr, 1/7)
+        XCTAssertEqual(p2.nightPortions(using: coordinates).isha, 1/7)
         
         var p3 = CalculationParameters(fajrAngle: 10, ishaAngle: 15)
         p3.highLatitudeRule = .twilightAngle
-        XCTAssertEqual(p3.nightPortions().fajr, 10/60)
-        XCTAssertEqual(p3.nightPortions().isha, 15/60)
+        XCTAssertEqual(p3.nightPortions(using: coordinates).fajr, 10/60)
+        XCTAssertEqual(p3.nightPortions(using: coordinates).isha, 15/60)
     }
     
     func testCalculationMethods() {
@@ -437,6 +439,7 @@ class AdhanTests: XCTestCase {
         comps1.month = 6
         comps1.day = 15
 
+        params.highLatitudeRule = .middleOfTheNight
         let p1 = PrayerTimes(coordinates: coords, date: comps1, calculationParameters: params)!
 
         XCTAssertEqual(dateFormatter.string(from: p1.fajr), "1:14 AM")
@@ -465,6 +468,17 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p3.asr), "5:46 PM")
         XCTAssertEqual(dateFormatter.string(from: p3.maghrib), "10:01 PM")
         XCTAssertEqual(dateFormatter.string(from: p3.isha), "11:50 PM")
+
+        params.highLatitudeRule = nil
+        let pAuto = PrayerTimes(coordinates: coords, date: comps1, calculationParameters: params)!
+        let expectedAuto = p2
+
+        XCTAssertEqual(pAuto.fajr, expectedAuto.fajr)
+        XCTAssertEqual(pAuto.sunrise, expectedAuto.sunrise)
+        XCTAssertEqual(pAuto.dhuhr, expectedAuto.dhuhr)
+        XCTAssertEqual(pAuto.asr, expectedAuto.asr)
+        XCTAssertEqual(pAuto.maghrib, expectedAuto.maghrib)
+        XCTAssertEqual(pAuto.isha, expectedAuto.isha)
     }
 
     func testRecommendedHighLatitudeRule() {
