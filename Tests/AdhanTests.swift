@@ -33,20 +33,22 @@ func date(year: Int, month: Int, day: Int, hours: Double = 0) -> DateComponents 
 class AdhanTests: XCTestCase {
     
     func testNightPortion() {
+        let coordinates = Coordinates(latitude: 0, longitude: 0)
+
         var p1 = CalculationParameters(fajrAngle: 18, ishaAngle: 18)
         p1.highLatitudeRule = .middleOfTheNight
-        XCTAssertEqual(p1.nightPortions().fajr, 0.5)
-        XCTAssertEqual(p1.nightPortions().isha, 0.5)
+        XCTAssertEqual(p1.nightPortions(using: coordinates).fajr, 0.5)
+        XCTAssertEqual(p1.nightPortions(using: coordinates).isha, 0.5)
         
         var p2 = CalculationParameters(fajrAngle: 18, ishaAngle: 18)
         p2.highLatitudeRule = .seventhOfTheNight
-        XCTAssertEqual(p2.nightPortions().fajr, 1/7)
-        XCTAssertEqual(p2.nightPortions().isha, 1/7)
+        XCTAssertEqual(p2.nightPortions(using: coordinates).fajr, 1/7)
+        XCTAssertEqual(p2.nightPortions(using: coordinates).isha, 1/7)
         
         var p3 = CalculationParameters(fajrAngle: 10, ishaAngle: 15)
         p3.highLatitudeRule = .twilightAngle
-        XCTAssertEqual(p3.nightPortions().fajr, 10/60)
-        XCTAssertEqual(p3.nightPortions().isha, 15/60)
+        XCTAssertEqual(p3.nightPortions(using: coordinates).fajr, 10/60)
+        XCTAssertEqual(p3.nightPortions(using: coordinates).isha, 15/60)
     }
     
     func testCalculationMethods() {
