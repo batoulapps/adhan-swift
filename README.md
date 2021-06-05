@@ -164,7 +164,8 @@ let qiblaDirection = Qibla(coordinates: nyc).direction
 Adhan is made publicly available to provide a well tested and well documented library for Islamic prayer times to all
 developers. We accept feature contributions provided that they are properly documented and include the appropriate
 unit tests. We are also looking for contributions in the form of unit tests of of prayer times for different
-locations, we do ask that the source of the comparison values be properly documented.
+locations, we do ask that the source of the comparison values be properly documented. For all pull requests, 
+use `develop` as the base branch.
 
 ## License
 
