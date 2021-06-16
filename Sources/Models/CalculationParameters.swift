@@ -66,9 +66,9 @@ public struct CalculationParameters: Codable, Equatable {
     }
 
     func nightPortions(using coordinates: Coordinates) -> (fajr: Double, isha: Double) {
-        let highLatitudeRule = highLatitudeRule ?? .recommended(for: coordinates)
+        let currentHighLatitudeRule = highLatitudeRule ?? .recommended(for: coordinates)
 
-        switch highLatitudeRule {
+        switch currentHighLatitudeRule {
         case .middleOfTheNight:
             return (1/2, 1/2)
         case .seventhOfTheNight:

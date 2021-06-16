@@ -69,15 +69,20 @@ class TimeTests: XCTestCase {
         #if os(Linux)
         let fileManager = FileManager.default
         let currentDir = URL(fileURLWithPath: fileManager.currentDirectoryPath)
-        let fixtureDir = currentDir.appendingPathComponent("Shared/Times")
+        let fixtureDir = currentDir.appendingPathComponent("Tests/Resources/Times")
         let paths = try! fileManager.contentsOfDirectory(at: fixtureDir, includingPropertiesForKeys: nil)
             .filter { $0.pathExtension == "json" }
+        #elseif SWIFT_PACKAGE
+        let paths = Bundle.module.paths(forResourcesOfType: "json", inDirectory: "Resources/Times")
+            .compactMap(URL.init(fileURLWithPath:))
         #else
         let bundle = Bundle(for: type(of: self))
         let paths = bundle.paths(forResourcesOfType: "json", inDirectory: "Times")
             .compactMap(URL.init(fileURLWithPath:))
         #endif
-        
+
+        XCTAssert(paths.count > 0)
+
         for path in paths {
             let filename = path.lastPathComponent
             var output = "################\nTime Test Output\n"
