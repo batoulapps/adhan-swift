@@ -43,18 +43,11 @@ struct SolarTime {
         date.hour = 0
         date.minute = 0
 
-        guard let currentDate = Calendar.gregorianUTC.date(from: date),
-            let nextDate = Calendar.gregorianUTC.date(byAdding: .day, value: 1, to: currentDate),
-            let previousDate = Calendar.gregorianUTC.date(byAdding: .day, value: -1, to: currentDate) else {
-            return nil
-        }
+        let julianDay = Astronomical.julianDay(dateComponents: date)
+        let prevSolar = SolarCoordinates(julianDay: julianDay - 1)
+        let solar = SolarCoordinates(julianDay: julianDay)
+        let nextSolar = SolarCoordinates(julianDay: julianDay + 1)
 
-        let nextDay = Calendar.gregorianUTC.dateComponents([.year, .month, .day], from: nextDate)
-        let previousDay = Calendar.gregorianUTC.dateComponents([.year, .month, .day], from: previousDate)
-
-        let prevSolar = SolarCoordinates(julianDay: Astronomical.julianDay(dateComponents: previousDay))
-        let solar = SolarCoordinates(julianDay: Astronomical.julianDay(dateComponents: date))
-        let nextSolar = SolarCoordinates(julianDay: Astronomical.julianDay(dateComponents: nextDay))
         let m0 = Astronomical.approximateTransit(longitude: coordinates.longitudeAngle, siderealTime: solar.apparentSiderealTime, rightAscension: solar.rightAscension)
         let solarAltitude = Angle(-50.0 / 60.0)
 
@@ -64,8 +57,8 @@ struct SolarTime {
         self.prevSolar = prevSolar
         self.nextSolar = nextSolar
         self.approxTransit = m0
-        
-        
+
+
         let transitTime = Astronomical.correctedTransit(approximateTransit: m0, longitude: coordinates.longitudeAngle, siderealTime: solar.apparentSiderealTime,
                                                      rightAscension: solar.rightAscension, previousRightAscension: prevSolar.rightAscension, nextRightAscension: nextSolar.rightAscension)
         let sunriseTime = Astronomical.correctedHourAngle(approximateTransit: m0, angle: solarAltitude, coordinates: coordinates, afterTransit: false, siderealTime: solar.apparentSiderealTime,
@@ -74,11 +67,11 @@ struct SolarTime {
         let sunsetTime = Astronomical.correctedHourAngle(approximateTransit: m0, angle: solarAltitude, coordinates: coordinates, afterTransit: true, siderealTime: solar.apparentSiderealTime,
                                                       rightAscension: solar.rightAscension, previousRightAscension: prevSolar.rightAscension, nextRightAscension: nextSolar.rightAscension,
                                                       declination: solar.declination, previousDeclination: prevSolar.declination, nextDeclination: nextSolar.declination)
-        
+
         guard let transitDate = date.settingHour(transitTime), let sunriseDate = date.settingHour(sunriseTime), let sunsetDate = date.settingHour(sunsetTime) else {
             return nil
         }
-        
+
         self.transit = transitDate
         self.sunrise = sunriseDate
         self.sunset = sunsetDate
