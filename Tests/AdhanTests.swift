@@ -9,13 +9,6 @@
 import XCTest
 @testable import Adhan
 
-/* prayer times for comparison
-
-http://www.mosken.se/b%C3%B6netider // Malmo, Sweden
-http://www.uoif-online.com/horaires-de-prieres/ // Paris 12 degrees
-
-*/
-
 func date(year: Int, month: Int, day: Int, hours: Double = 0) -> DateComponents {
     var cal = Calendar(identifier: Calendar.Identifier.gregorian)
     cal.timeZone = TimeZone(identifier: "UTC")!
