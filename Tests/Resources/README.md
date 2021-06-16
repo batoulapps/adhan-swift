@@ -1,1 +1,0 @@
-# adhan-testdata
