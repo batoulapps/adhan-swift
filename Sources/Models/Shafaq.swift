@@ -1,8 +1,8 @@
 //
-//  Rouding.swift
+//  Shafaq.swift
 //  Adhan
 //
-//  Copyright © 2020 Batoul Apps. All rights reserved.
+//  Copyright © 2021 Batoul Apps. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,27 @@
 
 import Foundation
 
-public enum Rounding: String, Codable, CaseIterable {
-    case nearest
-    case up
-    case none
+/**
+ Shafaq is the twilight in the sky. Different madhabs define the appearance of
+ twilight differently. These values are used by the MoonsightingComittee method
+ for the different ways to calculate Isha.
+
+  *Values*
+
+  **general**
+
+  General is a combination of Ahmer and Abyad.
+
+  **ahmer**
+
+  Ahmer means the twilight is the red glow in the sky. Used by the Shafi, Maliki, and Hanbali madhabs.
+
+  **abyad**
+
+  Abyad means the twilight is the white glow in the sky. Used by the Hanafi madhab.
+ */
+public enum Shafaq: String, Codable, CaseIterable {
+    case general
+    case ahmer
+    case abyad
 }

@@ -24,6 +24,7 @@ params.adjustments.fajr = 2
 | highLatitudeRule | Which setting from the HighLatitudeRule enum to use for calculating the minimum time for Fajr and the maximum time for Isha. |
 | adjustments | PrayerAdjustments struct with custom prayer time adjustments in minutes for each prayer time. |
 | rounding | The behavior for rounding prayer times. Either to nearest minute, to the higher minute, or none.  |
+| shafaq | Used by the MoonsightingCommittee method to determine how to calculate Isha. See explanation of values below. |
 
 ## CalculationMethod
 
@@ -70,3 +71,13 @@ You can get the recommended High Latitude Rule for a location by calling the `re
 let myCoordinates = Coordinates(latitude: 48.983226, longitude: -3.216649)
 let highLatRule = HighLatitudeRule.recommended(for: myCoordinates)
 ```
+
+#### Shafaq
+
+Shafaq is used by the MoonsightingCommittee method to determine what type of twilight to use in order to determine the time for Isha.
+
+| Value | Description |
+| ----- | ----------- |
+| general | General is a combination of Ahmer and Abyad. This is the defualt value and will provide more reasonable times for locations at higher latitudes. |
+| ahmer | Ahmer means the twilight is the red glow in the sky. Used by the Shafi, Maliki, and Hanbali madhabs. This generally produces an earlier Isha time. |
+| abyad | Abyad means the twilight is the white glow in the sky. Used by the Hanafi madhab. This generally produces a later Isha time. |

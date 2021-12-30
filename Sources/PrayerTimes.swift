@@ -127,7 +127,7 @@ public struct PrayerTimes {
 
             let safeIsha: Date = {
                 guard calculationParameters.method != .moonsightingCommittee else {
-                    return Astronomical.seasonAdjustedEveningTwilight(latitude: coordinates.latitude, day: dayOfYear, year: year, sunset: sunsetDate)
+                    return Astronomical.seasonAdjustedEveningTwilight(latitude: coordinates.latitude, day: dayOfYear, year: year, sunset: sunsetDate, shafaq: calculationParameters.shafaq)
                 }
 
                 let portion = calculationParameters.nightPortions(using: coordinates).isha
