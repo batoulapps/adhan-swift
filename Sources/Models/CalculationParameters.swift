@@ -38,6 +38,7 @@ public struct CalculationParameters: Codable, Equatable {
     public var highLatitudeRule: HighLatitudeRule? = nil
     public var adjustments: PrayerAdjustments = PrayerAdjustments()
     public var rounding: Rounding = .nearest
+    public var shafaq: Shafaq = .general
     var methodAdjustments: PrayerAdjustments = PrayerAdjustments()
 
     init(fajrAngle: Double, ishaAngle: Double) {

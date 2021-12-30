@@ -279,12 +279,27 @@ struct Astronomical {
     }
 
     /* Twilight adjustment based on observational data for use in the Moonsighting Committee calculation method. */
-    static func seasonAdjustedEveningTwilight(latitude: Double, day: Int, year: Int, sunset: Date) -> Date {
-        let a: Double = 75 + ((25.60 / 55.0) * fabs(latitude))
-        let b: Double = 75 + ((2.050 / 55.0) * fabs(latitude))
-        let c: Double = 75 - ((9.210 / 55.0) * fabs(latitude))
-        let d: Double = 75 + ((6.140 / 55.0) * fabs(latitude))
-
+    static func seasonAdjustedEveningTwilight(latitude: Double, day: Int, year: Int, sunset: Date, shafaq: Shafaq) -> Date {
+        let a, b, c, d: Double
+        
+        switch shafaq {
+        case .general:
+            a = 75 + ((25.60 / 55.0) * fabs(latitude))
+            b = 75 + ((2.050 / 55.0) * fabs(latitude))
+            c = 75 - ((9.210 / 55.0) * fabs(latitude))
+            d = 75 + ((6.140 / 55.0) * fabs(latitude))
+        case .ahmer:
+            a = 62 + ((17.40 / 55.0) * fabs(latitude))
+            b = 62 - ((7.160 / 55.0) * fabs(latitude))
+            c = 62 + ((5.120 / 55.0) * fabs(latitude))
+            d = 62 + ((19.44 / 55.0) * fabs(latitude))
+        case .abyad:
+            a = 75 + ((25.60 / 55.0) * fabs(latitude))
+            b = 75 + ((7.160 / 55.0) * fabs(latitude))
+            c = 75 + ((36.84 / 55.0) * fabs(latitude))
+            d = 75 + ((81.84 / 55.0) * fabs(latitude))
+        }
+        
         let adjustment: Double = {
             let dyy = Double(Astronomical.daysSinceSolstice(dayOfYear: day, year: year, latitude: latitude))
             if ( dyy < 91) {

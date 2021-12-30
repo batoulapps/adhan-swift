@@ -132,6 +132,8 @@ import Foundation
     open var madhab: BAMadhab = .shafi
     open var highLatitudeRule: BAHighLatitudeRule = .middleOfTheNight
     open var adjustments: BAPrayerAdjustments = BAPrayerAdjustments()
+    open var shafaq: BAShafaq = .general
+    open var rounding: BARounding = .nearest
     private var methodAdjustments: BAPrayerAdjustments = BAPrayerAdjustments()
     
     public init(fajrAngle: Double, maghribAngle: Double, ishaAngle: Double, ishaInterval: Int) {
@@ -147,6 +149,15 @@ import Foundation
         self.init(fajrAngle: params.fajrAngle, maghribAngle: params.maghribAngle ?? 0, ishaAngle: params.ishaAngle, ishaInterval: params.ishaInterval)
         self.method = method
         self.methodAdjustments = BAPrayerAdjustments(fajr: params.methodAdjustments.fajr, sunrise: params.methodAdjustments.sunrise, dhuhr: params.methodAdjustments.dhuhr, asr: params.methodAdjustments.asr, maghrib: params.methodAdjustments.maghrib, isha: params.methodAdjustments.isha)
+        
+        switch params.rounding {
+        case .nearest:
+            self.rounding = .nearest
+        case .up:
+            self.rounding = .up
+        case .none:
+            self.rounding = .none
+        }
     }
     
     internal func calculationParameters() -> CalculationParameters {
@@ -171,6 +182,24 @@ import Foundation
             params.highLatitudeRule = HighLatitudeRule.seventhOfTheNight
         case BAHighLatitudeRule.twilightAngle:
             params.highLatitudeRule = HighLatitudeRule.twilightAngle
+        }
+        
+        switch self.shafaq {
+        case BAShafaq.general:
+            params.shafaq = Shafaq.general
+        case BAShafaq.ahmer:
+            params.shafaq = Shafaq.ahmer
+        case BAShafaq.abyad:
+            params.shafaq = Shafaq.abyad
+        }
+        
+        switch self.rounding {
+        case BARounding.nearest:
+            params.rounding = Rounding.nearest
+        case BARounding.up:
+            params.rounding = Rounding.up
+        case BARounding.none:
+            params.rounding = Rounding.none
         }
         
         return params
@@ -227,6 +256,18 @@ import Foundation
 @objc public enum BAMadhab: Int {
     case shafi
     case hanafi
+}
+
+@objc public enum BAShafaq: Int {
+    case general
+    case ahmer
+    case abyad
+}
+
+@objc public enum BARounding: Int {
+    case nearest
+    case up
+    case none
 }
 
 @objc public enum BAHighLatitudeRule: Int {
