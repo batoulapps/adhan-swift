@@ -9,13 +9,6 @@
 import XCTest
 @testable import Adhan
 
-/* prayer times for comparison
-
-http://www.mosken.se/b%C3%B6netider // Malmo, Sweden
-http://www.uoif-online.com/horaires-de-prieres/ // Paris 12 degrees
-
-*/
-
 func date(year: Int, month: Int, day: Int, hours: Double = 0) -> DateComponents {
     var cal = Calendar(identifier: Calendar.Identifier.gregorian)
     cal.timeZone = TimeZone(identifier: "UTC")!
@@ -33,20 +26,22 @@ func date(year: Int, month: Int, day: Int, hours: Double = 0) -> DateComponents 
 class AdhanTests: XCTestCase {
     
     func testNightPortion() {
+        let coordinates = Coordinates(latitude: 0, longitude: 0)
+
         var p1 = CalculationParameters(fajrAngle: 18, ishaAngle: 18)
         p1.highLatitudeRule = .middleOfTheNight
-        XCTAssertEqual(p1.nightPortions().fajr, 0.5)
-        XCTAssertEqual(p1.nightPortions().isha, 0.5)
+        XCTAssertEqual(p1.nightPortions(using: coordinates).fajr, 0.5)
+        XCTAssertEqual(p1.nightPortions(using: coordinates).isha, 0.5)
         
         var p2 = CalculationParameters(fajrAngle: 18, ishaAngle: 18)
         p2.highLatitudeRule = .seventhOfTheNight
-        XCTAssertEqual(p2.nightPortions().fajr, 1/7)
-        XCTAssertEqual(p2.nightPortions().isha, 1/7)
+        XCTAssertEqual(p2.nightPortions(using: coordinates).fajr, 1/7)
+        XCTAssertEqual(p2.nightPortions(using: coordinates).isha, 1/7)
         
         var p3 = CalculationParameters(fajrAngle: 10, ishaAngle: 15)
         p3.highLatitudeRule = .twilightAngle
-        XCTAssertEqual(p3.nightPortions().fajr, 10/60)
-        XCTAssertEqual(p3.nightPortions().isha, 15/60)
+        XCTAssertEqual(p3.nightPortions(using: coordinates).fajr, 10/60)
+        XCTAssertEqual(p3.nightPortions(using: coordinates).isha, 15/60)
     }
     
     func testCalculationMethods() {
@@ -437,6 +432,7 @@ class AdhanTests: XCTestCase {
         comps1.month = 6
         comps1.day = 15
 
+        params.highLatitudeRule = .middleOfTheNight
         let p1 = PrayerTimes(coordinates: coords, date: comps1, calculationParameters: params)!
 
         XCTAssertEqual(dateFormatter.string(from: p1.fajr), "1:14 AM")
@@ -465,6 +461,17 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p3.asr), "5:46 PM")
         XCTAssertEqual(dateFormatter.string(from: p3.maghrib), "10:01 PM")
         XCTAssertEqual(dateFormatter.string(from: p3.isha), "11:50 PM")
+
+        params.highLatitudeRule = nil
+        let pAuto = PrayerTimes(coordinates: coords, date: comps1, calculationParameters: params)!
+        let expectedAuto = p2
+
+        XCTAssertEqual(pAuto.fajr, expectedAuto.fajr)
+        XCTAssertEqual(pAuto.sunrise, expectedAuto.sunrise)
+        XCTAssertEqual(pAuto.dhuhr, expectedAuto.dhuhr)
+        XCTAssertEqual(pAuto.asr, expectedAuto.asr)
+        XCTAssertEqual(pAuto.maghrib, expectedAuto.maghrib)
+        XCTAssertEqual(pAuto.isha, expectedAuto.isha)
     }
 
     func testRecommendedHighLatitudeRule() {
@@ -473,5 +480,190 @@ class AdhanTests: XCTestCase {
 
         let coords2 = Coordinates(latitude: 48.983226, longitude: -3.216649)
         XCTAssertEqual(HighLatitudeRule.recommended(for: coords2), .seventhOfTheNight)
+    }
+    
+    func testShafaqGeneral() {
+        let coords = Coordinates(latitude: 43.494, longitude: -79.844)
+        var params = CalculationMethod.moonsightingCommittee.params
+        params.shafaq = .general
+        params.madhab = .hanafi
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(identifier: "America/New_York")!
+        dateFormatter.dateStyle = .none
+        dateFormatter.timeStyle = .short
+
+        var comps = DateComponents()
+        comps.year = 2021
+        comps.month = 1
+        comps.day = 1
+        
+        var p = PrayerTimes(coordinates: coords, date: comps, calculationParameters: params)!
+
+        XCTAssertEqual(dateFormatter.string(from: p.fajr), "6:16 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:52 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "12:28 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.asr), "3:12 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.maghrib), "4:57 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.isha), "6:27 PM")
+        
+        comps.year = 2021
+        comps.month = 4
+        comps.day = 1
+        p = PrayerTimes(coordinates: coords, date: comps, calculationParameters: params)!
+
+        XCTAssertEqual(dateFormatter.string(from: p.fajr), "5:28 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:01 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:28 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.asr), "5:53 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.maghrib), "7:49 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.isha), "9:01 PM")
+        
+        comps.year = 2021
+        comps.month = 7
+        comps.day = 1
+        p = PrayerTimes(coordinates: coords, date: comps, calculationParameters: params)!
+
+        XCTAssertEqual(dateFormatter.string(from: p.fajr), "3:52 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunrise), "5:42 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:28 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.asr), "6:42 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.maghrib), "9:07 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.isha), "10:22 PM")
+        
+        comps.year = 2021
+        comps.month = 11
+        comps.day = 1
+        p = PrayerTimes(coordinates: coords, date: comps, calculationParameters: params)!
+
+        XCTAssertEqual(dateFormatter.string(from: p.fajr), "6:22 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:55 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:08 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.asr), "4:26 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.maghrib), "6:13 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.isha), "7:35 PM")
+    }
+    
+    func testShafaqAhmer() {
+        let coords = Coordinates(latitude: 43.494, longitude: -79.844)
+        var params = CalculationMethod.moonsightingCommittee.params
+        params.shafaq = .ahmer
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(identifier: "America/New_York")!
+        dateFormatter.dateStyle = .none
+        dateFormatter.timeStyle = .short
+
+        var comps = DateComponents()
+        comps.year = 2021
+        comps.month = 1
+        comps.day = 1
+        
+        var p = PrayerTimes(coordinates: coords, date: comps, calculationParameters: params)!
+
+        XCTAssertEqual(dateFormatter.string(from: p.fajr), "6:16 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:52 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "12:28 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.asr), "2:37 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.maghrib), "4:57 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.isha), "6:07 PM") // value from source is 6:08 PM
+        
+        comps.year = 2021
+        comps.month = 4
+        comps.day = 1
+        p = PrayerTimes(coordinates: coords, date: comps, calculationParameters: params)!
+
+        XCTAssertEqual(dateFormatter.string(from: p.fajr), "5:28 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:01 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:28 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.asr), "4:59 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.maghrib), "7:49 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.isha), "8:45 PM")
+        
+        comps.year = 2021
+        comps.month = 7
+        comps.day = 1
+        p = PrayerTimes(coordinates: coords, date: comps, calculationParameters: params)!
+
+        XCTAssertEqual(dateFormatter.string(from: p.fajr), "3:52 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunrise), "5:42 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:28 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.asr), "5:29 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.maghrib), "9:07 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.isha), "10:19 PM")
+        
+        comps.year = 2021
+        comps.month = 11
+        comps.day = 1
+        p = PrayerTimes(coordinates: coords, date: comps, calculationParameters: params)!
+
+        XCTAssertEqual(dateFormatter.string(from: p.fajr), "6:22 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:55 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:08 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.asr), "3:45 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.maghrib), "6:13 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.isha), "7:15 PM")
+    }
+    
+    func testShafaqAbyad() {
+        let coords = Coordinates(latitude: 43.494, longitude: -79.844)
+        var params = CalculationMethod.moonsightingCommittee.params
+        params.shafaq = .abyad
+        params.madhab = .hanafi
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(identifier: "America/New_York")!
+        dateFormatter.dateStyle = .none
+        dateFormatter.timeStyle = .short
+
+        var comps = DateComponents()
+        comps.year = 2021
+        comps.month = 1
+        comps.day = 1
+        
+        var p = PrayerTimes(coordinates: coords, date: comps, calculationParameters: params)!
+
+        XCTAssertEqual(dateFormatter.string(from: p.fajr), "6:16 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:52 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "12:28 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.asr), "3:12 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.maghrib), "4:57 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.isha), "6:28 PM")
+        
+        comps.year = 2021
+        comps.month = 4
+        comps.day = 1
+        p = PrayerTimes(coordinates: coords, date: comps, calculationParameters: params)!
+
+        XCTAssertEqual(dateFormatter.string(from: p.fajr), "5:28 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:01 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:28 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.asr), "5:53 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.maghrib), "7:49 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.isha), "9:12 PM")
+        
+        comps.year = 2021
+        comps.month = 7
+        comps.day = 1
+        p = PrayerTimes(coordinates: coords, date: comps, calculationParameters: params)!
+
+        XCTAssertEqual(dateFormatter.string(from: p.fajr), "3:52 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunrise), "5:42 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:28 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.asr), "6:42 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.maghrib), "9:07 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.isha), "11:17 PM")
+        
+        comps.year = 2021
+        comps.month = 11
+        comps.day = 1
+        p = PrayerTimes(coordinates: coords, date: comps, calculationParameters: params)!
+
+        XCTAssertEqual(dateFormatter.string(from: p.fajr), "6:22 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:55 AM")
+        XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:08 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.asr), "4:26 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.maghrib), "6:13 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.isha), "7:37 PM")
     }
 }

@@ -101,7 +101,7 @@ public struct PrayerTimes {
                 return Astronomical.seasonAdjustedMorningTwilight(latitude: coordinates.latitude, day: dayOfYear, year: year, sunrise: sunriseDate)
             }
 
-            let portion = calculationParameters.nightPortions().fajr
+            let portion = calculationParameters.nightPortions(using: coordinates).fajr
             let nightFraction = portion * night
 
             return sunriseDate.addingTimeInterval(-nightFraction)
@@ -127,10 +127,10 @@ public struct PrayerTimes {
 
             let safeIsha: Date = {
                 guard calculationParameters.method != .moonsightingCommittee else {
-                    return Astronomical.seasonAdjustedEveningTwilight(latitude: coordinates.latitude, day: dayOfYear, year: year, sunset: sunsetDate)
+                    return Astronomical.seasonAdjustedEveningTwilight(latitude: coordinates.latitude, day: dayOfYear, year: year, sunset: sunsetDate, shafaq: calculationParameters.shafaq)
                 }
 
-                let portion = calculationParameters.nightPortions().isha
+                let portion = calculationParameters.nightPortions(using: coordinates).isha
                 let nightFraction = portion * night
 
                 return sunsetDate.addingTimeInterval(nightFraction)
