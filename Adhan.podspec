@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Adhan'
-  s.version          = '1.3.0'
+  s.version          = '1.4.0'
   s.summary          = 'High precision Islamic prayer time library.'
 
   s.description      = <<-DESC
@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.social_media_url = 'https://twitter.com/batoulapps'
 
-  s.swift_versions = ['4.0', '4.1', '4.2', '5.0', '5.1', '5.2']
+  s.swift_versions = ['4.0', '4.1', '4.2', '5.0', '5.1', '5.2', '5.3', '5.4', '5.5']
 
   s.ios.deployment_target = '9.0'
   s.osx.deployment_target = '10.9'
