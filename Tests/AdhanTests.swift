@@ -6,6 +6,7 @@
 //  Copyright © 2016 Batoul Apps. All rights reserved.
 //
 
+import CoreLocation
 import XCTest
 @testable import Adhan
 
@@ -425,6 +426,12 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(CalculationParameters.recommended(forCountryCode: "TR")?.method, .turkey)
         XCTAssertEqual(CalculationParameters.recommended(forCountryCode: "US")?.method, .northAmerica)
         XCTAssertEqual(CalculationParameters.recommended(forCountryCode: "ZW")?.method, .muslimWorldLeague)
+    }
+
+    func testRecommendedCalculationParametersWithGeocoder() async throws {
+        let location = CLLocation(latitude: 1.3521, longitude: 103.8198)
+        let placemark = try await CLGeocoder().reverseGeocodeLocation(location)[0]
+        XCTAssertEqual(CalculationParameters.recommended(for: placemark)?.method, .singapore)
     }
 
     func testHighLatitudeRule() {
