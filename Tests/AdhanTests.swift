@@ -418,18 +418,13 @@ class AdhanTests: XCTestCase {
         XCTAssertNotNil(p2)
     }
 
-    func testRecommendedCalculationMethod() throws {
-        let timeZone1 = try XCTUnwrap(TimeZone(identifier: "Africa/Cairo"))
-        XCTAssertEqual(CalculationMethod.recommended(for: timeZone1), .egyptian)
-
-        let timeZone2 = try XCTUnwrap(TimeZone(identifier: "Europe/Istanbul"))
-        XCTAssertEqual(CalculationMethod.recommended(for: timeZone2), .turkey)
-
-        let timeZone3 = try XCTUnwrap(TimeZone(identifier: "Asia/Riyadh"))
-        XCTAssertEqual(CalculationMethod.recommended(for: timeZone3), .ummAlQura)
-
-        let timeZone4 = try XCTUnwrap(TimeZone(identifier: "America/New_York"))
-        XCTAssertEqual(CalculationMethod.recommended(for: timeZone4), .northAmerica)
+    func testRecommendedCalculationParameters() throws {
+        XCTAssertEqual(CalculationParameters.recommended(forCountryCode: "CA")?.method, .moonsightingCommittee)
+        XCTAssertEqual(CalculationParameters.recommended(forCountryCode: "EG")?.method, .egyptian)
+        XCTAssertEqual(CalculationParameters.recommended(forCountryCode: "SA")?.method, .ummAlQura)
+        XCTAssertEqual(CalculationParameters.recommended(forCountryCode: "TR")?.method, .turkey)
+        XCTAssertEqual(CalculationParameters.recommended(forCountryCode: "US")?.method, .northAmerica)
+        XCTAssertEqual(CalculationParameters.recommended(forCountryCode: "ZW")?.method, .muslimWorldLeague)
     }
 
     func testHighLatitudeRule() {
