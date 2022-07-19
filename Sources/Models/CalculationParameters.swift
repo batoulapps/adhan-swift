@@ -23,8 +23,10 @@
 //  THE SOFTWARE.
 //
 
-import CoreLocation
 import Foundation
+#if canImport(CoreLocation)
+import CoreLocation
+#endif
 
 /**
   Customizable parameters for calculating prayer times
@@ -82,16 +84,18 @@ public struct CalculationParameters: Codable, Equatable {
 }
 
 public extension CalculationParameters {
+    /// Returns the recommended calculation parameters for the specified country code.
+    static func recommended(forCountryCode code: String) -> CalculationParameters? {
+        mapped.first { $0.value.contains(code) }?.key.params
+    }
+
+    #if canImport(CoreLocation)
     /// Returns the recommended calculation parameters  for the specified geographic data.
     static func recommended(for placemark: CLPlacemark) -> CalculationParameters? {
         guard let countryCode = placemark.isoCountryCode else { return nil }
         return recommended(forCountryCode: countryCode)
     }
-
-    /// Returns the recommended calculation parameters for the specified country code.
-    static func recommended(forCountryCode code: String) -> CalculationParameters? {
-        mapped.first { $0.value.contains(code) }?.key.params
-    }
+    #endif
 
     private static let mapped: [CalculationMethod: [String]] = [
         .egyptian: ["EG", "LY", "SD"],

@@ -6,9 +6,11 @@
 //  Copyright © 2016 Batoul Apps. All rights reserved.
 //
 
-import CoreLocation
 import XCTest
 @testable import Adhan
+#if canImport(CoreLocation)
+import CoreLocation
+#endif
 
 func date(year: Int, month: Int, day: Int, hours: Double = 0) -> DateComponents {
     var cal = Calendar(identifier: Calendar.Identifier.gregorian)
@@ -428,11 +430,13 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(CalculationParameters.recommended(forCountryCode: "ZW")?.method, .muslimWorldLeague)
     }
 
+    #if canImport(CoreLocation)
     func testRecommendedCalculationParametersWithGeocoder() async throws {
         let location = CLLocation(latitude: 1.3521, longitude: 103.8198)
         let placemark = try await CLGeocoder().reverseGeocodeLocation(location)[0]
         XCTAssertEqual(CalculationParameters.recommended(for: placemark)?.method, .singapore)
     }
+    #endif
 
     func testHighLatitudeRule() {
         let coords = Coordinates(latitude: 55.983226, longitude: -3.216649)
