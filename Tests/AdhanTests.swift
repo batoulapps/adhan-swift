@@ -431,10 +431,21 @@ class AdhanTests: XCTestCase {
     }
 
     #if canImport(CoreLocation)
-    func testRecommendedCalculationParametersWithGeocoder() async throws {
+    func testRecommendedCalculationParametersWithGeocoder() {
         let location = CLLocation(latitude: 1.3521, longitude: 103.8198)
-        let placemark = try await CLGeocoder().reverseGeocodeLocation(location)[0]
-        XCTAssertEqual(CalculationParameters.recommended(for: placemark)?.method, .singapore)
+        let promise = expectation(description: #function)
+
+        CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
+            guard let placemark = placemarks?.first, error == nil else {
+                XCTFail("Should have retrieved a placemark")
+                return
+            }
+
+            XCTAssertEqual(CalculationParameters.recommended(for: placemark)?.method, .singapore)
+            promise.fulfill()
+        }
+
+        wait(for: [promise], timeout: 5)
     }
     #endif
 
