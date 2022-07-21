@@ -21,7 +21,7 @@ platform :ios do
 
   private_lane :_test do |options|
     if options[:scheme].include? "macOS"
-        scan(scheme: options[:scheme], clean: true, code_coverage: true, xcargs: "SWIFT_VERSION=#{options[:swift_version]}", destination: "platform=macOS")
+        scan(scheme: options[:scheme], clean: true, code_coverage: true, xcargs: "SWIFT_VERSION=#{options[:swift_version]}", destination: "platform=macOS,OS=10.15.0")
     else
         scan(scheme: options[:scheme], clean: true, code_coverage: true, xcargs: "SWIFT_VERSION=#{options[:swift_version]}")
     end
