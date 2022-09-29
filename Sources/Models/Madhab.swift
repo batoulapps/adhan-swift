@@ -32,6 +32,15 @@ public enum Madhab: Int, Codable, CaseIterable {
     case shafi = 1
     
     case hanafi = 2
+    
+        public var names: String {
+        switch self {
+        case .hanafi:
+            return "Hanafi Madhab"
+        case .shafi:
+            return "Shafi, Jafari, Maliki and Hanbali Madhabs"
+        }
+    }
 
     var shadowLength: Double {
         return Double(self.rawValue)
