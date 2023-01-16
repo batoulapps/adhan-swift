@@ -43,6 +43,14 @@ public struct PrayerTimes {
     public let date: DateComponents
     public let calculationParameters: CalculationParameters
 
+    public init?(coordinates: Coordinates, date: Date = Date(), calculationMethod: CalculationMethod = .ummAlQura) {
+        self.init(
+            coordinates: coordinates,
+            date: Calendar.current.dateComponents([.year, .month, .day], from: date),
+            calculationParameters: calculationMethod.params
+        )
+    }
+
     public init?(coordinates: Coordinates, date: DateComponents, calculationParameters: CalculationParameters) {
 
         var tempFajr: Date? = nil
