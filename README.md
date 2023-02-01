@@ -25,7 +25,7 @@ pod 'Adhan'
 For [Carthage](https://github.com/Carthage/Carthage) add the following to your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
 
 ```ruby
-github "batoulapps/adhan-swift" "master"
+github "batoulapps/adhan-swift" "main"
 ```
 
 ### Swift Package Manager
@@ -35,7 +35,7 @@ For [SPM](https://swift.org/package-manager/) add the following to your `Package
 ```swift
 // swift-tools-version:4.2
 dependencies: [
-    .package(url: "https://github.com/batoulapps/adhan-swift", .branch("master")),
+    .package(url: "https://github.com/batoulapps/adhan-swift", .branch("main")),
 ]
 ```
 
