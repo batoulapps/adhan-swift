@@ -8,6 +8,9 @@
 
 import XCTest
 @testable import Adhan
+#if canImport(CoreLocation)
+import CoreLocation
+#endif
 
 func date(year: Int, month: Int, day: Int, hours: Double = 0) -> DateComponents {
     var cal = Calendar(identifier: Calendar.Identifier.gregorian)
@@ -417,6 +420,34 @@ class AdhanTests: XCTestCase {
         let p2 = PrayerTimes(coordinates: Coordinates(latitude: 71.275009, longitude: -156.761368), date: comps2, calculationParameters: CalculationMethod.muslimWorldLeague.params)
         XCTAssertNotNil(p2)
     }
+
+    func testRecommendedCalculationParameters() throws {
+        XCTAssertEqual(CalculationParameters.recommended(forCountryCode: "CA")?.method, .moonsightingCommittee)
+        XCTAssertEqual(CalculationParameters.recommended(forCountryCode: "EG")?.method, .egyptian)
+        XCTAssertEqual(CalculationParameters.recommended(forCountryCode: "SA")?.method, .ummAlQura)
+        XCTAssertEqual(CalculationParameters.recommended(forCountryCode: "TR")?.method, .turkey)
+        XCTAssertEqual(CalculationParameters.recommended(forCountryCode: "US")?.method, .northAmerica)
+        XCTAssertEqual(CalculationParameters.recommended(forCountryCode: "ZW")?.method, .muslimWorldLeague)
+    }
+
+    #if canImport(CoreLocation)
+    func testRecommendedCalculationParametersWithGeocoder() {
+        let location = CLLocation(latitude: 1.3521, longitude: 103.8198)
+        let promise = expectation(description: #function)
+
+        CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
+            guard let placemark = placemarks?.first, error == nil else {
+                XCTFail("Should have retrieved a placemark")
+                return
+            }
+
+            XCTAssertEqual(CalculationParameters.recommended(for: placemark)?.method, .singapore)
+            promise.fulfill()
+        }
+
+        wait(for: [promise], timeout: 5)
+    }
+    #endif
 
     func testHighLatitudeRule() {
         let coords = Coordinates(latitude: 55.983226, longitude: -3.216649)

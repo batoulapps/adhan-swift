@@ -24,6 +24,9 @@
 //
 
 import Foundation
+#if canImport(CoreLocation)
+import CoreLocation
+#endif
 
 /**
   Customizable parameters for calculating prayer times
@@ -78,4 +81,28 @@ public struct CalculationParameters: Codable, Equatable {
             return (self.fajrAngle / 60, self.ishaAngle / 60)
         }
     }
+}
+
+public extension CalculationParameters {
+    /// Returns the recommended calculation parameters for the specified country code.
+    static func recommended(forCountryCode code: String) -> CalculationParameters? {
+        guard let url = Bundle.module.url(forResource: "countries", withExtension: "json"),
+              let data = try? Data(contentsOf: url),
+              let decoded = try? JSONDecoder().decode([String: [String]].self, from: data),
+              let key = decoded.first(where: { $0.value.contains(code) })?.key,
+              let method = CalculationMethod(rawValue: key)
+        else {
+            return nil
+        }
+
+        return method.params
+    }
+
+    #if canImport(CoreLocation)
+    /// Returns the recommended calculation parameters  for the specified geographic data.
+    static func recommended(for placemark: CLPlacemark) -> CalculationParameters? {
+        guard let countryCode = placemark.isoCountryCode else { return nil }
+        return recommended(forCountryCode: countryCode)
+    }
+    #endif
 }
