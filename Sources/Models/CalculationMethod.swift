@@ -171,7 +171,7 @@ public enum CalculationMethod: String, Codable, CaseIterable {
             return CalculationParameters(fajrAngle: 17.7, maghribAngle: 4.5, ishaAngle: 14, method: self)
         case .turkey:
             var params = CalculationParameters(fajrAngle: 18, ishaAngle: 17, method: self)
-            params.methodAdjustments = PrayerAdjustments(fajr: 0, sunrise: -7, dhuhr: 5, asr: 4, maghrib: 7, isha: 0)
+            params.methodAdjustments = PrayerAdjustments(fajr: 0, sunrise: -6, dhuhr: 5, asr: 5, maghrib: 8, isha: 1)
             return params
         case .other:
             return CalculationParameters(fajrAngle: 0, ishaAngle: 0, method: self)
