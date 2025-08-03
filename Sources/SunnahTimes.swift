@@ -2,7 +2,7 @@
 //  SunnahTimes.swift
 //  Adhan
 //
-//  Copyright © 2018 Batoul Apps. All rights reserved.
+//  Copyright © 2018 Batoul Apps.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -26,19 +26,21 @@
 import Foundation
 
 /* Sunnah times for a location and date using the given prayer times.
- All prayer times are in UTC and should be displayed using a DateFormatter that
- has the correct timezone set. */
+ All prayer times are in UTC and should be displayed using a DateFormatter
+ that has the correct timezone set. */
+
 /// A struct representing additional Sunnah prayer times based on `PrayerTimes`.
 ///
-/// Includes: - 
+/// Includes:
+/// - `firstThirdOfTheNight`: End of the first third of the night (Maghrib + 1/3 of night duration)
 /// - `middleOfTheNight`: Midpoint between Maghrib and next Fajr
-/// - `lastThirdOfTheNight`: Start of final third of the night (for Qiyam)
+/// - `lastThirdOfTheNight`: Start of the final third of the night (for Qiyam)
 /// - `sunrise`: Exact sunrise time
 /// - `lastTimeOfDhuha`: ~10 minutes before Dhuhr
 /// - `firstTimeOfWitre`: After Isha
 /// - `lastTimeOfWitre`: ~10 minutes before Fajr
 public struct SunnahTimes {
-
+    public let firstThirdOfTheNight: Date
     public let middleOfTheNight: Date
     public let lastThirdOfTheNight: Date
     public let sunrise: Date
@@ -60,8 +62,12 @@ public struct SunnahTimes {
 
         let nightDuration = nextDayPrayerTimes.fajr.timeIntervalSince(prayerTimes.maghrib)
 
+        self.firstThirdOfTheNight = prayerTimes.maghrib
+            .addingTimeInterval(nightDuration / 3.0)
+            .roundedMinute()
+
         self.middleOfTheNight = prayerTimes.maghrib
-            .addingTimeInterval(nightDuration / 2)
+            .addingTimeInterval(nightDuration / 2.0)
             .roundedMinute()
 
         self.lastThirdOfTheNight = prayerTimes.maghrib
@@ -71,14 +77,13 @@ public struct SunnahTimes {
         self.sunrise = prayerTimes.sunrise.roundedMinute()
 
         self.lastTimeOfDhuha = prayerTimes.dhuhr
-            .addingTimeInterval(-10 * 60)
+            .addingTimeInterval(-10 * 60) // 10 minutes before Dhuhr
             .roundedMinute()
 
         self.firstTimeOfWitre = prayerTimes.isha.roundedMinute()
 
         self.lastTimeOfWitre = nextDayPrayerTimes.fajr
-            .addingTimeInterval(-10 * 60)
+            .addingTimeInterval(-10 * 60) // 10 minutes before Fajr
             .roundedMinute()
     }
 }
-
