@@ -22,6 +22,9 @@ func date(year: Int, month: Int, day: Int, hours: Double = 0) -> DateComponents 
     return comps
 }
 
+func setDateTimeFormat(_ formatter: DateFormatter) {
+    formatter.dateFormat = "h:mm a"
+}
 
 class AdhanTests: XCTestCase {
     
@@ -130,8 +133,7 @@ class AdhanTests: XCTestCase {
         
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "America/New_York")!
-        dateFormatter.dateStyle = .none
-        dateFormatter.timeStyle = .short
+        setDateTimeFormat(dateFormatter)
         
         XCTAssertEqual(dateFormatter.string(from: p.fajr), "4:42 AM")
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "6:08 AM")
@@ -145,8 +147,7 @@ class AdhanTests: XCTestCase {
         
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "America/New_York")!
-        dateFormatter.dateStyle = .none
-        dateFormatter.timeStyle = .short
+        setDateTimeFormat(dateFormatter)
         
         var comps = DateComponents()
         comps.year = 2015
@@ -206,8 +207,7 @@ class AdhanTests: XCTestCase {
         
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "America/New_York")!
-        dateFormatter.dateStyle = .none
-        dateFormatter.timeStyle = .short
+        setDateTimeFormat(dateFormatter)
         
         XCTAssertEqual(dateFormatter.string(from: p.fajr), "5:48 AM")
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:16 AM")
@@ -229,8 +229,7 @@ class AdhanTests: XCTestCase {
         
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "Europe/Oslo")!
-        dateFormatter.dateStyle = .none
-        dateFormatter.timeStyle = .short
+        setDateTimeFormat(dateFormatter)
         
         XCTAssertEqual(dateFormatter.string(from: p.fajr), "7:34 AM")
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "9:19 AM")
@@ -250,8 +249,7 @@ class AdhanTests: XCTestCase {
         
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "Asia/Tehran")!
-        dateFormatter.dateStyle = .none
-        dateFormatter.timeStyle = .short
+        setDateTimeFormat(dateFormatter)
         
         XCTAssertEqual(dateFormatter.string(from: p.fajr), "5:37 AM")
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:07 AM")
@@ -282,8 +280,7 @@ class AdhanTests: XCTestCase {
 
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "Europe/Istanbul")!
-        dateFormatter.dateStyle = .none
-        dateFormatter.timeStyle = .short
+        setDateTimeFormat(dateFormatter)
 
         var comps1 = DateComponents()
         comps1.year = 2020
@@ -307,8 +304,7 @@ class AdhanTests: XCTestCase {
 
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "Africa/Cairo")!
-        dateFormatter.dateStyle = .none
-        dateFormatter.timeStyle = .short
+        setDateTimeFormat(dateFormatter)
 
         var comps1 = DateComponents()
         comps1.year = 2020
@@ -424,8 +420,7 @@ class AdhanTests: XCTestCase {
 
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "Europe/London")!
-        dateFormatter.dateStyle = .none
-        dateFormatter.timeStyle = .short
+        setDateTimeFormat(dateFormatter)
 
         var comps1 = DateComponents()
         comps1.year = 2020
@@ -490,8 +485,7 @@ class AdhanTests: XCTestCase {
         
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "America/New_York")!
-        dateFormatter.dateStyle = .none
-        dateFormatter.timeStyle = .short
+        setDateTimeFormat(dateFormatter)
 
         var comps = DateComponents()
         comps.year = 2021
@@ -551,8 +545,7 @@ class AdhanTests: XCTestCase {
         
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "America/New_York")!
-        dateFormatter.dateStyle = .none
-        dateFormatter.timeStyle = .short
+        setDateTimeFormat(dateFormatter)
 
         var comps = DateComponents()
         comps.year = 2021
@@ -613,8 +606,7 @@ class AdhanTests: XCTestCase {
         
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "America/New_York")!
-        dateFormatter.dateStyle = .none
-        dateFormatter.timeStyle = .short
+        setDateTimeFormat(dateFormatter)
 
         var comps = DateComponents()
         comps.year = 2021
