@@ -19,11 +19,16 @@ platform :ios do
     _test(options) rescue _test(options)
   end
 
-  private_lane :_test do |options|
+private_lane :_test do |options|
+    # Completely skips package caching for the build phase
+    skip_spm = "-disablePackageRepositoryCache"
+
     if options[:scheme].include? "macOS"
-        scan(scheme: options[:scheme], clean: true, code_coverage: true, xcargs: "SWIFT_VERSION=#{options[:swift_version]}", destination: "platform=macOS")
+        scan(scheme: options[:scheme], clean: true, code_coverage: true, xcargs: "SWIFT_VERSION=#{options[:swift_version]} MACOSX_DEPLOYMENT_TARGET=10.13 #{skip_spm}", destination: "platform=macOS")
+    elsif options[:scheme].include? "tvOS"
+        scan(scheme: options[:scheme], clean: true, code_coverage: true, xcargs: "SWIFT_VERSION=#{options[:swift_version]} #{skip_spm}", destination: "platform=tvOS Simulator,name=Apple TV")
     else
-        scan(scheme: options[:scheme], clean: true, code_coverage: true, xcargs: "SWIFT_VERSION=#{options[:swift_version]}")
+        scan(scheme: options[:scheme], clean: true, code_coverage: true, xcargs: "SWIFT_VERSION=#{options[:swift_version]} #{skip_spm}", destination: "platform=iOS Simulator,name=iPhone 16 Pro")
     end
   end
 
