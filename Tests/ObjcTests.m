@@ -16,6 +16,13 @@
 
 @implementation ObjcTests
 
+- (void)configureTimeFormatter:(NSDateFormatter *)formatter {
+    // Use a stable, locale-independent format to avoid narrow no-break space in AM/PM
+    formatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+    formatter.timeZone = [NSTimeZone timeZoneWithName:@"America/New_York"];
+    formatter.dateFormat = @"h:mm a";
+}
+
 - (void)testObjcInterface {
     NSDateComponents *date = [[NSDateComponents alloc] init];
     date.year = 2015;
@@ -28,8 +35,7 @@
     BAPrayerTimes *p = [[BAPrayerTimes alloc] initWithCoordinates:[[BACoordinates alloc] initWithLatitude:35.7750 longitude:-78.6389] date:date calculationParameters:params];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.timeZone = [[NSTimeZone alloc] initWithName:@"America/New_York"];
-    formatter.timeStyle = NSDateFormatterShortStyle;
+    [self configureTimeFormatter:formatter];
     
     XCTAssertEqualObjects([formatter stringFromDate:p.fajr], @"4:42 AM");
     XCTAssertEqualObjects([formatter stringFromDate:p.sunrise], @"6:08 AM");
@@ -46,8 +52,7 @@
     date.day = 1;
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.timeZone = [[NSTimeZone alloc] initWithName:@"America/New_York"];
-    formatter.timeStyle = NSDateFormatterShortStyle;
+    [self configureTimeFormatter:formatter];
     
     BACalculationParameters *params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodMoonsightingCommittee];
     params.shafaq = BAShafaqGeneral;
@@ -76,8 +81,7 @@
     date.day = 12;
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.timeZone = [[NSTimeZone alloc] initWithName:@"America/New_York"];
-    formatter.timeStyle = NSDateFormatterShortStyle;
+    [self configureTimeFormatter:formatter];
     
     BACalculationParameters *params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodNorthAmerica];
     params.madhab = BAMadhabHanafi;
