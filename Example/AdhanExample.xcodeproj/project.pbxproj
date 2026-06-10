@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		8495F2992FDA268A00DD513D /* Adhan in Frameworks */ = {isa = PBXBuildFile; productRef = 8495F2982FDA268A00DD513D /* Adhan */; };
+		84F7278B2FD7BC2F0037FE56 /* Adhan in Frameworks */ = {isa = PBXBuildFile; productRef = 84F7278A2FD7BC2F0037FE56 /* Adhan */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		84F7277B2FD792800037FE56 /* AdhanExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AdhanExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +28,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84F7278B2FD7BC2F0037FE56 /* Adhan in Frameworks */,
+				8495F2992FDA268A00DD513D /* Adhan in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +72,8 @@
 			);
 			name = AdhanExample;
 			packageProductDependencies = (
+				84F7278A2FD7BC2F0037FE56 /* Adhan */,
+				8495F2982FDA268A00DD513D /* Adhan */,
 			);
 			productName = AdhanExample;
 			productReference = 84F7277B2FD792800037FE56 /* AdhanExample.app */;
@@ -94,6 +103,9 @@
 			);
 			mainGroup = 84F727722FD792800037FE56;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				8495F2972FDA268A00DD513D /* XCLocalSwiftPackageReference "../../adhan-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 84F7277C2FD792800037FE56 /* Products */;
 			projectDirPath = "";
@@ -258,6 +270,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -289,6 +302,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -328,6 +342,24 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		8495F2972FDA268A00DD513D /* XCLocalSwiftPackageReference "../../adhan-swift" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../../adhan-swift";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8495F2982FDA268A00DD513D /* Adhan */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Adhan;
+		};
+		84F7278A2FD7BC2F0037FE56 /* Adhan */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Adhan;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 84F727732FD792800037FE56 /* Project object */;
 }
