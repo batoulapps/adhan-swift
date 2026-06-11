@@ -1,52 +1,18 @@
 # Adhan Swift
 
-![badge-languages][] ![badge-pms][] ![badge-platforms][]
+Adhan Swift is a well tested and well documented library for calculating Islamic prayer times.
 
-[![badge-pod][]][cocoapods] [![badge-travis][]][travis] [![badge-cov][]][codecov]
-
-Adhan Swift is a well tested and well documented library for calculating Islamic prayer times. Adhan Swift supports Swift 4.0, Swift 4.2, Swift 5.0 and Objective-C.
-
-All astronomical calculations are high precision equations directly from the book [“Astronomical Algorithms” by Jean Meeus](http://www.willbell.com/math/mc1.htm). This book is recommended by the Astronomical Applications Department of the U.S. Naval Observatory and the Earth System Research Laboratory of the National Oceanic and Atmospheric Administration.
+All astronomical calculations are high precision equations directly from the book _“Astronomical Algorithms” by Jean Meeus_. This book is recommended by the Astronomical Applications Department of the U.S. Naval Observatory and the Earth System Research Laboratory of the National Oceanic and Atmospheric Administration.
 
 Implementations of Adhan in other languages can be found in the parent repo [Adhan](https://github.com/batoulapps/Adhan).
 
 ## Installation
 
-### CocoaPods
-
-For [CocoaPods](https://cocoapods.org/) add the following to your [Podfile](https://guides.cocoapods.org/syntax/podfile.html):
-
-```ruby
-pod 'Adhan'
-```
-
-### Carthage
-
-For [Carthage](https://github.com/Carthage/Carthage) add the following to your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
-
-```ruby
-github "batoulapps/adhan-swift" "main"
-```
-
 ### Swift Package Manager
 
-For [SPM](https://swift.org/package-manager/) add the following to your `Package.swift` file:
-
-```swift
-// swift-tools-version:4.2
-dependencies: [
-    .package(url: "https://github.com/batoulapps/adhan-swift", .branch("main")),
-]
-```
-
-### Manually
-
-You can also manually add Adhan.
-
-- Download the source.
-- Add Adhan.xcodeproj as a subproject in your app's project.
-- Drag Adhan.framework to "Linked Frameworks and Libraries" in your app's target.
-
+- Project > Package Dependencies
+- Add https://github.com/batoulapps/adhan-swift.git
+- Select "Up to Next Major" with "1.4.0"
 
 ## Usage
 
@@ -70,7 +36,7 @@ let coordinates = Coordinates(latitude: 35.78056, longitude: -78.6389)
 
 #### Date
 
-To avoid confusion with timezones the date parameter passed in should be an instance of
+To avoid confusion with timezones, the date parameter passed in should be an instance of
 `DateComponents`. The year, month, and day components need to be populated. All other
 components will be ignored. The year, month and day values should be for the local date
 that you want prayer times for. These date components are expected to be for the Gregorian calendar.
@@ -170,13 +136,3 @@ use `develop` as the base branch.
 ## License
 
 Adhan is available under the MIT license. See the LICENSE file for more info.
-
-[badge-pod]: https://img.shields.io/cocoapods/v/Adhan.svg?label=version
-[badge-pms]: https://img.shields.io/badge/supports-CocoaPods%20%7C%20Carthage%20%7C%20SwiftPM-green.svg
-[badge-languages]: https://img.shields.io/badge/languages-Swift%20%7C%20ObjC-orange.svg
-[badge-platforms]: https://img.shields.io/badge/platforms-macOS%20%7C%20iOS%20%7C%20watchOS%20%7C%20tvOS-lightgrey.svg
-[badge-travis]: https://travis-ci.org/batoulapps/adhan-swift.svg?branch=master
-[badge-cov]: https://codecov.io/gh/batoulapps/adhan-swift/branch/master/graph/badge.svg
-[travis]: https://travis-ci.org/batoulapps/adhan-swift
-[cocoapods]: https://cocoapods.org/pods/Adhan
-[codecov]: https://codecov.io/gh/batoulapps/adhan-swift

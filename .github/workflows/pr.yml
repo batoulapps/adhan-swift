@@ -1,0 +1,67 @@
+name: Swift
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  swift_package:
+    name: "Swift Package"
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Native Swift Toolchain Tests
+        run: set -o pipefail && swift test -v --parallel | xcbeautify
+
+  linux:
+    name: "Linux"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: swift build -v
+      - name: Run tests
+        run: swift test -v --parallel
+
+  apple_platforms_matrix:
+    name: "Apple / ${{ matrix.platform_name }}"
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        include:
+          - platform_name: "macOS"
+            destination: "platform=macOS"
+          - platform_name: "iOS"
+            destination: "platform=iOS Simulator,name=iPhone 17 Pro"
+          - platform_name: "tvOS"
+            destination: "platform=tvOS Simulator,name=Apple TV"
+          - platform_name: "watchOS"
+            destination: "platform=watchOS Simulator,name=Apple Watch Series 11 (46mm)"
+          - platform_name: "visionOS"
+            destination: "platform=visionOS Simulator,name=Apple Vision Pro,OS=26.2"
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test Platform Matrix
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -scheme Adhan \
+            -destination "${{ matrix.destination }}" \
+            CODE_SIGNING_ALLOWED=NO | xcbeautify
+
+  build_example_app:
+    name: "Example App"
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Example App Target
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project Example/AdhanExample.xcodeproj \
+            -scheme AdhanExample \
+            -destination "platform=iOS Simulator,name=iPhone 17 Pro" \
+            CODE_SIGNING_ALLOWED=NO | xcbeautify
