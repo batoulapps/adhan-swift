@@ -58,7 +58,7 @@ The rest of the needed information is contained within the `CalculationParameter
 
 Once the `PrayerTimes` struct has been initialized it will contain members
 for all five prayer times and the time for sunrise. The prayer times will be instances
-of NSDate and as such will refer to a fixed point in universal time. To display these
+of `Date` and as such will refer to a fixed point in universal time. To display these
 times for the local timezone you will need to create a date formatter and set
 the appropriate timezone.
 
@@ -73,16 +73,19 @@ print("fajr \(formatter.string(from: prayers.fajr))")
 ## Full Example
 
 ```swift
+let formatter = DateFormatter()
+formatter.timeStyle = .medium
+formatter.timeZone = TimeZone(identifier: "America/New_York")!
+
 let cal = Calendar(identifier: Calendar.Identifier.gregorian)
 let date = cal.dateComponents([.year, .month, .day], from: Date())
-let coordinates = Coordinates(latitude: 35.78056, longitude: -78.6389)
-var params = CalculationMethod.moonsightingCommittee.params
-params.madhab = .hanafi
-if let prayers = PrayerTimes(coordinates: coordinates, date: date, calculationParameters: params) {
-    let formatter = DateFormatter()
-    formatter.timeStyle = .medium
-    formatter.timeZone = TimeZone(identifier: "America/New_York")!
 
+let coordinates = Coordinates(latitude: 35.78056, longitude: -78.6389)
+
+var params = CalculationMethod.northAmerica.params
+params.madhab = .hanafi
+
+if let prayers = PrayerTimes(coordinates: coordinates, date: date, calculationParameters: params) {
     print("fajr \(formatter.string(from: prayers.fajr))")
     print("sunrise \(formatter.string(from: prayers.sunrise))")
     print("dhuhr \(formatter.string(from: prayers.dhuhr))")

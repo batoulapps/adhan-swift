@@ -30,65 +30,32 @@ struct ContentView: View {
         Qibla(coordinates: coordinates).direction
     }
     
-    func prayerName(for prayer: Prayer) -> String {
-        switch prayer {
-        case .fajr:
-            "Fajr"
-        case .sunrise:
-            "Sunrise"
-        case .dhuhr:
-            "Dhuhr"
-        case .asr:
-            "Asr"
-        case .maghrib:
-            "Maghrib"
-        case .isha:
-            "Isha"
-        }
-    }
+    let formatter = {
+        let new = DateFormatter()
+        new.timeStyle = .medium
+        new.timeZone = TimeZone(identifier: "America/New_York")!
+        return new
+    }()
     
     var body: some View {
         VStack {
             if let prayerTimes {
-                ForEach(Prayer.allCases, id: \.self) { prayer in
-                    HStack {
-                        Text(prayerName(for: prayer))
-                        Spacer()
-                        Text(prayerTimes.time(for: prayer).formatted(date: .omitted, time: .shortened))
-                    }
-                    Divider()
-                    .padding(.bottom, 4)
-                }
+                Text("Fajr: \(formatter.string(from: prayerTimes.fajr))")
+                Text("Sunrise: \(formatter.string(from: prayerTimes.sunrise))")
+                Text("Dhuhr: \(formatter.string(from: prayerTimes.dhuhr))")
+                Text("Asr: \(formatter.string(from: prayerTimes.asr))")
+                Text("Maghrib: \(formatter.string(from: prayerTimes.maghrib))")
+                Text("Isha: \(formatter.string(from: prayerTimes.isha))")
+                
                 if let sunnahTimes = SunnahTimes(from: prayerTimes) {
-                    HStack {
-                        Text("Last third of the night")
-                        Spacer()
-                        Text(sunnahTimes.lastThirdOfTheNight.formatted(date: .omitted, time: .shortened))
-                    }
-                    .padding(.top, 12)
+                    Text("Last third of the night: \(formatter.string(from: sunnahTimes.lastThirdOfTheNight))")
                     
-                    HStack {
-                        Text("Middle of the night")
-                        Spacer()
-                        Text(sunnahTimes.middleOfTheNight.formatted(date: .omitted, time: .shortened))
-                    }
-                    .padding(.top, 12)
+                    Text("Middle of the night: \(formatter.string(from: sunnahTimes.middleOfTheNight))")
                 }
             }
             
-            Divider()
-            
-            HStack(spacing: 0) {
-                Text("Qibla")
-                Spacer()
-                Image(systemName: "arrow.up")
-                    .rotationEffect(.degrees(qibla))
-                Spacer()
-                Text("\(qibla.formatted(.number.precision(.fractionLength(1))))\u{00B0}")
-            }
-            .padding(.top, 12)
+            Text("Qibla: \(qibla)")
         }
-        .frame(width: 250)
     }
 }
 
