@@ -1,10 +1,16 @@
-// swift-tools-version:5.3
-// The swift-tools-version declares the minimum version of Swift required to build this package.
+// swift-tools-version:6.0
 
 import PackageDescription
 
 let package = Package(
     name: "Adhan",
+    platforms: [
+        .iOS(.v13),
+        .macOS(.v10_13),
+        .tvOS(.v12),
+        .watchOS(.v6),
+        .visionOS(.v1),
+    ],
     products: [
         .library(
             name: "Adhan",
@@ -14,15 +20,13 @@ let package = Package(
     targets: [
         .target(
             name: "Adhan",
-            path: "Sources",
-            exclude: ["AdhanObjc.swift", "Info.plist"]
+            path: "Sources"
         ),
         .testTarget(
             name: "Tests",
             dependencies: ["Adhan"],
             path: "Tests",
-            exclude: ["ObjcTests.m", "Info.plist"],
             resources: [.copy("Resources")]
-        )
+        ),
     ]
 )
