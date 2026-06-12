@@ -145,7 +145,19 @@ struct Astronomical {
     static func approximateTransit(longitude L: Angle, siderealTime Θ0: Angle, rightAscension α2: Angle) -> Double {
         /* Equation from page Astronomical Algorithms 102 */
         let Lw = L * -1
-        return ((α2 + Lw - Θ0) / 360).degrees.normalizedToScale(1)
+        let m0 = ((α2 + Lw - Θ0) / 360).degrees.normalizedToScale(1)
+        // For locations near the International Date Line, normalizeWithBound can produce
+        // an m0 for the wrong calendar date.  We detect this by comparing m0 to a
+        // generalized transit time based on the longitude. If they differ by more than
+        // half a day, m0 is off by one cycle and we adjust in the correct direction.
+        let expectedTransit = ((12.0 - L.degrees / 15.0) / 24.0).normalizedToScale(1)
+        if m0 - expectedTransit > 0.5 {
+            return m0 - 1.0
+        } else if expectedTransit - m0 > 0.5 {
+            return m0 + 1.0
+        } else {
+            return m0
+        }
     }
 
     /* The time at which the sun is at its highest point in the sky (in universal time) */

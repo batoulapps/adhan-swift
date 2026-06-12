@@ -658,4 +658,32 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "6:13 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "7:37 PM")
     }
+
+    func testPrayerTimesOrderNearDateLine1() {
+        var comps = DateComponents()
+        comps.year = 2025
+        comps.month = 12
+        comps.day = 1
+        checkPrayersOrder(date: comps, coordinates: Coordinates(latitude: 42.74674252600066, longitude: 177.2401196144623))
+    }
+
+    func testPrayerTimesOrderNearDateLine2() {
+        var comps = DateComponents()
+        comps.year = 2025
+        comps.month = 12
+        comps.day = 1
+        checkPrayersOrder(date: comps, coordinates: Coordinates(latitude: 47.082209457885355, longitude: 177.24642294208638))
+    }
+
+    private func checkPrayersOrder(date: DateComponents, coordinates: Coordinates) {
+        var params = CalculationMethod.muslimWorldLeague.params
+        params.madhab = .shafi
+        params.highLatitudeRule = .twilightAngle
+        let p = PrayerTimes(coordinates: coordinates, date: date, calculationParameters: params)!
+        XCTAssertLessThan(p.fajr, p.sunrise)
+        XCTAssertLessThan(p.sunrise, p.dhuhr)
+        XCTAssertLessThan(p.dhuhr, p.asr)
+        XCTAssertLessThan(p.asr, p.maghrib)
+        XCTAssertLessThan(p.maghrib, p.isha)
+    }
 }

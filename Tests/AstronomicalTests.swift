@@ -181,23 +181,70 @@ class AstronomicalTests: XCTestCase {
         for (index, time) in solar.enumerated() {
             if index > 0 {
                 let previousTime = solar[index-1]
-                
+
                 let transit1 = time.transit.timeIntervalSinceMidnight
                 let transit2 = previousTime.transit.timeIntervalSinceMidnight
-                
+
                 // transit from one day to another should not differ more than one minute
                 XCTAssertLessThan(fabs(transit1 - transit2), 60)
-                
+
                 let sunrise1 = time.sunrise.timeIntervalSinceMidnight
                 let sunrise2 = previousTime.sunrise.timeIntervalSinceMidnight
-                
+
                 let sunset1 = time.sunset.timeIntervalSinceMidnight
                 let sunset2 = previousTime.sunset.timeIntervalSinceMidnight
-                
+
                 // sunrise and sunset from one day to another should not differ more than two minutes
                 XCTAssertLessThan(fabs(sunrise1 - sunrise2), 2 * 60)
                 XCTAssertLessThan(fabs(sunset1 - sunset2), 2 * 60)
             }
+        }
+    }
+
+    func testApproximateTransitNearDateLine() {
+        // On Dec 1, 2025 for a location at longitude ~177°E, the solar transit falls just
+        // before UTC midnight. The raw (alpha2 + Lw - theta0) / 360 value is a tiny negative
+        // number (~-0.000028), which normalizedToScale wraps to ~0.9999 — placing the transit
+        // at 23:59 UTC (local noon the *next* local day) instead of ~00:00 UTC (local noon on
+        // the requested date). The fix detects this by comparing against the expected transit
+        // for the longitude and adjusting by one cycle when they differ by more than half a day.
+        let jd = Astronomical.julianDay(year: 2025, month: 12, day: 1)
+        let solar = SolarCoordinates(julianDay: jd)
+        let longitude: Angle = 177.2401196144623
+        let m0 = Astronomical.approximateTransit(longitude: longitude, siderealTime: solar.apparentSiderealTime, rightAscension: solar.rightAscension)
+        // After fix: m0 should be near 0 (transit just before/after UTC midnight = local noon Dec 1),
+        // not near 1 (which would be 23:59 UTC = local noon Dec 2).
+        XCTAssertLessThan(fabs(m0), 0.1, "approximateTransit near date line returned \(m0), expected value near 0")
+    }
+
+    func testSolarTimeContinuityNearDateLine() {
+        // Near the International Date Line, the solar transit crosses UTC midnight on certain dates,
+        // causing approximateTransit to wrap to the wrong cycle without the fix. This produces ~24h
+        // jumps in raw transit/sunrise/sunset values between consecutive days (e.g. Dec 1 → Dec 2,
+        // 2025 at this longitude), which breaks night-duration and safe fajr/isha calculations.
+        let coordinates = Coordinates(latitude: 42.74674252600066, longitude: 177.2401196144623)
+        var previousTime: SolarTime? = nil
+        for i in 0...364 {
+            let d = date(year: 2025, month: 11, day: 1 + i)
+            guard let time = SolarTime(date: d, coordinates: coordinates) else { continue }
+            if let prev = previousTime {
+                let transit1 = time.transit.timeIntervalSinceMidnight
+                let transit2 = prev.transit.timeIntervalSinceMidnight
+
+                // transit from one day to another should not differ more than one minute
+                XCTAssertLessThan(fabs(transit1 - transit2), 60)
+
+                let sunrise1 = time.sunrise.timeIntervalSinceMidnight
+                let sunrise2 = prev.sunrise.timeIntervalSinceMidnight
+
+                let sunset1 = time.sunset.timeIntervalSinceMidnight
+                let sunset2 = prev.sunset.timeIntervalSinceMidnight
+
+                // sunrise and sunset from one day to another should not differ more than two minutes
+                XCTAssertLessThan(fabs(sunrise1 - sunrise2), 2 * 60)
+                XCTAssertLessThan(fabs(sunset1 - sunset2), 2 * 60)
+            }
+            previousTime = time
         }
     }
     
