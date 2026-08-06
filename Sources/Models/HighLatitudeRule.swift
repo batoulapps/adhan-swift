@@ -52,7 +52,7 @@ public enum HighLatitudeRule: String, Codable, CaseIterable {
 
     /// Returns the recommended High Latitude Rule for the specified location.
     public static func recommended(for coordinates: Coordinates) -> HighLatitudeRule {
-        if coordinates.latitude > 48 {
+        if abs(coordinates.latitude) > 48 {
             return .seventhOfTheNight
         } else {
             return .middleOfTheNight
