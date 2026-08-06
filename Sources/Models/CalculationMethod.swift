@@ -73,7 +73,21 @@ import Foundation
 
   **singapore**
 
-  Used in Singapore, Malaysia, and Indonesia. Early Fajr time with an angle of 20° and standard Isha time with an angle of 18°.
+  Majlis Ugama Islam Singapura (MUIS). Early Fajr time with an angle of 20° and standard Isha time
+  with an angle of 18°.
+
+  **malaysia**
+
+  Jabatan Kemajuan Islam Malaysia (JAKIM). Fajr angle of 18° — JAKIM revised this from 20° in a
+  November 2019 decision — and standard Isha time with an angle of 18°, plus a 1 minute Dhuhr
+  adjustment and a 1 minute earlier sunrise adjustment.
+
+  **indonesia**
+
+  Kementerian Agama Republik Indonesia (Kemenag). Fajr angle of 20° and Isha angle of 18°, with
+  Maghrib calculated at 1° below the horizon rather than this library's usual geometric sunset, plus
+  per-prayer adjustments (2 minutes for Fajr/Asr/Maghrib/Isha, 3 minutes for Dhuhr, 4 minutes earlier
+  for sunrise).
 
   **tehran**
 
@@ -121,6 +135,12 @@ public enum CalculationMethod: String, Codable, CaseIterable {
     // Singapore
     case singapore
 
+    // Jabatan Kemajuan Islam Malaysia (JAKIM)
+    case malaysia
+
+    // Kementerian Agama Republik Indonesia (Kemenag)
+    case indonesia
+
     // Institute of Geophysics, University of Tehran
     case tehran
 
@@ -165,6 +185,16 @@ public enum CalculationMethod: String, Codable, CaseIterable {
         case .singapore:
             var params = CalculationParameters(fajrAngle: 20, ishaAngle: 18, method: self)
             params.methodAdjustments = PrayerAdjustments(dhuhr: 1)
+            params.rounding = .up
+            return params
+        case .malaysia:
+            var params: CalculationParameters = CalculationParameters(fajrAngle: 18, ishaAngle: 18, method: self)
+            params.methodAdjustments = PrayerAdjustments(sunrise: -1, dhuhr: 1)
+            params.rounding = .up
+            return params
+        case .indonesia:
+            var params = CalculationParameters(fajrAngle: 20, maghribAngle: 1, ishaAngle: 18, method: self)
+            params.methodAdjustments = PrayerAdjustments(fajr: 2, sunrise: -4, dhuhr: 3, asr: 2, maghrib: 2, isha: 2)
             params.rounding = .up
             return params
         case .tehran:
