@@ -12,7 +12,7 @@ Implementations of Adhan in other languages can be found in the parent repo [Adh
 
 - Project > Package Dependencies
 - Add https://github.com/batoulapps/adhan-swift.git
-- Select "Up to Next Major" with "1.4.0"
+- Select "Up to Next Major" with "1.5.0"
 
 ## Usage
 
