@@ -39,7 +39,7 @@ Preset calculation parameters for different regions.
 | dubai | Used in the UAE. Slightly earlier Fajr time and slightly later Isha time with angles of 18.2° for Fajr and Isha in addition to 3 minute offsets for sunrise, Dhuhr, Asr, and Maghrib. |
 | qatar | Same Isha interval as `ummAlQura` but with the standard Fajr time using an angle of 18°. |
 | kuwait | Standard Fajr time with an angle of 18°. Slightly earlier Isha time with an angle of 17.5°. |
-| moonsightingCommittee | Method developed by Khalid Shaukat, founder of Moonsighting Committee Worldwide. Uses standard 18° angles for Fajr and Isha in addition to seasonal adjustment values. This method automatically applies the 1/7 approximation rule for locations above 55° latitude. Recommended for North America and the UK. |
+| moonsightingCommittee | Method developed by Khalid Shaukat, founder of Moonsighting Committee Worldwide. Uses standard 18° angles for Fajr and Isha in addition to seasonal adjustment values. This method automatically applies the 1/7 approximation rule for locations at or above 55° latitude. Recommended for North America and the UK. |
 | singapore | Used in Singapore, Malaysia, and Indonesia. Early Fajr time with an angle of 20° and standard Isha time with an angle of 18°. |
 | turkey | An approximation of the Diyanet method used in Turkey. This approximation is less accurate outside the region of Turkey. |
 | tehran | Institute of Geophysics, University of Tehran. Early Isha time with an angle of 14°. Slightly later Fajr time with an angle of 17.7°. Calculates Maghrib based on the sun reaching an angle of 4.5° below the horizon. |
