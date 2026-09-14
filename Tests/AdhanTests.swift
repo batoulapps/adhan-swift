@@ -120,6 +120,15 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p12.ishaAngle, 14)
         XCTAssertEqual(p12.ishaInterval, 0)
         XCTAssertEqual(p12.method, CalculationMethod.tehran)
+
+        let p13 = CalculationMethod.indonesia.params
+        XCTAssertEqual(p13.fajrAngle, 20)
+        XCTAssertEqual(p13.sunriseAngle, 1)
+        XCTAssertEqual(p13.maghribAngle, 1)
+        XCTAssertEqual(p13.ishaAngle, 18)
+        XCTAssertEqual(p13.ishaInterval, 0)
+        XCTAssertEqual(p13.rounding, .up)
+        XCTAssertEqual(p13.method, CalculationMethod.indonesia)
     }
     
     func testPrayerTimes() {
@@ -321,6 +330,45 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p1.isha), "6:29 PM")
     }
     
+    func testIndonesia() {
+        // values from https://bimasislam.kemenag.go.id/jadwalshalat for DKI Jakarta, Kota Jakarta
+        // coordinates are fitted to the published schedule, Kemenag does not publish its markaz
+        let coords = Coordinates(latitude: -6.169, longitude: 106.831)
+        let params = CalculationMethod.indonesia.params
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(identifier: "Asia/Jakarta")!
+        setDateTimeFormat(dateFormatter)
+
+        var comps1 = DateComponents()
+        comps1.year = 2026
+        comps1.month = 9
+        comps1.day = 14
+
+        let p1 = PrayerTimes(coordinates: coords, date: comps1, calculationParameters: params)!
+
+        XCTAssertEqual(dateFormatter.string(from: p1.fajr), "4:32 AM")
+        XCTAssertEqual(dateFormatter.string(from: p1.sunrise), "5:43 AM")
+        XCTAssertEqual(dateFormatter.string(from: p1.dhuhr), "11:52 AM")
+        XCTAssertEqual(dateFormatter.string(from: p1.asr), "3:05 PM")
+        XCTAssertEqual(dateFormatter.string(from: p1.maghrib), "5:53 PM")
+        XCTAssertEqual(dateFormatter.string(from: p1.isha), "7:02 PM")
+
+        var comps2 = DateComponents()
+        comps2.year = 2026
+        comps2.month = 1
+        comps2.day = 1
+
+        let p2 = PrayerTimes(coordinates: coords, date: comps2, calculationParameters: params)!
+
+        XCTAssertEqual(dateFormatter.string(from: p2.fajr), "4:19 AM")
+        XCTAssertEqual(dateFormatter.string(from: p2.sunrise), "5:39 AM")
+        XCTAssertEqual(dateFormatter.string(from: p2.dhuhr), "12:00 PM")
+        XCTAssertEqual(dateFormatter.string(from: p2.asr), "3:26 PM")
+        XCTAssertEqual(dateFormatter.string(from: p2.maghrib), "6:14 PM")
+        XCTAssertEqual(dateFormatter.string(from: p2.isha), "7:29 PM")
+    }
+
     func testTimeForPrayer() {
         var comps = DateComponents()
         comps.year = 2016

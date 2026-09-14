@@ -73,7 +73,13 @@ import Foundation
 
   **singapore**
 
-  Used in Singapore, Malaysia, and Indonesia. Early Fajr time with an angle of 20° and standard Isha time with an angle of 18°.
+  Used in Singapore and Malaysia. Early Fajr time with an angle of 20° and standard Isha time with an angle of 18°.
+
+  **indonesia**
+
+  Kementerian Agama Republik Indonesia, the official method for Indonesia. Fajr angle of 20° and Isha angle of 18°, with sunrise and
+  Maghrib taken at a sun altitude of -1° rather than the usual -0.833°. Times are rounded up to the minute and carry the ihtiyati
+  safety margin: 2 minutes for Fajr, Asr, Maghrib and Isha, 3 minutes for Dhuhr, and -3 minutes for sunrise.
 
   **tehran**
 
@@ -121,6 +127,9 @@ public enum CalculationMethod: String, Codable, CaseIterable {
     // Singapore
     case singapore
 
+    // Kementerian Agama Republik Indonesia
+    case indonesia
+
     // Institute of Geophysics, University of Tehran
     case tehran
 
@@ -165,6 +174,12 @@ public enum CalculationMethod: String, Codable, CaseIterable {
         case .singapore:
             var params = CalculationParameters(fajrAngle: 20, ishaAngle: 18, method: self)
             params.methodAdjustments = PrayerAdjustments(dhuhr: 1)
+            params.rounding = .up
+            return params
+        case .indonesia:
+            var params = CalculationParameters(fajrAngle: 20, maghribAngle: 1, ishaAngle: 18, method: self)
+            params.sunriseAngle = 1
+            params.methodAdjustments = PrayerAdjustments(fajr: 2, sunrise: -3, dhuhr: 3, asr: 2, maghrib: 2, isha: 2)
             params.rounding = .up
             return params
         case .tehran:

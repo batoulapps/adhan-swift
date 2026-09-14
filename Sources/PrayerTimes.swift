@@ -141,6 +141,15 @@ public struct PrayerTimes {
             }
         }
         
+        // Sunrise calculation with check against safe value
+        if let sunriseAngle = calculationParameters.sunriseAngle,
+            let sunriseComponents = solarTime.timeForSolarAngle(Angle(-sunriseAngle), afterTransit: false),
+            let sunriseAngleDate = cal.date(from: sunriseComponents),
+            // sunrise is considered safe if it falls between fajr and the standard sunrise
+            sunriseAngleDate < sunriseDate, (tempFajr?.compare(sunriseAngleDate) == .orderedAscending || tempFajr == nil) {
+                tempSunrise = sunriseAngleDate
+        }
+
         // Maghrib calculation with check against safe value
         if let maghribAngle = calculationParameters.maghribAngle,
             let maghribComponents = solarTime.timeForSolarAngle(Angle(-maghribAngle), afterTransit: true),

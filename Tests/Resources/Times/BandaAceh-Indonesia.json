@@ -1,0 +1,235 @@
+{
+ "params": {
+  "latitude": 5.5503,
+  "longitude": 95.3178,
+  "timezone": "Asia/Jakarta",
+  "method": "Indonesia",
+  "madhab": "Shafi",
+  "highLatitudeRule": "MiddleOfTheNight"
+ },
+ "source": [
+  "https://bimasislam.kemenag.go.id/jadwalshalat",
+  "BANDA ACEH, 24 days of 2026",
+  "northern hemisphere, the one axis Jakarta cannot cover",
+  "coordinates fitted to the published schedule, Kemenag does not publish its markaz"
+ ],
+ "variance": 1,
+ "times": [
+  {
+   "date": "2026-01-01",
+   "fajr": "5:27 AM",
+   "sunrise": "6:45 AM",
+   "dhuhr": "12:46 PM",
+   "asr": "4:07 PM",
+   "maghrib": "6:40 PM",
+   "isha": "7:54 PM"
+  },
+  {
+   "date": "2026-01-15",
+   "fajr": "5:33 AM",
+   "sunrise": "6:50 AM",
+   "dhuhr": "12:52 PM",
+   "asr": "4:13 PM",
+   "maghrib": "6:46 PM",
+   "isha": "7:59 PM"
+  },
+  {
+   "date": "2026-02-01",
+   "fajr": "5:38 AM",
+   "sunrise": "6:52 AM",
+   "dhuhr": "12:56 PM",
+   "asr": "4:17 PM",
+   "maghrib": "6:52 PM",
+   "isha": "8:03 PM"
+  },
+  {
+   "date": "2026-02-15",
+   "fajr": "5:38 AM",
+   "sunrise": "6:51 AM",
+   "dhuhr": "12:56 PM",
+   "asr": "4:16 PM",
+   "maghrib": "6:54 PM",
+   "isha": "8:04 PM"
+  },
+  {
+   "date": "2026-03-01",
+   "fajr": "5:36 AM",
+   "sunrise": "6:48 AM",
+   "dhuhr": "12:55 PM",
+   "asr": "4:11 PM",
+   "maghrib": "6:55 PM",
+   "isha": "8:03 PM"
+  },
+  {
+   "date": "2026-03-15",
+   "fajr": "5:31 AM",
+   "sunrise": "6:42 AM",
+   "dhuhr": "12:51 PM",
+   "asr": "4:03 PM",
+   "maghrib": "6:53 PM",
+   "isha": "8:02 PM"
+  },
+  {
+   "date": "2026-04-01",
+   "fajr": "5:23 AM",
+   "sunrise": "6:34 AM",
+   "dhuhr": "12:46 PM",
+   "asr": "3:48 PM",
+   "maghrib": "6:51 PM",
+   "isha": "8:00 PM"
+  },
+  {
+   "date": "2026-04-15",
+   "fajr": "5:16 AM",
+   "sunrise": "6:28 AM",
+   "dhuhr": "12:42 PM",
+   "asr": "3:50 PM",
+   "maghrib": "6:49 PM",
+   "isha": "7:59 PM"
+  },
+  {
+   "date": "2026-05-01",
+   "fajr": "5:09 AM",
+   "sunrise": "6:23 AM",
+   "dhuhr": "12:39 PM",
+   "asr": "3:56 PM",
+   "maghrib": "6:49 PM",
+   "isha": "8:00 PM"
+  },
+  {
+   "date": "2026-05-15",
+   "fajr": "5:04 AM",
+   "sunrise": "6:21 AM",
+   "dhuhr": "12:39 PM",
+   "asr": "4:00 PM",
+   "maghrib": "6:49 PM",
+   "isha": "8:02 PM"
+  },
+  {
+   "date": "2026-06-01",
+   "fajr": "5:02 AM",
+   "sunrise": "6:21 AM",
+   "dhuhr": "12:40 PM",
+   "asr": "4:05 PM",
+   "maghrib": "6:52 PM",
+   "isha": "8:07 PM"
+  },
+  {
+   "date": "2026-06-15",
+   "fajr": "5:03 AM",
+   "sunrise": "6:23 AM",
+   "dhuhr": "12:43 PM",
+   "asr": "4:09 PM",
+   "maghrib": "6:56 PM",
+   "isha": "8:11 PM"
+  },
+  {
+   "date": "2026-07-01",
+   "fajr": "5:07 AM",
+   "sunrise": "6:26 AM",
+   "dhuhr": "12:46 PM",
+   "asr": "4:12 PM",
+   "maghrib": "6:59 PM",
+   "isha": "8:14 PM"
+  },
+  {
+   "date": "2026-07-15",
+   "fajr": "5:11 AM",
+   "sunrise": "6:29 AM",
+   "dhuhr": "12:48 PM",
+   "asr": "4:13 PM",
+   "maghrib": "7:00 PM",
+   "isha": "8:15 PM"
+  },
+  {
+   "date": "2026-08-01",
+   "fajr": "5:15 AM",
+   "sunrise": "6:31 AM",
+   "dhuhr": "12:49 PM",
+   "asr": "4:09 PM",
+   "maghrib": "6:59 PM",
+   "isha": "8:11 PM"
+  },
+  {
+   "date": "2026-08-15",
+   "fajr": "5:17 AM",
+   "sunrise": "6:31 AM",
+   "dhuhr": "12:47 PM",
+   "asr": "4:02 PM",
+   "maghrib": "6:55 PM",
+   "isha": "8:06 PM"
+  },
+  {
+   "date": "2026-09-01",
+   "fajr": "5:17 AM",
+   "sunrise": "6:29 AM",
+   "dhuhr": "12:42 PM",
+   "asr": "3:48 PM",
+   "maghrib": "6:48 PM",
+   "isha": "7:58 PM"
+  },
+  {
+   "date": "2026-09-15",
+   "fajr": "5:15 AM",
+   "sunrise": "6:26 AM",
+   "dhuhr": "12:38 PM",
+   "asr": "3:42 PM",
+   "maghrib": "6:42 PM",
+   "isha": "7:50 PM"
+  },
+  {
+   "date": "2026-10-01",
+   "fajr": "5:12 AM",
+   "sunrise": "6:23 AM",
+   "dhuhr": "12:32 PM",
+   "asr": "3:44 PM",
+   "maghrib": "6:34 PM",
+   "isha": "7:42 PM"
+  },
+  {
+   "date": "2026-10-15",
+   "fajr": "5:09 AM",
+   "sunrise": "6:21 AM",
+   "dhuhr": "12:28 PM",
+   "asr": "3:45 PM",
+   "maghrib": "6:28 PM",
+   "isha": "7:37 PM"
+  },
+  {
+   "date": "2026-11-01",
+   "fajr": "5:08 AM",
+   "sunrise": "6:21 AM",
+   "dhuhr": "12:26 PM",
+   "asr": "3:46 PM",
+   "maghrib": "6:23 PM",
+   "isha": "7:34 PM"
+  },
+  {
+   "date": "2026-11-15",
+   "fajr": "5:09 AM",
+   "sunrise": "6:24 AM",
+   "dhuhr": "12:27 PM",
+   "asr": "3:48 PM",
+   "maghrib": "6:23 PM",
+   "isha": "7:34 PM"
+  },
+  {
+   "date": "2026-12-01",
+   "fajr": "5:13 AM",
+   "sunrise": "6:30 AM",
+   "dhuhr": "12:31 PM",
+   "asr": "3:53 PM",
+   "maghrib": "6:26 PM",
+   "isha": "7:39 PM"
+  },
+  {
+   "date": "2026-12-15",
+   "fajr": "5:18 AM",
+   "sunrise": "6:36 AM",
+   "dhuhr": "12:37 PM",
+   "asr": "3:59 PM",
+   "maghrib": "6:31 PM",
+   "isha": "7:45 PM"
+  }
+ ]
+}

@@ -17,6 +17,7 @@ params.adjustments.fajr = 2
 | --------- | ----------- |
 | method    | Which preset from the CalculationMethod enum was used. Default value is `other`. |
 | fajrAngle | Angle of the sun below the horizon used to calculate Fajr. |
+| sunriseAngle | Angle of the sun below the horizon used to calculate sunrise, used for some Calculation Methods. Without it sunrise uses the standard -0.833° horizon. |
 | maghribAngle | Angle of the sun below the horizon used to calculate Maghrib, used for some Calculation Methods. |
 | ishaAngle | Angle of the sun below the horizon used to calculate Isha. |
 | ishaInterval | Minutes after Maghrib (if set, the time for Isha will be Maghrib plus ishaInterval). |
@@ -40,7 +41,8 @@ Preset calculation parameters for different regions.
 | qatar | Same Isha interval as `ummAlQura` but with the standard Fajr time using an angle of 18°. |
 | kuwait | Standard Fajr time with an angle of 18°. Slightly earlier Isha time with an angle of 17.5°. |
 | moonsightingCommittee | Method developed by Khalid Shaukat, founder of Moonsighting Committee Worldwide. Uses standard 18° angles for Fajr and Isha in addition to seasonal adjustment values. This method automatically applies the 1/7 approximation rule for locations at or above 55° latitude. Recommended for North America and the UK. |
-| singapore | Used in Singapore, Malaysia, and Indonesia. Early Fajr time with an angle of 20° and standard Isha time with an angle of 18°. |
+| singapore | Used in Singapore and Malaysia. Early Fajr time with an angle of 20° and standard Isha time with an angle of 18°. For Indonesia use `indonesia`. |
+| indonesia | Kementerian Agama Republik Indonesia, the official method for Indonesia. Fajr angle of 20° and Isha angle of 18°, with sunrise and Maghrib taken at a sun altitude of -1° rather than the usual -0.833°. Times are rounded up to the minute and carry the ihtiyati safety margin: 2 minutes for Fajr, Asr, Maghrib and Isha, 3 minutes for Dhuhr, and -3 minutes for sunrise. |
 | turkey | An approximation of the Diyanet method used in Turkey. This approximation is less accurate outside the region of Turkey. |
 | tehran | Institute of Geophysics, University of Tehran. Early Isha time with an angle of 14°. Slightly later Fajr time with an angle of 17.7°. Calculates Maghrib based on the sun reaching an angle of 4.5° below the horizon. |
 | northAmerica | Also known as the ISNA method. Can be used for North America, but the moonsightingCommittee method is preferable. Gives later Fajr times and early Isha times with angles of 15°. |

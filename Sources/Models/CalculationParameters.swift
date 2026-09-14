@@ -31,6 +31,7 @@ import Foundation
 public struct CalculationParameters: Codable, Equatable {
     public var method: CalculationMethod = .other
     public var fajrAngle: Double
+    public var sunriseAngle: Double?
     public var maghribAngle: Double?
     public var ishaAngle: Double
     public var ishaInterval: Minute = 0
