@@ -55,7 +55,7 @@ import Foundation
   **moonsightingCommittee**
 
   Method developed by Khalid Shaukat, founder of Moonsighting Committee Worldwide. Uses standard 18° angles for Fajr and Isha in addition
-  to seasonal adjustment values. This method automatically applies the 1/7 approximation rule for locations above 55° latitude.
+  to seasonal adjustment values. This method automatically applies the 1/7 approximation rule for locations at or above 55° latitude.
   Recommended for North America and the UK.
 
   **northAmerica**
