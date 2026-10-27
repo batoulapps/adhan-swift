@@ -86,11 +86,33 @@ struct SolarTime {
 
     // hours from transit
     func afternoon(shadowLength: Double) -> DateComponents? {
-        // TODO source shadow angle calculation
         let tangent = Angle(fabs(observer.latitude - solar.declination.degrees))
         let inverse = shadowLength + tan(tangent.radians)
         let angle = Angle(radians: atan(1.0 / inverse))
 
-        return timeForSolarAngle(angle, afterTransit: true)
+        // A valid afternoon time requires that the sun's disc is fully above
+        // the horizon. The hourAngle calculation is based on the midpoint of
+        // the sun's disc.
+        let solarAngularDiameter = 32.0 / 60.0
+        guard angle.degrees > solarAngularDiameter / 2 else {
+            return nil
+        }
+
+        let maxAltitude = Astronomical.altitudeOfCelestialBody(observerLatitude: observer.latitudeAngle, declination: solar.declination, localHourAngle: Angle(0))
+
+        // Confirm the sun's maximum altitude on this day actually reaches the computed angle.
+        guard maxAltitude.degrees >= angle.degrees else {
+            return nil
+        }
+
+        // Confirm the resulting time is after solar transit (noon) to ensure this is afternoon.
+        guard let result = timeForSolarAngle(angle, afterTransit: true),
+            let resultDate = Calendar.gregorianUTC.date(from: result),
+            let transitDate = Calendar.gregorianUTC.date(from: transit),
+            resultDate > transitDate else {
+                return nil
+        }
+
+        return result
     }
 }
