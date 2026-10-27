@@ -107,7 +107,7 @@ public struct PrayerTimes {
             return sunriseDate.addingTimeInterval(-nightFraction)
         }()
 
-        if tempFajr == nil || tempFajr?.compare(safeFajr) == .orderedAscending {
+        if tempFajr == nil || tempFajr?.compare(safeFajr) == .orderedAscending || !PrayerTimes.timesInOrder(tempFajr, tempSunrise) {
             tempFajr = safeFajr
         }
 
@@ -136,7 +136,7 @@ public struct PrayerTimes {
                 return sunsetDate.addingTimeInterval(nightFraction)
             }()
 
-            if tempIsha == nil || tempIsha?.compare(safeIsha) == .orderedDescending {
+            if tempIsha == nil || !PrayerTimes.timesInOrder(tempMaghrib, tempIsha) || tempIsha?.compare(safeIsha) == .orderedDescending {
                 tempIsha = safeIsha
             }
         }
@@ -148,6 +148,18 @@ public struct PrayerTimes {
             // maghrib is considered safe if it falls between sunset and isha
             sunsetDate < maghribDate, (tempIsha?.compare(maghribDate) == .orderedDescending || tempIsha == nil) {
                 tempMaghrib = maghribDate
+        }
+
+        // Ensure all prayer times are in the correct order and that there is
+        // at least a 5 minute time difference. This prevents invalid prayer times
+        // for locations inside the polar circle on dates where the sun rises
+        // but never leaves the horizon.
+        guard PrayerTimes.timesInOrder(tempFajr, tempSunrise),
+            PrayerTimes.timesInOrder(tempSunrise, tempDhuhr),
+            PrayerTimes.timesInOrder(tempDhuhr, tempAsr),
+            PrayerTimes.timesInOrder(tempAsr, tempMaghrib),
+            PrayerTimes.timesInOrder(tempMaghrib, tempIsha) else {
+                return nil
         }
 
         // if we don't have all prayer times then initialization failed
@@ -232,5 +244,15 @@ public struct PrayerTimes {
         case .isha:
             return isha
         }
+    }
+
+    static let minimumPrayerGap: TimeInterval = 5 * 60
+
+    static func timesInOrder(_ first: Date?, _ second: Date?) -> Bool {
+        guard let first = first, let second = second else {
+            return false
+        }
+
+        return second.timeIntervalSince(first) >= PrayerTimes.minimumPrayerGap
     }
 }

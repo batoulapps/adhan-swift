@@ -721,6 +721,35 @@ class AdhanTests: XCTestCase {
         checkPrayersOrder(date: comps, coordinates: Coordinates(latitude: 47.082209457885355, longitude: 177.24642294208638))
     }
 
+    func testPrayerTimesOrderedSunBarelyClearsAsrThresholdAt67N() {
+        var comps = DateComponents()
+        comps.year = 2026
+        comps.month = 1
+        comps.day = 8
+        let coordinates = Coordinates(latitude: 67.37800510772394, longitude: -67.26246475893095)
+        let params = CalculationMethod.muslimWorldLeague.params
+        guard let p = PrayerTimes(coordinates: coordinates, date: comps, calculationParameters: params) else {
+            XCTFail("Expected prayer times to be computable")
+            return
+        }
+        XCTAssertLessThan(p.fajr, p.sunrise)
+        XCTAssertLessThan(p.sunrise, p.dhuhr)
+        XCTAssertLessThan(p.dhuhr, p.asr)
+        XCTAssertLessThan(p.asr, p.maghrib)
+        XCTAssertLessThan(p.maghrib, p.isha)
+    }
+
+    func testPrayerTimesNilWhenSunCannotReachRequiredAltitudeAt67N() {
+        var comps = DateComponents()
+        comps.year = 2026
+        comps.month = 1
+        comps.day = 5
+        let coordinates = Coordinates(latitude: 67.37800510772394, longitude: -67.26246475893095)
+        let params = CalculationMethod.muslimWorldLeague.params
+        let p = PrayerTimes(coordinates: coordinates, date: comps, calculationParameters: params)
+        XCTAssertNil(p)
+    }
+
     private func checkPrayersOrder(date: DateComponents, coordinates: Coordinates) {
         var params = CalculationMethod.muslimWorldLeague.params
         params.madhab = .shafi

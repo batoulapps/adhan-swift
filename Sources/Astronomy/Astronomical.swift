@@ -180,16 +180,29 @@ struct Astronomical {
         let term1 = sin(h0.radians) - (sin(coordinates.latitudeAngle.radians) * sin(δ2.radians))
         let term2 = cos(coordinates.latitudeAngle.radians) * cos(δ2.radians)
         let H0 = Angle(radians: acos(term1 / term2))
-        let m = afterTransit ? m0 + (H0.degrees / 360) : m0 - (H0.degrees / 360)
-        let θ = Angle(Θ0.degrees + (360.985647 * m)).unwound()
-        let α = Astronomical.interpolateAngles(value: α2, previousValue: α1, nextValue: α3, factor: m).unwound()
-        let δ = Angle(Astronomical.interpolate(value: δ2.degrees, previousValue: δ1.degrees, nextValue: δ3.degrees, factor: m))
-        let H = (θ - Lw - α)
-        let h = Astronomical.altitudeOfCelestialBody(observerLatitude: coordinates.latitudeAngle, declination: δ, localHourAngle: H)
-        let term3 = (h - h0).degrees
-        let term4 = 360 * cos(δ.radians) * cos(coordinates.latitudeAngle.radians) * sin(H.radians)
-        let Δm = term3 / term4
-        return (m + Δm) * 24
+        var m = afterTransit ? m0 + (H0.degrees / 360) : m0 - (H0.degrees / 360)
+
+        // Astronomical Algorithms page 103 notes that the correction value of Δm
+        // should be ±0.01 and to recalculate with the corrected m value if needed.
+        // Iteration is capped at 10 to account for situations where convergence doesn't occur.
+        for _ in 0..<10 {
+            let θ = Angle(Θ0.degrees + (360.985647 * m)).unwound()
+            let α = Astronomical.interpolateAngles(value: α2, previousValue: α1, nextValue: α3, factor: m).unwound()
+            let δ = Angle(Astronomical.interpolate(value: δ2.degrees, previousValue: δ1.degrees, nextValue: δ3.degrees, factor: m))
+            let H = (θ - Lw - α)
+            let h = Astronomical.altitudeOfCelestialBody(observerLatitude: coordinates.latitudeAngle, declination: δ, localHourAngle: H)
+            let dmDenominator = 360 * cos(δ.radians) * cos(coordinates.latitudeAngle.radians) * sin(H.radians)
+            guard dmDenominator != 0 else {
+                return .nan
+            }
+            let Δm = (h - h0).degrees / dmDenominator
+            m += Δm
+            if fabs(Δm) <= 0.01 {
+                break
+            }
+        }
+
+        return m * 24
     }
 
     /* Interpolation of a value given equidistant
