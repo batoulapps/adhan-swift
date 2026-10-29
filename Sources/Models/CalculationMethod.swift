@@ -194,6 +194,8 @@ public enum CalculationMethod: String, Codable, CaseIterable {
             return params
         case .indonesia:
             var params = CalculationParameters(fajrAngle: 20, maghribAngle: 1, ishaAngle: 18, method: self)
+            // Kemenag publishes a nominal 2 minute ihtiyat for every prayer; the sunrise and Dhuhr values
+            // here differ because they are fitted to match Kemenag's official published timetable.
             params.methodAdjustments = PrayerAdjustments(fajr: 2, sunrise: -4, dhuhr: 3, asr: 2, maghrib: 2, isha: 2)
             params.rounding = .up
             return params
