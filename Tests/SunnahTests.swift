@@ -192,4 +192,40 @@ class SunnahTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: sunnahTimes.middleOfTheNight), "10/25/15, 12:43 AM")
         XCTAssertEqual(dateFormatter.string(from: sunnahTimes.lastThirdOfTheNight), "10/25/15, 2:42 AM")
     }
+
+    func testSunnahTimesHonorRounding() {
+        let coordinates = Coordinates(latitude: 35.7750, longitude: -78.6336)
+        let today = DateComponents(year: 2015, month: 7, day: 12)
+        let tomorrow = DateComponents(year: 2015, month: 7, day: 13)
+
+        // Mirrors the unrounded computation in SunnahTimes.
+        func exactSunnahTimes(_ params: CalculationParameters) -> (prayers: PrayerTimes, middle: Date, lastThird: Date) {
+            let todayPrayers = PrayerTimes(coordinates: coordinates, date: today, calculationParameters: params)!
+            let tomorrowPrayers = PrayerTimes(coordinates: coordinates, date: tomorrow, calculationParameters: params)!
+            let nightDuration = tomorrowPrayers.fajr.timeIntervalSince(todayPrayers.maghrib)
+            return (todayPrayers,
+                    todayPrayers.maghrib.addingTimeInterval(nightDuration / 2),
+                    todayPrayers.maghrib.addingTimeInterval(nightDuration * (2 / 3)))
+        }
+
+        // With rounding disabled, the sunnah times must not be rounded to the nearest minute.
+        var noneParams = CalculationMethod.northAmerica.params
+        noneParams.rounding = .none
+        let noneExpected = exactSunnahTimes(noneParams)
+        let noneSunnah = SunnahTimes(from: noneExpected.prayers)!
+        XCTAssertEqual(noneSunnah.middleOfTheNight, noneExpected.middle.roundedMinute(rounding: .none))
+        XCTAssertEqual(noneSunnah.lastThirdOfTheNight, noneExpected.lastThird.roundedMinute(rounding: .none))
+
+        // With rounding up, the sunnah times are rounded up just like the prayer times.
+        var upParams = CalculationMethod.northAmerica.params
+        upParams.rounding = .up
+        let upExpected = exactSunnahTimes(upParams)
+        let upSunnah = SunnahTimes(from: upExpected.prayers)!
+        XCTAssertEqual(upSunnah.middleOfTheNight, upExpected.middle.roundedMinute(rounding: .up))
+        XCTAssertEqual(upSunnah.lastThirdOfTheNight, upExpected.lastThird.roundedMinute(rounding: .up))
+
+        // The exact last third falls 20 seconds past the minute on this date,
+        // so rounding up and rounding to the nearest minute disagree.
+        XCTAssertNotEqual(upSunnah.lastThirdOfTheNight, upExpected.lastThird.roundedMinute(rounding: .nearest))
+    }
 }
