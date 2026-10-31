@@ -30,6 +30,13 @@ import Foundation
 
   All prayer times are in UTC and should be displayed using a DateFormatter that
   has the correct timezone set.
+
+  Near the polar circles the sun may not rise or set, or may not reach the
+  angle required for a given prayer, on certain days of the year. By default
+  `calculationParameters.polarCircleResolution` is `aqrabBalad`, which
+  automatically substitutes the closest usable latitude in these cases. If a
+  substitute can't be found (or `polarCircleResolution` is `unresolved`),
+  initialization fails and returns nil.
  */
 public struct PrayerTimes {
     public let fajr: Date
@@ -44,6 +51,84 @@ public struct PrayerTimes {
     public let calculationParameters: CalculationParameters
 
     public init?(coordinates: Coordinates, date: DateComponents, calculationParameters: CalculationParameters) {
+        // Latitude must be within ±90° and the date must include a year, month and day
+        // that can form a valid calendar date
+        guard abs(coordinates.latitude) <= 90,
+            date.year != nil,
+            date.month != nil,
+            date.day != nil,
+            date.isValidDate(in: .gregorianUTC) else {
+            return nil
+        }
+
+        // Compute times for the requested location and date. This only fails near the
+        // polar circles during extreme situations like midnight sun or polar night.
+        var result = PrayerTimes.computeForDay(coordinates: coordinates, date: date, calculationParameters: calculationParameters)
+
+        // If the initial calculation failed, attempt polar circle resolution.
+        // aqrabBalad uses the nearest latitude that works,
+        // aqrabYaum uses the nearest day that works,
+        // and unresolved leaves the result nil.
+        if result == nil {
+            result = calculationParameters.polarCircleResolution.resolve(coordinates: coordinates, date: date, calculationParameters: calculationParameters)
+        }
+
+        // Prayer times can't be determined for this location and date. Either
+        // polarCircleResolution is unresolved or was unable to find valid times
+        // for the given parameters.
+        guard let result else {
+            return nil
+        }
+
+        self.coordinates = coordinates
+        self.date = date
+        self.calculationParameters = calculationParameters
+        self.fajr = result.fajr
+        self.sunrise = result.sunrise
+        self.dhuhr = result.dhuhr
+        self.asr = result.asr
+        self.maghrib = result.maghrib
+        self.isha = result.isha
+    }
+
+    /// Prayer times computed for a single day of solar geometry
+    struct DayResult: Equatable {
+        let fajr: Date
+        let sunrise: Date
+        let dhuhr: Date
+        let asr: Date
+        let maghrib: Date
+        let isha: Date
+
+        /// Shifts every time by a whole number of calendar days. Used to relabel a polar
+        /// circle resolved result onto the originally requested date.
+        func shifted(byDays days: Int) -> DayResult? {
+            guard days != 0 else {
+                return self
+            }
+
+            let cal: Calendar = .gregorianUTC
+            guard let fajr = cal.date(byAdding: .day, value: days, to: fajr),
+                let sunrise = cal.date(byAdding: .day, value: days, to: sunrise),
+                let dhuhr = cal.date(byAdding: .day, value: days, to: dhuhr),
+                let asr = cal.date(byAdding: .day, value: days, to: asr),
+                let maghrib = cal.date(byAdding: .day, value: days, to: maghrib),
+                let isha = cal.date(byAdding: .day, value: days, to: isha) else {
+                return nil
+            }
+
+            return DayResult(fajr: fajr, sunrise: sunrise, dhuhr: dhuhr, asr: asr, maghrib: maghrib, isha: isha)
+        }
+    }
+
+    /// Computes prayer times for a single day of solar geometry with no awareness of
+    /// polar circle resolution. Returns nil if any time can't be computed or the times
+    /// end up out of order.
+    static func computeForDay(
+        coordinates: Coordinates,
+        date: DateComponents,
+        calculationParameters: CalculationParameters
+    ) -> DayResult? {
 
         var tempFajr: Date? = nil
         var tempSunrise: Date? = nil
@@ -61,10 +146,6 @@ public struct PrayerTimes {
         }
 
         let tomorrow = cal.dateComponents([.year, .month, .day], from: tomorrowDate)
-
-        self.coordinates = coordinates
-        self.date = date
-        self.calculationParameters = calculationParameters
 
         guard let solarTime = SolarTime(date: date, coordinates: coordinates),
             let tomorrowSolarTime = SolarTime(date: tomorrow, coordinates: coordinates),
@@ -172,25 +253,26 @@ public struct PrayerTimes {
                 return nil
         }
 
-        // Assign final times to public struct members with all offsets
-        self.fajr = fajr.addingTimeInterval(calculationParameters.adjustments.fajr.timeInterval)
-            .addingTimeInterval(calculationParameters.methodAdjustments.fajr.timeInterval)
-            .roundedMinute(rounding: calculationParameters.rounding)
-        self.sunrise = sunrise.addingTimeInterval(calculationParameters.adjustments.sunrise.timeInterval)
-            .addingTimeInterval(calculationParameters.methodAdjustments.sunrise.timeInterval)
-            .roundedMinute(rounding: calculationParameters.rounding)
-        self.dhuhr = dhuhr.addingTimeInterval(calculationParameters.adjustments.dhuhr.timeInterval)
-            .addingTimeInterval(calculationParameters.methodAdjustments.dhuhr.timeInterval)
-            .roundedMinute(rounding: calculationParameters.rounding)
-        self.asr = asr.addingTimeInterval(calculationParameters.adjustments.asr.timeInterval)
-            .addingTimeInterval(calculationParameters.methodAdjustments.asr.timeInterval)
-            .roundedMinute(rounding: calculationParameters.rounding)
-        self.maghrib = maghrib.addingTimeInterval(calculationParameters.adjustments.maghrib.timeInterval)
-            .addingTimeInterval(calculationParameters.methodAdjustments.maghrib.timeInterval)
-            .roundedMinute(rounding: calculationParameters.rounding)
-        self.isha = isha.addingTimeInterval(calculationParameters.adjustments.isha.timeInterval)
-            .addingTimeInterval(calculationParameters.methodAdjustments.isha.timeInterval)
-            .roundedMinute(rounding: calculationParameters.rounding)
+        // Apply all offsets and rounding to the final times
+        return DayResult(
+            fajr: fajr.addingTimeInterval(calculationParameters.adjustments.fajr.timeInterval)
+                .addingTimeInterval(calculationParameters.methodAdjustments.fajr.timeInterval)
+                .roundedMinute(rounding: calculationParameters.rounding),
+            sunrise: sunrise.addingTimeInterval(calculationParameters.adjustments.sunrise.timeInterval)
+                .addingTimeInterval(calculationParameters.methodAdjustments.sunrise.timeInterval)
+                .roundedMinute(rounding: calculationParameters.rounding),
+            dhuhr: dhuhr.addingTimeInterval(calculationParameters.adjustments.dhuhr.timeInterval)
+                .addingTimeInterval(calculationParameters.methodAdjustments.dhuhr.timeInterval)
+                .roundedMinute(rounding: calculationParameters.rounding),
+            asr: asr.addingTimeInterval(calculationParameters.adjustments.asr.timeInterval)
+                .addingTimeInterval(calculationParameters.methodAdjustments.asr.timeInterval)
+                .roundedMinute(rounding: calculationParameters.rounding),
+            maghrib: maghrib.addingTimeInterval(calculationParameters.adjustments.maghrib.timeInterval)
+                .addingTimeInterval(calculationParameters.methodAdjustments.maghrib.timeInterval)
+                .roundedMinute(rounding: calculationParameters.rounding),
+            isha: isha.addingTimeInterval(calculationParameters.adjustments.isha.timeInterval)
+                .addingTimeInterval(calculationParameters.methodAdjustments.isha.timeInterval)
+                .roundedMinute(rounding: calculationParameters.rounding))
     }
 
     public func currentPrayer(at time: Date = Date()) -> Prayer? {

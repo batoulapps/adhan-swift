@@ -36,6 +36,7 @@ public struct CalculationParameters: Codable, Equatable {
     public var ishaInterval: Minute = 0
     public var madhab: Madhab = .shafi
     public var highLatitudeRule: HighLatitudeRule? = nil
+    public var polarCircleResolution: PolarCircleResolution = .aqrabBalad
     public var adjustments: PrayerAdjustments = PrayerAdjustments()
     public var rounding: Rounding = .nearest
     public var shafaq: Shafaq = .general

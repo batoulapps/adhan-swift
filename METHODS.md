@@ -25,6 +25,7 @@ params.adjustments.fajr = 2
 | adjustments | PrayerAdjustments struct with custom prayer time adjustments in minutes for each prayer time. |
 | rounding | The behavior for rounding prayer times. Either to nearest minute, to the higher minute, or none.  |
 | shafaq | Used by the MoonsightingCommittee method to determine how to calculate Isha. See explanation of values below. |
+| polarCircleResolution | Which setting from the PolarCircleResolution enum to use for resolving prayer times inside the polar circles. Default value is `aqrabBalad`. |
 
 ## CalculationMethod
 
@@ -71,6 +72,16 @@ You can get the recommended High Latitude Rule for a location by calling the `re
 let myCoordinates = Coordinates(latitude: 48.983226, longitude: -3.216649)
 let highLatRule = HighLatitudeRule.recommended(for: myCoordinates)
 ```
+
+## PolarCircleResolution
+
+Strategy used to resolve prayer times for locations inside the polar circles, where the sun may not rise or set, or may not reach the angle required for a given prayer, on certain days of the year.
+
+| Value | Description |
+| ----- | ----------- |
+| aqrabBalad | (default) Finds the closest location (moving toward the equator at the same longitude) for which prayer times can be computed. |
+| aqrabYaum | Finds the closest date (forward or backward) for which prayer times can be computed. |
+| unresolved | Leaves prayer times unresolved, `PrayerTimes` initialization returns nil when they can't be computed. See [README](README.md#polar-circle-locations). |
 
 #### Shafaq
 

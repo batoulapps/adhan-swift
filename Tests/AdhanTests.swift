@@ -385,8 +385,28 @@ class AdhanTests: XCTestCase {
         comps2.year = -1
         comps2.month = 99
         comps2.day = 99
-        let p2 = PrayerTimes(coordinates: Coordinates(latitude: 33.720817, longitude: 73.090032), date: comps1, calculationParameters: CalculationMethod.muslimWorldLeague.params)
+        let p2 = PrayerTimes(coordinates: Coordinates(latitude: 33.720817, longitude: 73.090032), date: comps2, calculationParameters: CalculationMethod.muslimWorldLeague.params)
         XCTAssertNil(p2)
+    }
+
+    func testIncompleteOrOutOfRangeDate() {
+        let coordinates = Coordinates(latitude: 33.720817, longitude: 73.090032)
+        let params = CalculationMethod.muslimWorldLeague.params
+        let invalidDates = [
+            DateComponents(month: 6, day: 21),
+            DateComponents(year: 2020, day: 21),
+            DateComponents(year: 2020, month: 6),
+            DateComponents(year: 2020, month: 2, day: 30),
+            DateComponents(year: 2021, month: 2, day: 29),
+            DateComponents(year: 2020, month: 1, day: 32),
+            DateComponents(year: 2020, month: 13, day: 1),
+        ]
+
+        for date in invalidDates {
+            XCTAssertNil(PrayerTimes(coordinates: coordinates, date: date, calculationParameters: params), "\(date)")
+        }
+
+        XCTAssertNotNil(PrayerTimes(coordinates: coordinates, date: DateComponents(year: 2020, month: 2, day: 29), calculationParameters: params))
     }
 
     func testInvalidLocation() {
@@ -399,12 +419,19 @@ class AdhanTests: XCTestCase {
     }
 
     func testExtremeLocation() {
+        var unresolvedParams = CalculationMethod.muslimWorldLeague.params
+        unresolvedParams.polarCircleResolution = .unresolved
+
         var comps1 = DateComponents()
         comps1.year = 2018
         comps1.month = 1
         comps1.day = 1
-        let p1 = PrayerTimes(coordinates: Coordinates(latitude: 71.275009, longitude: -156.761368), date: comps1, calculationParameters: CalculationMethod.muslimWorldLeague.params)
+        let p1 = PrayerTimes(coordinates: Coordinates(latitude: 71.275009, longitude: -156.761368), date: comps1, calculationParameters: unresolvedParams)
         XCTAssertNil(p1)
+
+        // the default polar circle resolution resolves the same date
+        let p1Resolved = PrayerTimes(coordinates: Coordinates(latitude: 71.275009, longitude: -156.761368), date: comps1, calculationParameters: CalculationMethod.muslimWorldLeague.params)
+        XCTAssertNotNil(p1Resolved)
 
         var comps2 = DateComponents()
         comps2.year = 2018
@@ -745,7 +772,8 @@ class AdhanTests: XCTestCase {
         comps.month = 1
         comps.day = 5
         let coordinates = Coordinates(latitude: 67.37800510772394, longitude: -67.26246475893095)
-        let params = CalculationMethod.muslimWorldLeague.params
+        var params = CalculationMethod.muslimWorldLeague.params
+        params.polarCircleResolution = .unresolved
         let p = PrayerTimes(coordinates: coordinates, date: comps, calculationParameters: params)
         XCTAssertNil(p)
     }

@@ -70,6 +70,22 @@ formatter.timeZone = TimeZone(identifier: "America/New_York")!
 print("fajr \(formatter.string(from: prayers.fajr))")
 ```
 
+#### Polar circle locations
+
+Near the polar circles (latitudes beyond ±66.56°) the sun may not rise or
+set, or may not reach the angle required for a given prayer, on certain days
+of the year. By default, the `polarCircleResolution` calculation parameter is
+set to `aqrabBalad`, which automatically substitutes the closest latitude
+(at the same longitude) for which prayer times can be computed, so this is
+handled for you in almost every case.
+
+It's still possible, though rare, for a substitute to not be found (or if
+you've set `polarCircleResolution` to `unresolved` yourself), in which case
+`PrayerTimes` cannot compute that day's times and initialization returns nil.
+
+See [`polarCircleResolution`](METHODS.md#polarcircleresolution) for the other
+available resolution strategies.
+
 ## Full Example
 
 ```swift
@@ -118,6 +134,13 @@ if let sunnahTimes = SunnahTimes(from: todayPrayers) {
 	print(dateFormatter.string(from: sunnahTimes.middleOfTheNight)
 }
 ```
+
+`SunnahTimes` internally computes a second `PrayerTimes` for the following
+day (using the same coordinates and calculation parameters) to determine the
+length of the night. That computation can fail independently of the
+`PrayerTimes` you passed in - near the polar circle, today's times may be
+computable while tomorrow's aren't - so `SunnahTimes` initialization can
+return nil even when the `PrayerTimes` you passed in is valid.
 
 ## Qibla Direction
 

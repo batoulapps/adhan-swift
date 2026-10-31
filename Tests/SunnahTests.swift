@@ -228,4 +228,30 @@ class SunnahTests: XCTestCase {
         // so rounding up and rounding to the nearest minute disagree.
         XCTAssertNotEqual(upSunnah.lastThirdOfTheNight, upExpected.lastThird.roundedMinute(rounding: .nearest))
     }
+
+    func testSunnahTimesNilWhenTomorrowFailsToResolve() {
+        // June 2, 2020 is the last day before permanent midnight sun begins at this
+        // location - today's times are valid on their own, but SunnahTimes also
+        // depends on tomorrow's prayer times to compute the night's length.
+        let coordinates = Coordinates(latitude: 66.7222444, longitude: 17.7189) // Arjeplog, Sweden
+        var params = CalculationMethod.muslimWorldLeague.params
+        params.polarCircleResolution = .unresolved
+
+        guard let prayerTimes = PrayerTimes(coordinates: coordinates, date: DateComponents(year: 2020, month: 6, day: 2), calculationParameters: params) else {
+            return XCTFail("Expected today's prayer times to be computable")
+        }
+        XCTAssertNil(SunnahTimes(from: prayerTimes))
+    }
+
+    func testSunnahTimesResolvedInPolarCircle() {
+        let coordinates = Coordinates(latitude: 66.7222444, longitude: 17.7189) // Arjeplog, Sweden
+        let params = CalculationMethod.muslimWorldLeague.params
+
+        guard let prayerTimes = PrayerTimes(coordinates: coordinates, date: DateComponents(year: 2020, month: 6, day: 21), calculationParameters: params),
+            let sunnahTimes = SunnahTimes(from: prayerTimes) else {
+            return XCTFail("Expected default polar circle resolution to resolve sunnah times")
+        }
+        XCTAssertGreaterThan(sunnahTimes.middleOfTheNight, prayerTimes.maghrib)
+        XCTAssertGreaterThan(sunnahTimes.lastThirdOfTheNight, sunnahTimes.middleOfTheNight)
+    }
 }
