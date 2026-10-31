@@ -40,7 +40,9 @@ Preset calculation parameters for different regions.
 | qatar | Same Isha interval as `ummAlQura` but with the standard Fajr time using an angle of 18°. |
 | kuwait | Standard Fajr time with an angle of 18°. Slightly earlier Isha time with an angle of 17.5°. |
 | moonsightingCommittee | Method developed by Khalid Shaukat, founder of Moonsighting Committee Worldwide. Uses standard 18° angles for Fajr and Isha in addition to seasonal adjustment values. This method automatically applies the 1/7 approximation rule for locations at or above 55° latitude. Recommended for North America and the UK. |
-| singapore | Used in Singapore, Malaysia, and Indonesia. Early Fajr time with an angle of 20° and standard Isha time with an angle of 18°. |
+| singapore | Majlis Ugama Islam Singapura (MUIS). Early Fajr time with an angle of 20° and standard Isha time with an angle of 18°. |
+| malaysia | Jabatan Kemajuan Islam Malaysia (JAKIM). Standard Fajr and Isha times with angles of 18°. JAKIM moved Fajr from 20° to 18° in 2019. Adds 1 minute to Dhuhr and moves sunrise 1 minute earlier. |
+| indonesia | Kementerian Agama Republik Indonesia (Kemenag). Early Fajr time with an angle of 20° and standard Isha time with an angle of 18°. Calculates Maghrib based on the sun reaching an angle of 1° below the horizon. Includes Kemenag's safety offsets of a few minutes on each prayer. |
 | turkey | An approximation of the Diyanet method used in Turkey. This approximation is less accurate outside the region of Turkey. |
 | tehran | Institute of Geophysics, University of Tehran. Early Isha time with an angle of 14°. Slightly later Fajr time with an angle of 17.7°. Calculates Maghrib based on the sun reaching an angle of 4.5° below the horizon. |
 | northAmerica | Also known as the ISNA method. Can be used for North America, but the moonsightingCommittee method is preferable. Gives later Fajr times and early Isha times with angles of 15°. |
