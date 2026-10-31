@@ -40,6 +40,11 @@ public struct CalculationParameters: Codable, Equatable {
     public var adjustments: PrayerAdjustments = PrayerAdjustments()
     public var rounding: Rounding = .nearest
     public var shafaq: Shafaq = .general
+    /// Height in meters of the observer above the horizon, used to calculate
+    /// sunrise and sunset. This is not the observer's elevation above sea level:
+    /// a city on a plateau has the same elevation as its horizon, so the value
+    /// should be `0`. See ``ElevationFromHorizon``.
+    public var elevationFromHorizon = ElevationFromHorizon(both: 0)
     var methodAdjustments: PrayerAdjustments = PrayerAdjustments()
 
     init(fajrAngle: Double, ishaAngle: Double) {
