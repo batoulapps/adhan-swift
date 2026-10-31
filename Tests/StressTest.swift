@@ -41,7 +41,8 @@ class StressTest: XCTestCase {
     //    order. Inside the polar circle, failure to compute is acceptable (the sun may not
     //    rise or set), but any times that are returned must still be ordered correctly.
     func testPrayerTimesOrderedAcrossGlobalCoordinatesAndAllDaysOf2025() {
-        let params = CalculationMethod.muslimWorldLeague.params
+        var params = CalculationMethod.muslimWorldLeague.params
+        params.polarCircleResolution = .unresolved
         var violations: [String] = []
         let cal: Calendar = .gregorianUTC
 
