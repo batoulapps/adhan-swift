@@ -10,7 +10,7 @@ import XCTest
 
 class ElevationTests: XCTestCase {
 
-    // Antalya, Turkey (the region discussed in adhan-js issue #146)
+    // Antalya, Turkey
     private let antalya = Coordinates(latitude: 36.3, longitude: 30.1)
     private let equinox = date(year: 2024, month: 3, day: 20)
 
