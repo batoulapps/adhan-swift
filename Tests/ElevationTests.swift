@@ -68,6 +68,35 @@ class ElevationTests: XCTestCase {
         XCTAssertEqual(zenith, 91.948, accuracy: 1e-3)
     }
 
+    func testElevationCorrectionMatchesTheAirAlmanac() {
+        // The Air Almanac 2026, table 2 "Depression of Sun at Various Heights, at
+        // Sunrise and Sunset", page A151. Heights are in feet and depressions are
+        // rounded to 0.1 degrees. Rows above 30 000 feet (aircraft heights) are not
+        // included.
+        let table: [(feet: Double, depression: Double)] = [
+            (500, 1.3),
+            (1000, 1.5),
+            (2000, 1.7),
+            (3000, 1.9),
+            (4000, 2.1),
+            (5000, 2.2),
+            (6000, 2.4),
+            (7000, 2.5),
+            (8000, 2.6),
+            (9000, 2.7),
+            (10000, 2.8),
+            (15000, 3.2),
+            (20000, 3.6),
+            (25000, 3.9),
+            (30000, 4.2),
+        ]
+        for (feet, depression) in table {
+            let meters = feet * 0.3048
+            let computed = 50.0 / 60 + Astronomical.elevationCorrection(meters).degrees
+            XCTAssertLessThan(abs(computed - depression), 0.06, "depression of the Sun at \(Int(feet)) feet")
+        }
+    }
+
     // MARK: - ElevationFromHorizon
 
     func testDefaultsToZeroForSunriseAndSunset() {
@@ -146,6 +175,8 @@ class ElevationTests: XCTestCase {
         }
     }
 
+    // Regression check: these bounds come from this library's own output, not
+    // from a published source.
     func testMovesSunriseEarlierAndSunsetAndMaghribLaterAt450Meters() throws {
         let base = try prayerTimes(unroundedParams())
         let elevated = try prayerTimes(unroundedParams(ElevationFromHorizon(both: 450)))
