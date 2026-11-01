@@ -12,7 +12,7 @@ This document explains the `elevationFromHorizon` calculation parameter: what it
 
 ## Summary
 
-An observer who is higher than the horizon they are looking at sees the sun rise earlier and set later than an observer at the same level as the horizon. Setting `elevationFromHorizon` to that height difference, in meters, adjusts sunrise, sunset, and Maghrib accordingly.
+An observer who is higher than the horizon they are looking at sees the sun rise earlier and set later than an observer at the same level as the horizon. Setting `elevationFromHorizon` to that height difference, in meters, adjusts sunrise and Maghrib accordingly.
 
 ```swift
 var params = CalculationMethod.muslimWorldLeague.params
@@ -42,7 +42,7 @@ In other words:
 | Valley, or anywhere the horizon is above the viewer | `0`                                             |
 | Sea to the west, mountains to the east              | `ElevationFromHorizon(sunrise: 0, sunset: 450)` |
 
-**Do not pass the altitude reported by a device's GPS (such as `CLLocation.altitude`) or an elevation lookup for the user's coordinates.** For cities on plateaus such as Denver (1609 m), Mexico City (2240 m), Addis Ababa (2355 m), or Sana'a (2250 m), using the elevation above sea level would make sunset and Maghrib about 7 to 9 minutes too late, and sunrise about as much too early.
+**Do not pass the altitude reported by a device's GPS (such as `CLLocation.altitude`) or an elevation lookup for the user's coordinates.** For cities on plateaus such as Denver (1609 m), Mexico City (2240 m), Addis Ababa (2355 m), or Sana'a (2250 m), using the elevation above sea level would make Maghrib about 7 to 9 minutes too late, and sunrise about as much too early.
 
 The `sunrise` value describes the eastern horizon and the `sunset` value describes the western horizon. A single value applies to both.
 
@@ -61,14 +61,14 @@ Muwaqqit takes the same approach: "Difference in elevation is not considered whe
 | Time                                                        | Effect                                                      |
 | ----------------------------------------------------------- | ----------------------------------------------------------- |
 | Sunrise                                                     | Earlier, using the `sunrise` value                          |
-| Sunset and Maghrib                                          | Later, using the `sunset` value                             |
+| Maghrib                                                     | Later, using the `sunset` value                             |
 | Fajr, Dhuhr, Asr, Isha                                      | Unchanged                                                   |
 | Maghrib using `maghribAngle` (Tehran)                       | Unchanged                                                   |
 | Isha using `ishaInterval`                                   | Follows Maghrib, since it is defined from it                |
 | High latitude rules, Moonsighting Committee seasonal limits | Follow sunrise and sunset, since they are defined from them |
 | Sunnah times                                                | Follow Maghrib, since the night starts there                |
 
-Approximate shift of sunrise (earlier) and sunset (later) in minutes. The two are equal to within a few seconds.
+Approximate shift of sunrise (earlier) and Maghrib (later) in minutes. The two are equal to within a few seconds.
 
 | Latitude | Date   | 10 m | 100 m | 450 m | 1000 m | 2000 m |
 | -------- | ------ | ---- | ----- | ----- | ------ | ------ |

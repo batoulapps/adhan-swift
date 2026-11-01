@@ -27,7 +27,7 @@ import Foundation
 
 /**
  Height in meters of the observer above the horizon they are looking at, used
- to calculate sunrise and sunset.
+ to calculate sunrise and Maghrib.
 
  An observer who is higher than their horizon sees the sun rise earlier and set
  later. `sunrise` describes the eastern horizon and `sunset` describes the
@@ -49,7 +49,7 @@ public struct ElevationFromHorizon: Codable, Equatable {
     /// Height in meters of the observer above the eastern horizon, used for sunrise.
     public var sunrise: Double
 
-    /// Height in meters of the observer above the western horizon, used for sunset and Maghrib.
+    /// Height in meters of the observer above the western horizon, used for Maghrib.
     public var sunset: Double
 
     /// Creates an elevation with separate heights in meters above the eastern and western horizons.
