@@ -73,7 +73,17 @@ import Foundation
 
   **singapore**
 
-  Used in Singapore, Malaysia, and Indonesia. Early Fajr time with an angle of 20° and standard Isha time with an angle of 18°.
+  Majlis Ugama Islam Singapura (MUIS). Early Fajr time with an angle of 20° and standard Isha time with an angle of 18°.
+
+  **malaysia**
+
+  Jabatan Kemajuan Islam Malaysia (JAKIM). Standard Fajr and Isha times with angles of 18°. JAKIM moved Fajr from 20° to 18° in 2019.
+  Adds 1 minute to Dhuhr and moves sunrise 1 minute earlier.
+
+  **indonesia**
+
+  Kementerian Agama Republik Indonesia (Kemenag). Early Fajr time with an angle of 20° and standard Isha time with an angle of 18°.
+  Calculates Maghrib based on the sun reaching an angle of 1° below the horizon. Includes Kemenag's safety offsets of a few minutes on each prayer.
 
   **tehran**
 
@@ -121,6 +131,12 @@ public enum CalculationMethod: String, Codable, CaseIterable {
     // Singapore
     case singapore
 
+    // Jabatan Kemajuan Islam Malaysia (JAKIM)
+    case malaysia
+
+    // Kementerian Agama Republik Indonesia (Kemenag)
+    case indonesia
+
     // Institute of Geophysics, University of Tehran
     case tehran
 
@@ -165,6 +181,19 @@ public enum CalculationMethod: String, Codable, CaseIterable {
         case .singapore:
             var params = CalculationParameters(fajrAngle: 20, ishaAngle: 18, method: self)
             params.methodAdjustments = PrayerAdjustments(dhuhr: 1)
+            params.rounding = .up
+            return params
+        case .malaysia:
+            var params: CalculationParameters = CalculationParameters(fajrAngle: 18, ishaAngle: 18, method: self)
+            params.methodAdjustments = PrayerAdjustments(sunrise: -1, dhuhr: 1)
+            params.rounding = .up
+            return params
+        case .indonesia:
+            var params = CalculationParameters(fajrAngle: 20, maghribAngle: 1, ishaAngle: 18, method: self)
+            // Kemenag adds 2 minutes to each prayer and subtracts 2 from sunrise. Sunrise needs 2 more minutes:
+            // Kemenag drops seconds, and sunrise is calculated at 1° below the horizon. The extra Dhuhr minute
+            // matches Kemenag's published timetable.
+            params.methodAdjustments = PrayerAdjustments(fajr: 2, sunrise: -4, dhuhr: 3, asr: 2, maghrib: 2, isha: 2)
             params.rounding = .up
             return params
         case .tehran:
