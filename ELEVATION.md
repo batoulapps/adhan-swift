@@ -17,7 +17,7 @@ An observer who is higher than the horizon they are looking at sees the sun rise
 ```swift
 var params = CalculationMethod.muslimWorldLeague.params
 // 450 meters above both the eastern and western horizon
-params.elevationFromHorizon = ElevationFromHorizon(both: 450)
+params.elevationFromHorizon = ElevationFromHorizon(450)
 // or different values for the eastern (sunrise) and western (sunset) horizon
 params.elevationFromHorizon = ElevationFromHorizon(sunrise: 450, sunset: 0)
 ```

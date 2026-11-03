@@ -37,7 +37,7 @@ struct SolarTime {
     private let nextSolar: SolarCoordinates
     private let approxTransit: Double
 
-    init?(date: DateComponents, coordinates: Coordinates, elevationFromHorizon: ElevationFromHorizon = ElevationFromHorizon(both: 0)) {
+    init?(date: DateComponents, coordinates: Coordinates, elevationFromHorizon: ElevationFromHorizon = ElevationFromHorizon(0)) {
         // calculations need to occur at 0h0m UTC
         var date = date
         date.hour = 0

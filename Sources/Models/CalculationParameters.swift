@@ -44,7 +44,7 @@ public struct CalculationParameters: Codable, Equatable {
     /// sunrise and Maghrib. This is not the observer's elevation above sea level:
     /// a city on a plateau has the same elevation as its horizon, so the value
     /// should be `0`. See ``ElevationFromHorizon``.
-    public var elevationFromHorizon = ElevationFromHorizon(both: 0)
+    public var elevationFromHorizon = ElevationFromHorizon(0)
     var methodAdjustments: PrayerAdjustments = PrayerAdjustments()
 
     init(fajrAngle: Double, ishaAngle: Double) {

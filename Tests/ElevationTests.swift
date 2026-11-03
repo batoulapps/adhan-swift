@@ -27,7 +27,7 @@ class ElevationTests: XCTestCase {
         return try XCTUnwrap(PrayerTimes(coordinates: antalya, date: date ?? equinox, calculationParameters: params), file: file, line: line)
     }
 
-    private func solarTime(_ elevation: ElevationFromHorizon = ElevationFromHorizon(both: 0), file: StaticString = #filePath, line: UInt = #line) throws -> SolarTime {
+    private func solarTime(_ elevation: ElevationFromHorizon = ElevationFromHorizon(0), file: StaticString = #filePath, line: UInt = #line) throws -> SolarTime {
         return try XCTUnwrap(SolarTime(date: equinox, coordinates: antalya, elevationFromHorizon: elevation), file: file, line: line)
     }
 
@@ -105,8 +105,8 @@ class ElevationTests: XCTestCase {
     }
 
     func testSingleValueAppliesToSunriseAndSunset() {
-        XCTAssertEqual(ElevationFromHorizon(both: 250), ElevationFromHorizon(sunrise: 250, sunset: 250))
-        XCTAssertEqual(ElevationFromHorizon(both: 250.5), ElevationFromHorizon(sunrise: 250.5, sunset: 250.5))
+        XCTAssertEqual(ElevationFromHorizon(250), ElevationFromHorizon(sunrise: 250, sunset: 250))
+        XCTAssertEqual(ElevationFromHorizon(250.5), ElevationFromHorizon(sunrise: 250.5, sunset: 250.5))
     }
 
     func testAcceptsSeparateSunriseAndSunsetValues() {
@@ -117,7 +117,7 @@ class ElevationTests: XCTestCase {
 
     func testTreatsNegativeValuesAsZero() throws {
         let base = try prayerTimes(unroundedParams())
-        let valley = try prayerTimes(unroundedParams(ElevationFromHorizon(both: -200)))
+        let valley = try prayerTimes(unroundedParams(ElevationFromHorizon(-200)))
         XCTAssertEqual(valley.sunrise, base.sunrise)
         XCTAssertEqual(valley.maghrib, base.maghrib)
 
@@ -129,9 +129,9 @@ class ElevationTests: XCTestCase {
 
     func testRejectsNonFiniteValues() {
         let invalid: [ElevationFromHorizon] = [
-            ElevationFromHorizon(both: .nan),
-            ElevationFromHorizon(both: .infinity),
-            ElevationFromHorizon(both: -.infinity),
+            ElevationFromHorizon(.nan),
+            ElevationFromHorizon(.infinity),
+            ElevationFromHorizon(-.infinity),
             ElevationFromHorizon(sunrise: .nan, sunset: 100),
             ElevationFromHorizon(sunrise: 100, sunset: .infinity),
         ]
@@ -146,7 +146,7 @@ class ElevationTests: XCTestCase {
 
     func testSolarTimeUsesTheStandardAltitudeLoweredByTheElevationCorrection() throws {
         let elevation = 450.0
-        let solar = try solarTime(ElevationFromHorizon(both: elevation))
+        let solar = try solarTime(ElevationFromHorizon(elevation))
         let altitude = Angle(-50.0 / 60) - Astronomical.elevationCorrection(elevation)
         XCTAssertEqual(try utcDate(solar.sunrise), try utcDate(solar.timeForSolarAngle(altitude, afterTransit: false)))
         XCTAssertEqual(try utcDate(solar.sunset), try utcDate(solar.timeForSolarAngle(altitude, afterTransit: true)))
@@ -154,7 +154,7 @@ class ElevationTests: XCTestCase {
 
     func testSolarTimeIsUnchangedWithoutElevation() throws {
         let standard = try XCTUnwrap(SolarTime(date: equinox, coordinates: antalya))
-        let zero = try solarTime(ElevationFromHorizon(both: 0))
+        let zero = try solarTime(ElevationFromHorizon(0))
         XCTAssertEqual(zero.sunrise, standard.sunrise)
         XCTAssertEqual(zero.sunset, standard.sunset)
         XCTAssertEqual(try utcDate(standard.sunrise), try utcDate(standard.timeForSolarAngle(Angle(-50.0 / 60), afterTransit: false)))
@@ -164,7 +164,7 @@ class ElevationTests: XCTestCase {
 
     func testDefaultAndExplicitZeroProduceIdenticalTimes() throws {
         let base = try prayerTimes(unroundedParams())
-        for elevation in [ElevationFromHorizon(both: 0), ElevationFromHorizon(sunrise: 0, sunset: 0)] {
+        for elevation in [ElevationFromHorizon(0), ElevationFromHorizon(sunrise: 0, sunset: 0)] {
             let times = try prayerTimes(unroundedParams(elevation))
             XCTAssertEqual(times.fajr, base.fajr)
             XCTAssertEqual(times.sunrise, base.sunrise)
@@ -179,9 +179,9 @@ class ElevationTests: XCTestCase {
     // from a published source.
     func testMovesSunriseEarlierAndSunsetAndMaghribLaterAt450Meters() throws {
         let base = try prayerTimes(unroundedParams())
-        let elevated = try prayerTimes(unroundedParams(ElevationFromHorizon(both: 450)))
+        let elevated = try prayerTimes(unroundedParams(ElevationFromHorizon(450)))
         let baseSunset = try utcDate(try solarTime().sunset)
-        let elevatedSunset = try utcDate(try solarTime(ElevationFromHorizon(both: 450)).sunset)
+        let elevatedSunset = try utcDate(try solarTime(ElevationFromHorizon(450)).sunset)
 
         let sunriseShift = minutes(from: elevated.sunrise, to: base.sunrise)
         let sunsetShift = minutes(from: baseSunset, to: elevatedSunset)
@@ -196,7 +196,7 @@ class ElevationTests: XCTestCase {
 
     func testDoesNotChangeFajrDhuhrAsrOrIsha() throws {
         let base = try prayerTimes(unroundedParams())
-        let elevated = try prayerTimes(unroundedParams(ElevationFromHorizon(both: 450)))
+        let elevated = try prayerTimes(unroundedParams(ElevationFromHorizon(450)))
         XCTAssertEqual(elevated.fajr, base.fajr)
         XCTAssertEqual(elevated.dhuhr, base.dhuhr)
         XCTAssertEqual(elevated.asr, base.asr)
@@ -205,8 +205,8 @@ class ElevationTests: XCTestCase {
 
     func testDoesNotChangeAnAngleBasedMaghrib() throws {
         let base = try prayerTimes(unroundedParams(method: .tehran))
-        let elevated = try prayerTimes(unroundedParams(ElevationFromHorizon(both: 450), method: .tehran))
-        XCTAssertGreaterThan(try utcDate(try solarTime(ElevationFromHorizon(both: 450)).sunset), try utcDate(try solarTime().sunset))
+        let elevated = try prayerTimes(unroundedParams(ElevationFromHorizon(450), method: .tehran))
+        XCTAssertGreaterThan(try utcDate(try solarTime(ElevationFromHorizon(450)).sunset), try utcDate(try solarTime().sunset))
         XCTAssertEqual(elevated.maghrib, base.maghrib)
         XCTAssertEqual(elevated.fajr, base.fajr)
         XCTAssertEqual(elevated.isha, base.isha)
@@ -214,8 +214,8 @@ class ElevationTests: XCTestCase {
 
     func testShiftsIntervalBasedIshaAlongWithSunset() throws {
         let base = try prayerTimes(unroundedParams(method: .ummAlQura))
-        let elevated = try prayerTimes(unroundedParams(ElevationFromHorizon(both: 450), method: .ummAlQura))
-        let sunsetShift = minutes(from: try utcDate(try solarTime().sunset), to: try utcDate(try solarTime(ElevationFromHorizon(both: 450)).sunset))
+        let elevated = try prayerTimes(unroundedParams(ElevationFromHorizon(450), method: .ummAlQura))
+        let sunsetShift = minutes(from: try utcDate(try solarTime().sunset), to: try utcDate(try solarTime(ElevationFromHorizon(450)).sunset))
         XCTAssertGreaterThan(sunsetShift, 0)
         XCTAssertEqual(minutes(from: base.isha, to: elevated.isha), sunsetShift, accuracy: 1e-10)
     }
@@ -224,7 +224,7 @@ class ElevationTests: XCTestCase {
         let base = try prayerTimes(unroundedParams())
         let sunriseOnly = try prayerTimes(unroundedParams(ElevationFromHorizon(sunrise: 450, sunset: 0)))
         let sunsetOnly = try prayerTimes(unroundedParams(ElevationFromHorizon(sunrise: 0, sunset: 450)))
-        let both = try prayerTimes(unroundedParams(ElevationFromHorizon(both: 450)))
+        let both = try prayerTimes(unroundedParams(ElevationFromHorizon(450)))
 
         XCTAssertEqual(sunriseOnly.sunrise, both.sunrise)
         XCTAssertEqual(sunriseOnly.maghrib, base.maghrib)
@@ -236,7 +236,7 @@ class ElevationTests: XCTestCase {
         let base = try prayerTimes(unroundedParams())
         var previous = 0.0
         for h in [10.0, 100, 500, 1000, 2000] {
-            let elevated = try prayerTimes(unroundedParams(ElevationFromHorizon(both: h)))
+            let elevated = try prayerTimes(unroundedParams(ElevationFromHorizon(h)))
             let shift = minutes(from: base.maghrib, to: elevated.maghrib)
             XCTAssertGreaterThan(shift, previous)
             previous = shift
@@ -244,7 +244,7 @@ class ElevationTests: XCTestCase {
     }
 
     func testIsUsedBySunnahTimes() throws {
-        let params = unroundedParams(ElevationFromHorizon(both: 450))
+        let params = unroundedParams(ElevationFromHorizon(450))
         let today = try prayerTimes(params)
         let tomorrow = try prayerTimes(params, date: date(year: 2024, month: 3, day: 21))
         let sunnah = try XCTUnwrap(SunnahTimes(from: today))
@@ -266,7 +266,7 @@ class ElevationTests: XCTestCase {
     func testStillResolvesPolarCircleLocations() throws {
         // Arjeplog, Sweden during midnight sun
         let arjeplog = Coordinates(latitude: 66.7222444, longitude: 17.7189)
-        let times = PrayerTimes(coordinates: arjeplog, date: date(year: 2020, month: 6, day: 21), calculationParameters: unroundedParams(ElevationFromHorizon(both: 300)))
+        let times = PrayerTimes(coordinates: arjeplog, date: date(year: 2020, month: 6, day: 21), calculationParameters: unroundedParams(ElevationFromHorizon(300)))
         XCTAssertNotNil(times)
     }
 }

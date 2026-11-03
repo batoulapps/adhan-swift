@@ -34,7 +34,7 @@ import Foundation
  western horizon. A single value applies to both:
 
  ```swift
- params.elevationFromHorizon = ElevationFromHorizon(both: 450)
+ params.elevationFromHorizon = ElevationFromHorizon(450)
  params.elevationFromHorizon = ElevationFromHorizon(sunrise: 450, sunset: 0)
  ```
 
@@ -59,7 +59,7 @@ public struct ElevationFromHorizon: Codable, Equatable {
     }
 
     /// Creates an elevation with the same height in meters above both horizons.
-    public init(both meters: Double) {
+    public init(_ meters: Double) {
         self.init(sunrise: meters, sunset: meters)
     }
 
