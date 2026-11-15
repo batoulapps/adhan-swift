@@ -36,6 +36,7 @@ struct SolarTime {
     private let prevSolar: SolarCoordinates
     private let nextSolar: SolarCoordinates
     private let approxTransit: Double
+    private let transitTime: Double
 
     init?(date: DateComponents, coordinates: Coordinates, elevationFromHorizon: ElevationFromHorizon = ElevationFromHorizon(0)) {
         // calculations need to occur at 0h0m UTC
@@ -80,21 +81,28 @@ struct SolarTime {
             return nil
         }
 
+        self.transitTime = transitTime
         self.transit = transitDate
         self.sunrise = sunriseDate
         self.sunset = sunsetDate
     }
 
-    func timeForSolarAngle(_ angle: Angle, afterTransit: Bool) -> DateComponents? {
+    func timeForSolarAngle(_ angle: Angle, afterTransit: Bool, initialDeclination: Angle? = nil, tolerance: Double = 0.01) -> DateComponents? {
         let hours = Astronomical.correctedHourAngle(approximateTransit: approxTransit, angle: angle, coordinates: observer, afterTransit: afterTransit, siderealTime: solar.apparentSiderealTime,
                                                rightAscension: solar.rightAscension, previousRightAscension: prevSolar.rightAscension, nextRightAscension: nextSolar.rightAscension,
-                                               declination: solar.declination, previousDeclination: prevSolar.declination, nextDeclination: nextSolar.declination)
+                                               declination: solar.declination, previousDeclination: prevSolar.declination, nextDeclination: nextSolar.declination,
+                                               initialDeclination: initialDeclination, tolerance: tolerance)
         return date.settingHour(hours)
     }
 
     // hours from transit
     func afternoon(shadowLength: Double) -> DateComponents? {
-        let tangent = Angle(fabs(observer.latitude - solar.declination.degrees))
+        // The noon shadow is cast when the sun is at transit, so use the
+        // declination interpolated to transit rather than the one at 0h UT.
+        // Transit can be up to a day away from 0h UT depending on longitude.
+        let noonDeclination = Angle(Astronomical.interpolate(value: solar.declination.degrees, previousValue: prevSolar.declination.degrees,
+                                                             nextValue: nextSolar.declination.degrees, factor: transitTime / 24))
+        let tangent = Angle(fabs(observer.latitude - noonDeclination.degrees))
         let inverse = shadowLength + tan(tangent.radians)
         let angle = Angle(radians: atan(1.0 / inverse))
 
@@ -106,7 +114,7 @@ struct SolarTime {
             return nil
         }
 
-        let maxAltitude = Astronomical.altitudeOfCelestialBody(observerLatitude: observer.latitudeAngle, declination: solar.declination, localHourAngle: Angle(0))
+        let maxAltitude = Astronomical.altitudeOfCelestialBody(observerLatitude: observer.latitudeAngle, declination: noonDeclination, localHourAngle: Angle(0))
 
         // Confirm the sun's maximum altitude on this day actually reaches the computed angle.
         guard maxAltitude.degrees >= angle.degrees else {
@@ -114,7 +122,9 @@ struct SolarTime {
         }
 
         // Confirm the resulting time is after solar transit (noon) to ensure this is afternoon.
-        guard let result = timeForSolarAngle(angle, afterTransit: true),
+        // Iterate to convergence, since the textbook's ±0.01 day tolerance can leave
+        // several seconds of error in Asr.
+        guard let result = timeForSolarAngle(angle, afterTransit: true, initialDeclination: noonDeclination, tolerance: 1e-7),
             let resultDate = Calendar.gregorianUTC.date(from: result),
             let transitDate = Calendar.gregorianUTC.date(from: transit),
             resultDate > transitDate else {

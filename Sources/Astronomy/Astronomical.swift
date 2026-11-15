@@ -191,16 +191,25 @@ struct Astronomical {
 
     static func correctedHourAngle(approximateTransit m0: Double, angle h0: Angle, coordinates: Coordinates, afterTransit: Bool, siderealTime Θ0: Angle,
                                    rightAscension α2: Angle, previousRightAscension α1: Angle, nextRightAscension α3: Angle,
-                                   declination δ2: Angle, previousDeclination δ1: Angle, nextDeclination δ3: Angle) -> Double {
-        /* Equation from page Astronomical Algorithms 102 */
+                                   declination δ2: Angle, previousDeclination δ1: Angle, nextDeclination δ3: Angle,
+                                   initialDeclination: Angle? = nil, tolerance: Double = 0.01) -> Double {
+        /* Equation (15.1) from Astronomical Algorithms page 102, which uses the
+           declination at 0h (δ2) for these approximate times. A caller that knows
+           a closer declination (e.g. at transit) can pass it instead, avoiding a
+           spurious NaN when the altitude is only reached with the declination
+           nearer the event. This departs from the text only in the starting
+           estimate; the iteration below determines the final result. */
+        let δ0 = initialDeclination ?? δ2
         let Lw = coordinates.longitudeAngle * Angle(-1)
-        let term1 = sin(h0.radians) - (sin(coordinates.latitudeAngle.radians) * sin(δ2.radians))
-        let term2 = cos(coordinates.latitudeAngle.radians) * cos(δ2.radians)
+        let term1 = sin(h0.radians) - (sin(coordinates.latitudeAngle.radians) * sin(δ0.radians))
+        let term2 = cos(coordinates.latitudeAngle.radians) * cos(δ0.radians)
         let H0 = Angle(radians: acos(term1 / term2))
         var m = afterTransit ? m0 + (H0.degrees / 360) : m0 - (H0.degrees / 360)
 
-        // Astronomical Algorithms page 103 notes that the correction value of Δm
-        // should be ±0.01 and to recalculate with the corrected m value if needed.
+        // Astronomical Algorithms page 103 notes that the corrections Δm are in most
+        // cases between -0.01 and +0.01, and that the calculation should be repeated
+        // with the corrected m if necessary; Example 15.a repeats it until the
+        // corrections are negligible.
         // Iteration is capped at 10 to account for situations where convergence doesn't occur.
         for _ in 0..<10 {
             let θ = Angle(Θ0.degrees + (360.985647 * m)).unwound()
@@ -214,7 +223,10 @@ struct Astronomical {
             }
             let Δm = (h - h0).degrees / dmDenominator
             m += Δm
-            if fabs(Δm) <= 0.01 {
+            // Stop iteration once Δm is within the tolerance. The default of 0.01
+            // day is this library's historical stopping point, not a limit from the
+            // text; callers needing a fully converged time pass a smaller tolerance.
+            if fabs(Δm) <= tolerance {
                 break
             }
         }

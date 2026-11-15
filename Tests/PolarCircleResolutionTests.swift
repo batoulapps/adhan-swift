@@ -141,7 +141,7 @@ class PolarCircleResolutionTests: XCTestCase {
         XCTAssertEqual(formatter.string(from: p.fajr), "June 21, 2020 12:48 AM")
         XCTAssertEqual(formatter.string(from: p.sunrise), "June 21, 2020 12:54 AM")
         XCTAssertEqual(formatter.string(from: p.dhuhr), "June 21, 2020 12:55 PM")
-        XCTAssertEqual(formatter.string(from: p.asr), "June 21, 2020 5:49 PM")
+        XCTAssertEqual(formatter.string(from: p.asr), "June 21, 2020 5:50 PM")
         XCTAssertEqual(formatter.string(from: p.maghrib), "June 22, 2020 12:30 AM")
         XCTAssertEqual(formatter.string(from: p.isha), "June 22, 2020 12:37 AM")
     }
