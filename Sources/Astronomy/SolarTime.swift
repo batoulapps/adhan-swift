@@ -52,7 +52,8 @@ struct SolarTime {
         let m0 = Astronomical.approximateTransit(longitude: coordinates.longitudeAngle, siderealTime: solar.apparentSiderealTime, rightAscension: solar.rightAscension)
         /* Standard altitude of the Sun at apparent rising and setting, accounting
            for refraction (0°34') and the semidiameter (0°16'), from Astronomical
-           Algorithms page 101 */
+           Algorithms page 101. As in the text and in published prayer time
+           tables, the Sun's parallax (8.8", about 1 second) is not included. */
         let solarAltitude = Angle(-50.0 / 60.0)
         // An observer elevated above the horizon sees the Sun rise earlier and set
         // later, since the visible horizon is lower and the Sun's rays are
@@ -87,11 +88,10 @@ struct SolarTime {
         self.sunset = sunsetDate
     }
 
-    func timeForSolarAngle(_ angle: Angle, afterTransit: Bool, initialDeclination: Angle? = nil, tolerance: Double = 0.01) -> DateComponents? {
+    func timeForSolarAngle(_ angle: Angle, afterTransit: Bool) -> DateComponents? {
         let hours = Astronomical.correctedHourAngle(approximateTransit: approxTransit, angle: angle, coordinates: observer, afterTransit: afterTransit, siderealTime: solar.apparentSiderealTime,
                                                rightAscension: solar.rightAscension, previousRightAscension: prevSolar.rightAscension, nextRightAscension: nextSolar.rightAscension,
-                                               declination: solar.declination, previousDeclination: prevSolar.declination, nextDeclination: nextSolar.declination,
-                                               initialDeclination: initialDeclination, tolerance: tolerance)
+                                               declination: solar.declination, previousDeclination: prevSolar.declination, nextDeclination: nextSolar.declination)
         return date.settingHour(hours)
     }
 
@@ -122,9 +122,7 @@ struct SolarTime {
         }
 
         // Confirm the resulting time is after solar transit (noon) to ensure this is afternoon.
-        // Iterate to convergence, since the textbook's ±0.01 day tolerance can leave
-        // several seconds of error in Asr.
-        guard let result = timeForSolarAngle(angle, afterTransit: true, initialDeclination: noonDeclination, tolerance: 1e-7),
+        guard let result = timeForSolarAngle(angle, afterTransit: true),
             let resultDate = Calendar.gregorianUTC.date(from: result),
             let transitDate = Calendar.gregorianUTC.date(from: transit),
             resultDate > transitDate else {

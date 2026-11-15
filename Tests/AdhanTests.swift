@@ -778,6 +778,17 @@ class AdhanTests: XCTestCase {
         XCTAssertNil(p)
     }
 
+    func testIshaFallsBackToHighLatitudeRuleWhenSunDoesNotReachIshaAngle() {
+        // On this night the Sun does not reach 15° below the horizon (confirmed with
+        // JPL DE440), so Isha is the seventh of the night time. Previously a
+        // spurious 15° time 32 minutes earlier was used instead.
+        let coordinates = Coordinates(latitude: 61.2181, longitude: -149.9003)
+        var params = CalculationMethod.northAmerica.params
+        params.highLatitudeRule = .seventhOfTheNight
+        let p = PrayerTimes(coordinates: coordinates, date: date(year: 2025, month: 4, day: 26), calculationParameters: params)!
+        XCTAssertEqual(p.isha, ISO8601DateFormatter().date(from: "2025-04-27T07:02:00Z"))
+    }
+
     func testAsrUsesSolarDeclinationAtTransit() {
         // Reference times are when the Sun's geometric altitude satisfies
         // cot(a) = shadowLength + tan(|latitude - declination at transit|),

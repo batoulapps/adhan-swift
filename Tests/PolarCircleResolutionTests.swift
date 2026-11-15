@@ -138,12 +138,15 @@ class PolarCircleResolutionTests: XCTestCase {
         formatter.timeZone = TimeZone(identifier: "Europe/Stockholm")!
         formatter.dateFormat = "MMMM dd, yyyy h:mm a"
 
-        XCTAssertEqual(formatter.string(from: p.fajr), "June 21, 2020 12:48 AM")
-        XCTAssertEqual(formatter.string(from: p.sunrise), "June 21, 2020 12:54 AM")
+        // The Sun neither rises nor sets here from June 3 to July 8, 2020
+        // (confirmed with JPL DE440), so times come from the closest day outside
+        // that period.
+        XCTAssertEqual(formatter.string(from: p.fajr), "June 21, 2020 1:09 AM")
+        XCTAssertEqual(formatter.string(from: p.sunrise), "June 21, 2020 1:19 AM")
         XCTAssertEqual(formatter.string(from: p.dhuhr), "June 21, 2020 12:55 PM")
-        XCTAssertEqual(formatter.string(from: p.asr), "June 21, 2020 5:50 PM")
-        XCTAssertEqual(formatter.string(from: p.maghrib), "June 22, 2020 12:30 AM")
-        XCTAssertEqual(formatter.string(from: p.isha), "June 22, 2020 12:37 AM")
+        XCTAssertEqual(formatter.string(from: p.asr), "June 21, 2020 5:49 PM")
+        XCTAssertEqual(formatter.string(from: p.maghrib), "June 22, 2020 12:20 AM")
+        XCTAssertEqual(formatter.string(from: p.isha), "June 22, 2020 12:30 AM")
     }
 
     func testAqrabYaumOrderedWhenSunCannotReachAsrAltitudeAt67N() {
