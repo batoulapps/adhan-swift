@@ -174,6 +174,27 @@ class AstronomicalTests: XCTestCase {
         XCTAssertEqual(twilightEnd.timeString(), "25:02")
         XCTAssertNil(invalid)
     }
+
+    func testHourAngleConvergesNearLowerCulmination() {
+        // Reference times are when the Sun's geometric altitude reaches the angle,
+        // computed with JPL DE440 (Skyfield). On these nights the Sun only just
+        // reaches the angle, where a single correction of the approximate time
+        // left the result about 3 minutes off.
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let cases: [(coordinates: Coordinates, date: DateComponents, angle: Angle, afterTransit: Bool, reference: Date)] = [
+            // Anchorage, Fajr at 18°
+            (Coordinates(latitude: 61.2181, longitude: -149.9003), date(year: 2024, month: 8, day: 25), -18, false, formatter.date(from: "2024-08-25T10:33:36.180Z")!),
+            // Glasgow, Isha at 18°
+            (Coordinates(latitude: 55.8642, longitude: -4.2518), date(year: 2028, month: 8, day: 9), -18, true, formatter.date(from: "2028-08-09T23:35:54.924Z")!)
+        ]
+        for testCase in cases {
+            let solar = SolarTime(date: testCase.date, coordinates: testCase.coordinates)!
+            let components = solar.timeForSolarAngle(testCase.angle, afterTransit: testCase.afterTransit)!
+            let time = Calendar.gregorianUTC.date(from: components)!
+            XCTAssertEqual(time.timeIntervalSince(testCase.reference), 0, accuracy: 10)
+        }
+    }
     
     func testRightAscensionEdgeCase() {
         let coordinates = Coordinates(latitude: 35 + 47/60, longitude: -78 - 39/60)

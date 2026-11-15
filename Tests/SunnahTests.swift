@@ -230,14 +230,15 @@ class SunnahTests: XCTestCase {
     }
 
     func testSunnahTimesNilWhenTomorrowFailsToResolve() {
-        // June 2, 2020 is the last day before permanent midnight sun begins at this
-        // location - today's times are valid on their own, but SunnahTimes also
-        // depends on tomorrow's prayer times to compute the night's length.
+        // The midnight sun at this location runs from June 3 to July 8, 2020
+        // (confirmed with JPL DE440). June 1's times are valid on their own, but
+        // SunnahTimes also depends on tomorrow's prayer times to compute the
+        // night's length, and June 2's night ends in the midnight sun.
         let coordinates = Coordinates(latitude: 66.7222444, longitude: 17.7189) // Arjeplog, Sweden
         var params = CalculationMethod.muslimWorldLeague.params
         params.polarCircleResolution = .unresolved
 
-        guard let prayerTimes = PrayerTimes(coordinates: coordinates, date: DateComponents(year: 2020, month: 6, day: 2), calculationParameters: params) else {
+        guard let prayerTimes = PrayerTimes(coordinates: coordinates, date: DateComponents(year: 2020, month: 6, day: 1), calculationParameters: params) else {
             return XCTFail("Expected today's prayer times to be computable")
         }
         XCTAssertNil(SunnahTimes(from: prayerTimes))

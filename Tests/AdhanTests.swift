@@ -212,7 +212,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.fajr), "5:48 AM")
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:16 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "12:33 PM")
-        XCTAssertEqual(dateFormatter.string(from: p.asr), "3:20 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.asr), "3:19 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "5:43 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "7:05 PM")
     }
@@ -234,7 +234,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.fajr), "7:34 AM")
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "9:19 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "12:25 PM")
-        XCTAssertEqual(dateFormatter.string(from: p.asr), "1:36 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.asr), "1:35 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "3:25 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "5:02 PM")
     }
@@ -292,7 +292,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p1.fajr), "4:44 AM")
         XCTAssertEqual(dateFormatter.string(from: p1.sunrise), "6:16 AM")
         XCTAssertEqual(dateFormatter.string(from: p1.dhuhr), "1:09 PM")
-        XCTAssertEqual(dateFormatter.string(from: p1.asr), "4:53 PM") // original time 4:52 PM
+        XCTAssertEqual(dateFormatter.string(from: p1.asr), "4:52 PM")
         XCTAssertEqual(dateFormatter.string(from: p1.maghrib), "7:52 PM")
         XCTAssertEqual(dateFormatter.string(from: p1.isha), "9:19 PM") // original time 9:18 PM
     }
@@ -606,7 +606,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.fajr), "6:22 AM")
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:55 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:08 PM")
-        XCTAssertEqual(dateFormatter.string(from: p.asr), "4:26 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.asr), "4:27 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "6:13 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "7:35 PM")
     }
@@ -630,7 +630,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.fajr), "6:16 AM")
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:52 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "12:28 PM")
-        XCTAssertEqual(dateFormatter.string(from: p.asr), "2:37 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.asr), "2:36 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "4:57 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "6:07 PM") // value from source is 6:08 PM
         
@@ -642,7 +642,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.fajr), "5:28 AM")
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:01 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:28 PM")
-        XCTAssertEqual(dateFormatter.string(from: p.asr), "4:59 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.asr), "4:58 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "7:49 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "8:45 PM")
         
@@ -666,7 +666,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.fajr), "6:22 AM")
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:55 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:08 PM")
-        XCTAssertEqual(dateFormatter.string(from: p.asr), "3:45 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.asr), "3:46 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "6:13 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "7:15 PM")
     }
@@ -727,7 +727,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.fajr), "6:22 AM")
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:55 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:08 PM")
-        XCTAssertEqual(dateFormatter.string(from: p.asr), "4:26 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.asr), "4:27 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "6:13 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "7:37 PM")
     }
@@ -752,7 +752,7 @@ class AdhanTests: XCTestCase {
         var comps = DateComponents()
         comps.year = 2026
         comps.month = 1
-        comps.day = 8
+        comps.day = 9
         let coordinates = Coordinates(latitude: 67.37800510772394, longitude: -67.26246475893095)
         let params = CalculationMethod.muslimWorldLeague.params
         guard let p = PrayerTimes(coordinates: coordinates, date: comps, calculationParameters: params) else {
@@ -776,6 +776,40 @@ class AdhanTests: XCTestCase {
         params.polarCircleResolution = .unresolved
         let p = PrayerTimes(coordinates: coordinates, date: comps, calculationParameters: params)
         XCTAssertNil(p)
+    }
+
+    func testIshaFallsBackToHighLatitudeRuleWhenSunDoesNotReachIshaAngle() {
+        // On this night the Sun does not reach 15° below the horizon (confirmed with
+        // JPL DE440), so Isha is the seventh of the night time. Previously a
+        // spurious 15° time 32 minutes earlier was used instead.
+        let coordinates = Coordinates(latitude: 61.2181, longitude: -149.9003)
+        var params = CalculationMethod.northAmerica.params
+        params.highLatitudeRule = .seventhOfTheNight
+        let p = PrayerTimes(coordinates: coordinates, date: date(year: 2025, month: 4, day: 26), calculationParameters: params)!
+        XCTAssertEqual(p.isha, ISO8601DateFormatter().date(from: "2025-04-27T07:02:00Z"))
+    }
+
+    func testAsrUsesSolarDeclinationAtTransit() {
+        // Reference times are when the Sun's geometric altitude satisfies
+        // cot(a) = shadowLength + tan(|latitude - declination at transit|),
+        // computed with JPL DE440 (Skyfield). In Toronto transit is ~17.5h after
+        // 0h UT, so using the declination at 0h UT shifted Asr by up to ~65s.
+        let coordinates = Coordinates(latitude: 43.6532, longitude: -79.3832)
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let cases: [(date: DateComponents, madhab: Madhab, reference: Date)] = [
+            // Declination increasing: the 0h UT declination made Asr late
+            (date(year: 2023, month: 2, day: 13), .shafi, formatter.date(from: "2023-02-13T20:18:55.092Z")!),
+            // Declination decreasing: the 0h UT declination made Asr early
+            (date(year: 2023, month: 10, day: 15), .hanafi, formatter.date(from: "2023-10-15T20:49:20.706Z")!)
+        ]
+        for testCase in cases {
+            var params = CalculationMethod.muslimWorldLeague.params
+            params.madhab = testCase.madhab
+            params.rounding = .none
+            let p = PrayerTimes(coordinates: coordinates, date: testCase.date, calculationParameters: params)!
+            XCTAssertEqual(p.asr.timeIntervalSince(testCase.reference), 0, accuracy: 5)
+        }
     }
 
     private func checkPrayersOrder(date: DateComponents, coordinates: Coordinates) {

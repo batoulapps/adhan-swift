@@ -36,6 +36,7 @@ struct SolarTime {
     private let prevSolar: SolarCoordinates
     private let nextSolar: SolarCoordinates
     private let approxTransit: Double
+    private let transitTime: Double
 
     init?(date: DateComponents, coordinates: Coordinates, elevationFromHorizon: ElevationFromHorizon = ElevationFromHorizon(0)) {
         // calculations need to occur at 0h0m UTC
@@ -51,7 +52,8 @@ struct SolarTime {
         let m0 = Astronomical.approximateTransit(longitude: coordinates.longitudeAngle, siderealTime: solar.apparentSiderealTime, rightAscension: solar.rightAscension)
         /* Standard altitude of the Sun at apparent rising and setting, accounting
            for refraction (0°34') and the semidiameter (0°16'), from Astronomical
-           Algorithms page 101 */
+           Algorithms page 101. As in the text and in published prayer time
+           tables, the Sun's parallax (8.8", about 1 second) is not included. */
         let solarAltitude = Angle(-50.0 / 60.0)
         // An observer elevated above the horizon sees the Sun rise earlier and set
         // later, since the visible horizon is lower and the Sun's rays are
@@ -80,6 +82,7 @@ struct SolarTime {
             return nil
         }
 
+        self.transitTime = transitTime
         self.transit = transitDate
         self.sunrise = sunriseDate
         self.sunset = sunsetDate
@@ -94,7 +97,12 @@ struct SolarTime {
 
     // hours from transit
     func afternoon(shadowLength: Double) -> DateComponents? {
-        let tangent = Angle(fabs(observer.latitude - solar.declination.degrees))
+        // The noon shadow is cast when the sun is at transit, so use the
+        // declination interpolated to transit rather than the one at 0h UT.
+        // Transit can be up to a day away from 0h UT depending on longitude.
+        let noonDeclination = Angle(Astronomical.interpolate(value: solar.declination.degrees, previousValue: prevSolar.declination.degrees,
+                                                             nextValue: nextSolar.declination.degrees, factor: transitTime / 24))
+        let tangent = Angle(fabs(observer.latitude - noonDeclination.degrees))
         let inverse = shadowLength + tan(tangent.radians)
         let angle = Angle(radians: atan(1.0 / inverse))
 
@@ -106,7 +114,7 @@ struct SolarTime {
             return nil
         }
 
-        let maxAltitude = Astronomical.altitudeOfCelestialBody(observerLatitude: observer.latitudeAngle, declination: solar.declination, localHourAngle: Angle(0))
+        let maxAltitude = Astronomical.altitudeOfCelestialBody(observerLatitude: observer.latitudeAngle, declination: noonDeclination, localHourAngle: Angle(0))
 
         // Confirm the sun's maximum altitude on this day actually reaches the computed angle.
         guard maxAltitude.degrees >= angle.degrees else {

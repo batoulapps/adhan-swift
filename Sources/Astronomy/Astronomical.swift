@@ -192,29 +192,91 @@ struct Astronomical {
     static func correctedHourAngle(approximateTransit m0: Double, angle h0: Angle, coordinates: Coordinates, afterTransit: Bool, siderealTime Θ0: Angle,
                                    rightAscension α2: Angle, previousRightAscension α1: Angle, nextRightAscension α3: Angle,
                                    declination δ2: Angle, previousDeclination δ1: Angle, nextDeclination δ3: Angle) -> Double {
-        /* Equation from page Astronomical Algorithms 102 */
-        let Lw = coordinates.longitudeAngle * Angle(-1)
-        let term1 = sin(h0.radians) - (sin(coordinates.latitudeAngle.radians) * sin(δ2.radians))
-        let term2 = cos(coordinates.latitudeAngle.radians) * cos(δ2.radians)
-        let H0 = Angle(radians: acos(term1 / term2))
-        var m = afterTransit ? m0 + (H0.degrees / 360) : m0 - (H0.degrees / 360)
+        let L = coordinates.longitudeAngle
+        let φ = coordinates.latitudeAngle
 
-        // Astronomical Algorithms page 103 notes that the correction value of Δm
-        // should be ±0.01 and to recalculate with the corrected m value if needed.
-        // Iteration is capped at 10 to account for situations where convergence doesn't occur.
-        for _ in 0..<10 {
+        /* The altitude of the body at time m (a fraction of the day), with the
+           right ascension and declination interpolated to m.
+           Equations from Astronomical Algorithms page 103 */
+        let Lw = L * Angle(-1)
+        func altitude(at m: Double) -> (h: Angle, δ: Angle, H: Angle) {
             let θ = Angle(Θ0.degrees + (360.985647 * m)).unwound()
             let α = Astronomical.interpolateAngles(value: α2, previousValue: α1, nextValue: α3, factor: m).unwound()
             let δ = Angle(Astronomical.interpolate(value: δ2.degrees, previousValue: δ1.degrees, nextValue: δ3.degrees, factor: m))
-            let H = (θ - Lw - α)
-            let h = Astronomical.altitudeOfCelestialBody(observerLatitude: coordinates.latitudeAngle, declination: δ, localHourAngle: H)
-            let dmDenominator = 360 * cos(δ.radians) * cos(coordinates.latitudeAngle.radians) * sin(H.radians)
-            guard dmDenominator != 0 else {
-                return .nan
+            let H = θ - Lw - α
+            let h = Astronomical.altitudeOfCelestialBody(observerLatitude: φ, declination: δ, localHourAngle: H)
+            return (h, δ, H)
+        }
+
+        /* The altitude is highest at transit and lowest at the lower culmination,
+           and, since the declination changes only slightly over half a day,
+           changes monotonically between them. So the requested altitude is
+           reached once between transit and the adjacent lower culmination if, and
+           only if, it lies between the altitudes at those two instants (see Note 2
+           on page 104). The lower culmination is the transit across the opposite
+           meridian, L + 180°. */
+        let transit = Astronomical.correctedTransit(approximateTransit: m0, longitude: L, siderealTime: Θ0,
+                                                    rightAscension: α2, previousRightAscension: α1, nextRightAscension: α3) / 24
+        let lowerCulmination = Astronomical.correctedTransit(approximateTransit: afterTransit ? transit + 0.5 : transit - 0.5,
+                                                             longitude: L + Angle(180), siderealTime: Θ0,
+                                                             rightAscension: α2, previousRightAscension: α1, nextRightAscension: α3) / 24
+        guard altitude(at: transit).h.degrees > h0.degrees,
+              altitude(at: lowerCulmination).h.degrees < h0.degrees else {
+            return .nan
+        }
+
+        // Bracket [lo, hi] around the solution, with the altitude above h0 on the
+        // transit side and below h0 on the lower culmination side.
+        var lo = min(transit, lowerCulmination)
+        var hi = max(transit, lowerCulmination)
+
+        /* Approximate time from equations (15.1) and (15.2) on page 102, using the
+           declination at 0h. If it does not exist or falls outside the bracket,
+           start from the middle of the bracket instead. */
+        let cosH0 = (sin(h0.radians) - (sin(φ.radians) * sin(δ2.radians))) / (cos(φ.radians) * cos(δ2.radians))
+        let H0 = Angle(radians: acos(cosH0))
+        var m = afterTransit ? m0 + (H0.degrees / 360) : m0 - (H0.degrees / 360)
+        if m.isNaN || m <= lo || m >= hi {
+            m = (lo + hi) / 2
+        }
+
+        /* Correct m by Δm = (h - h0) / (360 cos δ cos φ sin H) (page 103),
+           repeating the calculation with the corrected m until the correction is
+           negligible, as in Example 15.a on page 104. Near the transit or the lower
+           culmination sin H approaches zero and this correction can overshoot, so
+           a correction that would leave the bracket, or that is not shrinking fast
+           enough, is replaced by halving the bracket, the binary search of
+           Astronomical Algorithms chapter 5 (page 52). The rule for switching
+           between the two is that of rtsafe in Numerical Recipes, section 9.4.
+           This always converges, to the same solution the textbook iteration
+           converges to when it does. */
+        var Δm = hi - lo
+        var previousΔm = Δm
+        for _ in 0..<100 {
+            let (h, δ, H) = altitude(at: m)
+            let f = (h - h0).degrees
+            if f == 0 {
+                break
             }
-            let Δm = (h - h0).degrees / dmDenominator
-            m += Δm
-            if fabs(Δm) <= 0.01 {
+            if (f > 0) == afterTransit {
+                lo = m
+            } else {
+                hi = m
+            }
+            // Rate of change of the altitude, in degrees per day
+            let slope = -360 * cos(δ.radians) * cos(φ.radians) * sin(H.radians)
+            let newtonLeavesBracket = ((m - hi) * slope - f) * ((m - lo) * slope - f) >= 0
+            let newtonTooSlow = abs(2 * f) > abs(previousΔm * slope)
+            previousΔm = Δm
+            if newtonLeavesBracket || newtonTooSlow {
+                Δm = (hi - lo) / 2
+                m = lo + Δm
+            } else {
+                Δm = -f / slope
+                m += Δm
+            }
+            // About 0.1 milliseconds
+            if abs(Δm) < 1e-9 {
                 break
             }
         }
