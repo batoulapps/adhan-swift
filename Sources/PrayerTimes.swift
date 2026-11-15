@@ -51,13 +51,14 @@ public struct PrayerTimes {
     public let calculationParameters: CalculationParameters
 
     public init?(coordinates: Coordinates, date: DateComponents, calculationParameters: CalculationParameters) {
-        // Latitude must be within ±90° and the date must include a year, month and day
-        // that can form a valid calendar date
+        // Latitude must be within ±90°, the date must include a year, month and day
+        // that can form a valid calendar date, and the elevation must be finite
         guard abs(coordinates.latitude) <= 90,
             date.year != nil,
             date.month != nil,
             date.day != nil,
-            date.isValidDate(in: .gregorianUTC) else {
+            date.isValidDate(in: .gregorianUTC),
+            calculationParameters.elevationFromHorizon.isFinite else {
             return nil
         }
 
@@ -147,8 +148,12 @@ public struct PrayerTimes {
 
         let tomorrow = cal.dateComponents([.year, .month, .day], from: tomorrowDate)
 
-        guard let solarTime = SolarTime(date: date, coordinates: coordinates),
-            let tomorrowSolarTime = SolarTime(date: tomorrow, coordinates: coordinates),
+        // Elevation only changes sunrise and sunset. Twilight angles for Fajr, Isha,
+        // and Maghrib are not adjusted, following Odeh's "Calculating Prayer Times"
+        // section 7-4. See ELEVATION.md for details.
+        let elevation = calculationParameters.elevationFromHorizon
+        guard let solarTime = SolarTime(date: date, coordinates: coordinates, elevationFromHorizon: elevation),
+            let tomorrowSolarTime = SolarTime(date: tomorrow, coordinates: coordinates, elevationFromHorizon: elevation),
             let sunriseDate = cal.date(from: solarTime.sunrise),
             let sunsetDate = cal.date(from: solarTime.sunset),
             let tomorrowSunrise = cal.date(from: tomorrowSolarTime.sunrise) else {

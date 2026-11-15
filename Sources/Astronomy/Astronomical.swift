@@ -172,6 +172,23 @@ struct Astronomical {
         return (m0 + Δm.degrees) * 24
     }
 
+    /* How far the Sun's altitude at rising and setting is lowered
+       for an observer at the given height in meters above their horizon. */
+    static func elevationCorrection(_ elevation: Double) -> Angle {
+        guard elevation > 0 else {
+            return 0
+        }
+
+        /* Astronomical Algorithms does not cover the dip of the horizon (page 96).
+           Equation (8) from "Calculating Prayer Times" (حساب مواقيت الصلاة),
+           Mohammad Odeh, International Astronomical Center, 2001 (revised 2004),
+           section 4. The total combines the dip of the visible horizon below the
+           astronomical horizon (0.02917 * sqrt(h)) and the additional refraction
+           of the Sun's rays for an elevated observer (0.00617 * sqrt(h)).
+           See ELEVATION.md for details. */
+        return Angle(0.035333 * elevation.squareRoot())
+    }
+
     static func correctedHourAngle(approximateTransit m0: Double, angle h0: Angle, coordinates: Coordinates, afterTransit: Bool, siderealTime Θ0: Angle,
                                    rightAscension α2: Angle, previousRightAscension α1: Angle, nextRightAscension α3: Angle,
                                    declination δ2: Angle, previousDeclination δ1: Angle, nextDeclination δ3: Angle) -> Double {
