@@ -114,12 +114,33 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p11.ishaInterval, 0)
         XCTAssertEqual(p11.method, CalculationMethod.singapore)
         
-        let p12 = CalculationMethod.tehran.params
-        XCTAssertEqual(p12.fajrAngle, 17.7)
-        XCTAssertEqual(p12.maghribAngle, 4.5)
-        XCTAssertEqual(p12.ishaAngle, 14)
+        let p12 = CalculationMethod.malaysia.params
+        XCTAssertEqual(p12.fajrAngle, 18)
+        XCTAssertEqual(p12.ishaAngle, 18)
         XCTAssertEqual(p12.ishaInterval, 0)
-        XCTAssertEqual(p12.method, CalculationMethod.tehran)
+        XCTAssertEqual(p12.method, CalculationMethod.malaysia)
+        XCTAssertEqual(p12.methodAdjustments.sunrise, -1)
+        XCTAssertEqual(p12.methodAdjustments.dhuhr, 1)
+
+        let p13 = CalculationMethod.indonesia.params
+        XCTAssertEqual(p13.fajrAngle, 20)
+        XCTAssertEqual(p13.maghribAngle, 1)
+        XCTAssertEqual(p13.ishaAngle, 18)
+        XCTAssertEqual(p13.ishaInterval, 0)
+        XCTAssertEqual(p13.method, CalculationMethod.indonesia)
+        XCTAssertEqual(p13.methodAdjustments.fajr, 2)
+        XCTAssertEqual(p13.methodAdjustments.sunrise, -4)
+        XCTAssertEqual(p13.methodAdjustments.dhuhr, 3)
+        XCTAssertEqual(p13.methodAdjustments.asr, 2)
+        XCTAssertEqual(p13.methodAdjustments.maghrib, 2)
+        XCTAssertEqual(p13.methodAdjustments.isha, 2)
+
+        let p14 = CalculationMethod.tehran.params
+        XCTAssertEqual(p14.fajrAngle, 17.7)
+        XCTAssertEqual(p14.maghribAngle, 4.5)
+        XCTAssertEqual(p14.ishaAngle, 14)
+        XCTAssertEqual(p14.ishaInterval, 0)
+        XCTAssertEqual(p14.method, CalculationMethod.tehran)
     }
     
     func testPrayerTimes() {
