@@ -812,6 +812,63 @@ class AdhanTests: XCTestCase {
         }
     }
 
+    func testTimeZoneEastOfDateLine() {
+        // Nuku'alofa, Tonga keeps UTC+13 at 175°W
+        let tonga = TimeZone(secondsFromGMT: 13 * 3600)!
+        let coordinates = Coordinates(latitude: -21.1368, longitude: -175.2011, timeZone: tonga)
+        let p = PrayerTimes(coordinates: coordinates, date: date(year: 2027, month: 11, day: 12), calculationParameters: CalculationMethod.muslimWorldLeague.params)!
+        XCTAssertEqual(localTime(p.fajr, in: tonga), "2027-11-12 4:33 AM")
+        XCTAssertEqual(localTime(p.dhuhr, in: tonga), "2027-11-12 12:26 PM")
+        XCTAssertEqual(localTime(p.isha, in: tonga), "2027-11-12 8:12 PM")
+    }
+
+    func testTimeZoneWestOfDateLine() {
+        // Shemya, Alaska keeps UTC-10 at 174°E
+        let adak = TimeZone(secondsFromGMT: -10 * 3600)!
+        let coordinates = Coordinates(latitude: 52.72, longitude: 174.11, timeZone: adak)
+        let p = PrayerTimes(coordinates: coordinates, date: date(year: 2027, month: 11, day: 12), calculationParameters: CalculationMethod.muslimWorldLeague.params)!
+        XCTAssertEqual(localTime(p.fajr, in: adak), "2027-11-12 7:41 AM")
+        XCTAssertEqual(localTime(p.dhuhr, in: adak), "2027-11-12 2:09 PM")
+        XCTAssertEqual(localTime(p.isha, in: adak), "2027-11-12 8:27 PM")
+    }
+
+    func testTimeZoneUnchangedWhenLongitudeGivesTheRightDay() {
+        // Pago Pago, American Samoa keeps UTC-11 at 170°W
+        let samoa = TimeZone(secondsFromGMT: -11 * 3600)!
+        let params = CalculationMethod.muslimWorldLeague.params
+        let d = date(year: 2027, month: 11, day: 12)
+        let withTimeZone = PrayerTimes(coordinates: Coordinates(latitude: -14.28, longitude: -170.7, timeZone: samoa), date: d, calculationParameters: params)!
+        let withoutTimeZone = PrayerTimes(coordinates: Coordinates(latitude: -14.28, longitude: -170.7), date: d, calculationParameters: params)!
+        XCTAssertEqual(withTimeZone.dhuhr, withoutTimeZone.dhuhr)
+        XCTAssertEqual(localTime(withTimeZone.dhuhr, in: samoa), "2027-11-12 12:08 PM")
+    }
+
+    func testTimeZoneCarriedIntoSunnahTimes() {
+        let tonga = TimeZone(secondsFromGMT: 13 * 3600)!
+        let coordinates = Coordinates(latitude: -21.1368, longitude: -175.2011, timeZone: tonga)
+        let p = PrayerTimes(coordinates: coordinates, date: date(year: 2027, month: 11, day: 12), calculationParameters: CalculationMethod.muslimWorldLeague.params)!
+        let sunnahTimes = SunnahTimes(from: p)!
+        XCTAssertEqual(localTime(sunnahTimes.middleOfTheNight, in: tonga), "2027-11-12 11:45 PM")
+    }
+
+    func testTimeZoneCarriedIntoPolarCircleResolution() {
+        // Wrangel Island, Russia keeps UTC+12 at 179°W and has polar night in December
+        let chukotka = TimeZone(secondsFromGMT: 12 * 3600)!
+        let coordinates = Coordinates(latitude: 71.23, longitude: -179.4, timeZone: chukotka)
+        var params = CalculationMethod.muslimWorldLeague.params
+        params.polarCircleResolution = .aqrabBalad
+        let p = PrayerTimes(coordinates: coordinates, date: date(year: 2027, month: 12, day: 21), calculationParameters: params)!
+        XCTAssertTrue(localTime(p.dhuhr, in: chukotka).hasPrefix("2027-12-21 "), localTime(p.dhuhr, in: chukotka))
+    }
+
+    private func localTime(_ time: Date, in timeZone: TimeZone) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = timeZone
+        formatter.dateFormat = "yyyy-MM-dd h:mm a"
+        return formatter.string(from: time)
+    }
+
     private func checkPrayersOrder(date: DateComponents, coordinates: Coordinates) {
         var params = CalculationMethod.muslimWorldLeague.params
         params.madhab = .shafi

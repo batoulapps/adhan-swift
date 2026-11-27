@@ -142,7 +142,19 @@ struct Astronomical {
         return Angle(radians: asin(term1 + term2))
     }
 
-    static func approximateTransit(longitude L: Angle, siderealTime Θ0: Angle, rightAscension α2: Angle) -> Double {
+    /* Rough transit time as a fraction of the UTC day. Without a UTC offset this
+       is based on the longitude alone. The longitude can't tell which side of the
+       date line a location keeps its calendar on, so with an offset (in seconds)
+       the estimate is moved onto the location's local date (e.g. a day earlier in Tonga). */
+    static func expectedTransit(longitude L: Angle, utcOffset: TimeInterval? = nil) -> Double {
+        let fromLongitude = ((12.0 - L.degrees / 15.0) / 24.0).normalizedToScale(1)
+        guard let utcOffset else {
+            return fromLongitude
+        }
+        return fromLongitude - floor(fromLongitude + utcOffset / 86_400)
+    }
+
+    static func approximateTransit(longitude L: Angle, siderealTime Θ0: Angle, rightAscension α2: Angle, utcOffset: TimeInterval? = nil) -> Double {
         /* Equation from page Astronomical Algorithms 102 */
         let Lw = L * -1
         let m0 = ((α2 + Lw - Θ0) / 360).degrees.normalizedToScale(1)
@@ -150,7 +162,7 @@ struct Astronomical {
         // an m0 for the wrong calendar date.  We detect this by comparing m0 to a
         // generalized transit time based on the longitude. If they differ by more than
         // half a day, m0 is off by one cycle and we adjust in the correct direction.
-        let expectedTransit = ((12.0 - L.degrees / 15.0) / 24.0).normalizedToScale(1)
+        let expectedTransit = Astronomical.expectedTransit(longitude: L, utcOffset: utcOffset)
         if m0 - expectedTransit > 0.5 {
             return m0 - 1.0
         } else if expectedTransit - m0 > 0.5 {

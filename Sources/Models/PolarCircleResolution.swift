@@ -104,7 +104,7 @@ extension PolarCircleResolution {
         return candidateLatitudes.lazy
             .compactMap { latitude in
                 PrayerTimes.computeForDay(
-                    coordinates: Coordinates(latitude: latitude, longitude: coordinates.longitude),
+                    coordinates: Coordinates(latitude: latitude, longitude: coordinates.longitude, timeZone: coordinates.timeZone),
                     date: date,
                     calculationParameters: calculationParameters)
             }
