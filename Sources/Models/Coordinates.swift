@@ -28,10 +28,18 @@ import Foundation
 public struct Coordinates: Codable, Equatable {
     let latitude: Double
     let longitude: Double
+    let timeZone: TimeZone?
 
-    public init(latitude: Double, longitude: Double) {
+    /// - Parameters:
+    ///   - latitude: Degrees (value must be between -90 and 90).
+    ///   - longitude: Degrees.
+    ///   - timeZone: The location's time zone. Required for locations near the
+    ///     International Date Line, which otherwise may get the previous or next
+    ///     day's times.
+    public init(latitude: Double, longitude: Double, timeZone: TimeZone? = nil) {
         self.latitude = latitude
         self.longitude = longitude
+        self.timeZone = timeZone
     }
     
     var latitudeAngle: Angle {

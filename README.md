@@ -34,6 +34,15 @@ you want prayer times for.
 let coordinates = Coordinates(latitude: 35.78056, longitude: -78.6389)
 ```
 
+You can also pass in the location's time zone. Without it, certain places near
+the international date line (South Pacific Islands) may get either the previous
+or next day's times instead.
+
+```swift
+let coordinates = Coordinates(latitude: -21.1368, longitude: -175.2011,
+                              timeZone: TimeZone(identifier: "Pacific/Tongatapu")) // Nuku'alofa
+```
+
 #### Date
 
 To avoid confusion with timezones, the date parameter passed in should be an instance of

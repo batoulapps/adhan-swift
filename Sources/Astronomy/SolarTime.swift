@@ -48,8 +48,14 @@ struct SolarTime {
         let prevSolar = SolarCoordinates(julianDay: julianDay - 1)
         let solar = SolarCoordinates(julianDay: julianDay)
         let nextSolar = SolarCoordinates(julianDay: julianDay + 1)
+        let utcOffset = SolarTime.utcOffset(of: coordinates.timeZone, on: date)
 
-        let m0 = Astronomical.approximateTransit(longitude: coordinates.longitudeAngle, siderealTime: solar.apparentSiderealTime, rightAscension: solar.rightAscension)
+        let m0 = Astronomical.approximateTransit(
+            longitude: coordinates.longitudeAngle,
+            siderealTime: solar.apparentSiderealTime,
+            rightAscension: solar.rightAscension,
+            utcOffset: utcOffset
+        )
         /* Standard altitude of the Sun at apparent rising and setting, accounting
            for refraction (0°34') and the semidiameter (0°16'), from Astronomical
            Algorithms page 101. As in the text and in published prayer time
@@ -130,5 +136,13 @@ struct SolarTime {
         }
 
         return result
+    }
+
+    // The offset only selects the local day, so looking it up at 0h UTC is enough
+    private static func utcOffset(of timeZone: TimeZone?, on date: DateComponents) -> TimeInterval? {
+        guard let timeZone, let midnight = Calendar.gregorianUTC.date(from: date) else {
+            return nil
+        }
+        return TimeInterval(timeZone.secondsFromGMT(for: midnight))
     }
 }

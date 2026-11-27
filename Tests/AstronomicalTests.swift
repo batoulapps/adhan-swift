@@ -222,6 +222,31 @@ class AstronomicalTests: XCTestCase {
         }
     }
 
+    func testExpectedTransitFromLongitude() {
+        // Returned as a fraction of the UTC day; compare in hours.
+        XCTAssertEqual(Astronomical.expectedTransit(longitude: 0) * 24, 12, accuracy: 0.01)
+        XCTAssertEqual(Astronomical.expectedTransit(longitude: -75) * 24, 17, accuracy: 0.01)
+        XCTAssertEqual(Astronomical.expectedTransit(longitude: 180) * 24, 0, accuracy: 0.01)
+        XCTAssertEqual(Astronomical.expectedTransit(longitude: -180) * 24, 0, accuracy: 0.01)
+        XCTAssertEqual(Astronomical.expectedTransit(longitude: -175.2) * 24, 23.68, accuracy: 0.01)
+    }
+
+    func testExpectedTransitMovesOntoLocalDate() {
+        let hour: TimeInterval = 3600
+        // Tonga (UTC+13, 175.2°W): noon is the previous UTC day.
+        XCTAssertEqual(Astronomical.expectedTransit(longitude: -175.2, utcOffset: 13 * hour) * 24, -0.32, accuracy: 0.01)
+        // Shemya (UTC-10, 174.15°E): noon is the next UTC day.
+        XCTAssertEqual(Astronomical.expectedTransit(longitude: 174.15, utcOffset: -10 * hour) * 24, 24.39, accuracy: 0.01)
+    }
+
+    func testExpectedTransitUnchangedWhenOffsetAgreesWithLongitude() {
+        let hour: TimeInterval = 3600
+        XCTAssertEqual(Astronomical.expectedTransit(longitude: -170.7, utcOffset: -11 * hour) * 24, 23.38, accuracy: 0.01) // Pago Pago
+        XCTAssertEqual(Astronomical.expectedTransit(longitude: 178.5, utcOffset: 12 * hour) * 24, 0.1, accuracy: 0.01) // Suva
+        XCTAssertEqual(Astronomical.expectedTransit(longitude: -75, utcOffset: -5 * hour) * 24, 17, accuracy: 0.01) // New York
+        XCTAssertEqual(Astronomical.expectedTransit(longitude: 0, utcOffset: 0) * 24, 12, accuracy: 0.01)
+    }
+
     func testApproximateTransitNearDateLine() {
         // On Dec 1, 2025 for a location at longitude ~177°E, the solar transit falls just
         // before UTC midnight. The raw (alpha2 + Lw - theta0) / 360 value is a tiny negative
